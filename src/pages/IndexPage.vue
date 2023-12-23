@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex h-svh w-svw items-center justify-center">
     <MainGame></MainGame>
   </div>
 </template>
