@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
+import * as pixi from "pixi.js";
 
-export default class TargetBall extends PIXI.Graphics {
+export default class TargetBall extends pixi.Graphics {
   constructor(initRadius, maxRadius, growthRate) {
     super().beginFill(0xffff00).drawCircle(0, 0, initRadius).endFill();
     this.initRadius = initRadius;
