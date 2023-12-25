@@ -23,14 +23,16 @@ export default class TargetBall extends pixi.Graphics {
   }
 
   grow(delta) {
-    if (this.width <= this.maxRadius) {
-      this.width += this.width * this.growthRate * delta;
-      this.height += this.height * this.growthRate * delta;
+    if (this.radius <= this.maxRadius) {
+      this.radius += this.radius * this.growthRate * delta;
+      this.width = this.radius;
+      this.height = this.radius;
     }
   }
 
   resetRadius(radius) {
-    this.width = 2 * this.initRadius;
-    this.height = 2 * this.initRadius;
+    this.radius = 2 * this.initRadius;
+    this.width = this.radius;
+    this.height = this.radius;
   }
 }
