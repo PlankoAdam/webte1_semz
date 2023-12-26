@@ -1,5 +1,12 @@
 <template>
-  <div ref="gameWindow"></div>
+  <div class="flex flex-col">
+    <div class="flex-row absolute top-0 left-0 w-full my-3">
+      <h1 class="py-0 my-0 text-center text-6xl font-thin">
+        {{ scoreCount }}
+      </h1>
+    </div>
+    <div ref="gameWindow"></div>
+  </div>
 </template>
 
 <script setup>
@@ -9,6 +16,8 @@ import TargetBall from "./game/TargetBall.js";
 import Player from "./game/Player.js";
 
 let gameWindow = ref(null);
+let scoreCount = ref(0);
+const scoreMultiplier = 100;
 
 const gameWidth = 900;
 const gameHeight = 700;
@@ -35,7 +44,7 @@ const player = new Player(0.15);
 app.stage.addChild(player);
 player.setPos(mouseCoords.x, mouseCoords.y);
 
-const ball = new TargetBall(50, 10, 100, 0.01, { x: 2, y: 3 }, 2);
+const ball = new TargetBall(15, 15, 100, 0.01, 0, 0);
 app.stage.addChild(ball);
 ball.setRandPos();
 
@@ -47,6 +56,9 @@ app.ticker.add((delta) => {
   ball.move(delta);
   //If player object touches the ball
   if (ball.containsPoint(player.position)) {
+    scoreCount.value += Math.floor(
+      ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
+    );
     ball.setRandPos();
     ball.setRandDir();
     ball.resetRadius();
