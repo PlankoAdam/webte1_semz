@@ -14,6 +14,7 @@ import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import TargetBall from "./game/TargetBall.js";
 import Player from "./game/Player.js";
+import * as color from "./game/colors.json";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -29,7 +30,7 @@ let app = new PIXI.Application({
   width: gameWidth,
   height: gameHeight,
   antialias: true,
-  background: 0xffffff,
+  background: color.background,
   resizeTo: window,
 });
 

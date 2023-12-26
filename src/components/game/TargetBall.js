@@ -11,7 +11,7 @@ export default class TargetBall extends pixi.Graphics {
     moveDirection,
     moveSpeed
   ) {
-    super().beginFill(color.targetColor).drawCircle(0, 0, initRadius).endFill();
+    super().beginFill(color.target).drawCircle(0, 0, initRadius).endFill();
     this.initRadius = initRadius;
     this.minRadius = minRadius;
     this.maxRadius = maxRadius;

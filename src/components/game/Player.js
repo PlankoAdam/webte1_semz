@@ -5,7 +5,7 @@ import * as color from "./colors.json";
 export default class Player extends pixi.Graphics {
   constructor(moveSpeed) {
     super()
-      .beginFill(color.playerColor)
+      .beginFill(color.player)
       .drawPolygon(0, 0, 15, 50, 0, 40, -15, 50)
       .endFill();
     this.moveSpeed = moveSpeed;

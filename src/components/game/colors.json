@@ -1,4 +1,5 @@
 {
-  "playerColor": "0x023047",
-  "targetColor": "0xfb8500"
+  "background": "0xffffff",
+  "player": "0x023047",
+  "target": "0xfb8500"
 }
