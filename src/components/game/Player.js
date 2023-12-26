@@ -6,7 +6,7 @@ export default class Player extends pixi.Graphics {
   constructor(moveSpeed) {
     super()
       .beginFill(color.player)
-      .drawPolygon(0, 0, 15, 50, 0, 40, -15, 50)
+      .drawPolygon(0, -25, 15, 25, 0, 15, -15, 25)
       .endFill();
     this.moveSpeed = moveSpeed;
     this.acceleration = { x: 0, y: 0 };
@@ -34,9 +34,9 @@ export default class Player extends pixi.Graphics {
       const dist = distance(pointerCoords, this.position);
       const playerSpeed = dist * this.moveSpeed;
 
-      const rotatationAngle =
+      const rotationAngle =
         Math.atan2(toMouseDirection.y, toMouseDirection.x) + Math.PI / 2;
-      this.rotation = rotatationAngle;
+      this.rotation = rotationAngle;
 
       this.acceleration = {
         x: Math.sin(angleToMouse) * playerSpeed,

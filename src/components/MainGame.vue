@@ -38,6 +38,7 @@ let app = new PIXI.Application({
   resizeTo: window,
 });
 
+//DESKTOP CONTROLS
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
 app.stage.hitArea = app.screen;
@@ -46,6 +47,7 @@ app.stage.on("mousemove", (e) => {
   mouseCoords.y = e.global.y;
 });
 
+//MOBILE CONTROLS
 //Add listener for change in device orientation on mobile devices
 //Two types of controls available on mobile (comment out the unused one)
 
