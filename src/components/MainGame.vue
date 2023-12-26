@@ -47,18 +47,47 @@ app.stage.on("mousemove", (e) => {
 });
 
 //Add listener for change in device orientation on mobile devices
-const mobileCtrlMultiX = 0.3;
-const mobileCtrlMultiY = 0.5;
+//Two types of controls available on mobile (comment out the unused one)
+
+////Centered controls BEGIN
+// const centereCtrlsMultiX = 7;
+// const centereCtrlsMultiY = 10;
+// if (window.DeviceOrientationEvent) {
+//   window.addEventListener("deviceorientation", (e) => {
+//     const newX =
+//       centereCtrlsMultiX * (e.gamma / 180) * (gameWidth / 2) + gameWidth / 2;
+//     const newY =
+//       centereCtrlsMultiY * (e.beta / 180) * (gameHeight / 2) + gameHeight / 2;
+//     if (newX < gameWidth && newX >= 0) {
+//       mouseCoords.x = newX;
+//     }
+//     if (newY < gameHeight && newY >= 0) {
+//       mouseCoords.y = newY;
+//     }
+//   });
+//}
+////Centered controls END
+
+////Speed controls BEGIN
+const speedCtrlsMultiX = 0.3;
+const speedCtrlsMultiY = 0.5;
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", (e) => {
-    if (mouseCoords.x + e.gamma < gameWidth && mouseCoords.x + e.gamma > 0) {
-      mouseCoords.x += Math.floor(e.gamma * mobileCtrlMultiX);
+    if (
+      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) < gameWidth &&
+      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) > 0
+    ) {
+      mouseCoords.x += Math.floor(e.gamma * speedCtrlsMultiX);
     }
-    if (mouseCoords.y + e.beta < gameHeight && mouseCoords.y + e.beta > 0) {
-      mouseCoords.y += Math.floor(e.beta * mobileCtrlMultiY);
+    if (
+      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) < gameHeight &&
+      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) > 0
+    ) {
+      mouseCoords.y += Math.floor(e.beta * speedCtrlsMultiY);
     }
   });
 }
+////Speed controls END
 
 //Player object
 const player = new Player(0.15);
