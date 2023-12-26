@@ -4,6 +4,9 @@
       <h1 class="py-0 my-0 text-center text-6xl font-thin">
         {{ scoreCount }}
       </h1>
+      <p>
+        {{ orientReading[0] }}, {{ orientReading[1] }}, {{ orientReading[2] }}
+      </p>
     </div>
     <div ref="gameWindow"></div>
   </div>
@@ -18,12 +21,20 @@ import * as color from "./game/colors.json";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
-const scoreMultiplier = 100;
 
 let gameWidth = window.innerWidth;
 let gameHeight = window.innerHeight;
 
 let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
+
+let orientReading = ref([0, 0, 0]);
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", (e) => {
+    orientReading.value[0] = Math.floor(e.alpha);
+    orientReading.value[1] = Math.floor(e.beta);
+    orientReading.value[2] = Math.floor(e.gamma);
+  });
+}
 
 //Init PIXI app
 let app = new PIXI.Application({
