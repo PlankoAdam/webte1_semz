@@ -4,9 +4,6 @@
       <h1 class="py-0 my-0 text-center text-6xl font-thin">
         {{ scoreCount }}
       </h1>
-      <p>
-        {{ orientReading[0] }}, {{ orientReading[1] }}, {{ orientReading[2] }}
-      </p>
     </div>
     <div ref="gameWindow"></div>
   </div>
@@ -22,19 +19,15 @@ import * as color from "./game/colors.json";
 let gameWindow = ref(null);
 let scoreCount = ref(0);
 
+//Size of game area
 let gameWidth = window.innerWidth;
 let gameHeight = window.innerHeight;
+window.onResize = () => {
+  gameWidth = window.innerWidth;
+  gameHeight = window.innerHeight;
+};
 
 let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
-
-let orientReading = ref([0, 0, 0]);
-if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", (e) => {
-    orientReading.value[0] = Math.floor(e.alpha);
-    orientReading.value[1] = Math.floor(e.beta);
-    orientReading.value[2] = Math.floor(e.gamma);
-  });
-}
 
 //Init PIXI app
 let app = new PIXI.Application({
@@ -45,11 +38,6 @@ let app = new PIXI.Application({
   resizeTo: window,
 });
 
-window.onResize = () => {
-  gameWidth = window.innerWidth;
-  gameHeight = window.innerHeight;
-};
-
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
 app.stage.hitArea = app.screen;
@@ -57,6 +45,20 @@ app.stage.on("mousemove", (e) => {
   mouseCoords.x = e.global.x;
   mouseCoords.y = e.global.y;
 });
+
+//Add listener for change in device orientation on mobile devices
+const mobileCtrlMultiX = 0.3;
+const mobileCtrlMultiY = 0.5;
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", (e) => {
+    if (mouseCoords.x + e.gamma < gameWidth && mouseCoords.x + e.gamma > 0) {
+      mouseCoords.x += Math.floor(e.gamma * mobileCtrlMultiX);
+    }
+    if (mouseCoords.y + e.beta < gameHeight && mouseCoords.y + e.beta > 0) {
+      mouseCoords.y += Math.floor(e.beta * mobileCtrlMultiY);
+    }
+  });
+}
 
 //Player object
 const player = new Player(0.15);
