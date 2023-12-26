@@ -1,10 +1,11 @@
 import * as pixi from "pixi.js";
 import { distance } from "./utils.js";
+import * as color from "./colors.json";
 
 export default class Player extends pixi.Graphics {
   constructor(moveSpeed) {
     super()
-      .beginFill(0xffffff)
+      .beginFill(color.playerColor)
       .drawPolygon(0, 0, 15, 50, 0, 40, -15, 50)
       .endFill();
     this.moveSpeed = moveSpeed;

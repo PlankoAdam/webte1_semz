@@ -1,5 +1,6 @@
 import * as pixi from "pixi.js";
 import { normalize2DVect } from "./utils";
+import * as color from "./colors.json";
 
 export default class TargetBall extends pixi.Graphics {
   constructor(
@@ -10,7 +11,7 @@ export default class TargetBall extends pixi.Graphics {
     moveDirection,
     moveSpeed
   ) {
-    super().beginFill(0xffff00).drawCircle(0, 0, initRadius).endFill();
+    super().beginFill(color.targetColor).drawCircle(0, 0, initRadius).endFill();
     this.initRadius = initRadius;
     this.minRadius = minRadius;
     this.maxRadius = maxRadius;

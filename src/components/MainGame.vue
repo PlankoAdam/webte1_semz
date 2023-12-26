@@ -19,8 +19,8 @@ let gameWindow = ref(null);
 let scoreCount = ref(0);
 const scoreMultiplier = 100;
 
-const gameWidth = 900;
-const gameHeight = 700;
+let gameWidth = window.innerWidth;
+let gameHeight = window.innerHeight;
 
 let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
@@ -29,7 +29,14 @@ let app = new PIXI.Application({
   width: gameWidth,
   height: gameHeight,
   antialias: true,
+  background: 0xffffff,
+  resizeTo: window,
 });
+
+window.onResize = () => {
+  gameWidth = window.innerWidth;
+  gameHeight = window.innerHeight;
+};
 
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
