@@ -35,7 +35,7 @@ const player = new Player(0.15);
 app.stage.addChild(player);
 player.setPos(mouseCoords.x, mouseCoords.y);
 
-const ball = new TargetBall(15, 100, 0.02);
+const ball = new TargetBall(50, 10, 100, 0.01, { x: 2, y: 3 }, 2);
 app.stage.addChild(ball);
 ball.setRandPos();
 
@@ -44,9 +44,11 @@ app.ticker.add((delta) => {
   player.followPointer(mouseCoords, delta);
 
   ball.grow(delta);
+  ball.move(delta);
   //If player object touches the ball
   if (ball.containsPoint(player.position)) {
     ball.setRandPos();
+    ball.setRandDir();
     ball.resetRadius();
   }
 });

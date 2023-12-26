@@ -4,3 +4,9 @@ export function distance(p1, p2) {
 
   return Math.hypot(a, b);
 }
+
+export function normalize2DVect(v) {
+  const len = distance({ x: 0, y: 0 }, v);
+  if (len === 0) return v;
+  return { x: v.x / len, y: v.y / len };
+}
