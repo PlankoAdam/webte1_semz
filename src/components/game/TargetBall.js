@@ -4,6 +4,8 @@ import * as color from "./colors.json";
 
 export default class TargetBall extends pixi.Graphics {
   constructor(
+    initX,
+    initY,
     initRadius,
     minRadius,
     maxRadius,
@@ -12,6 +14,8 @@ export default class TargetBall extends pixi.Graphics {
     moveSpeed
   ) {
     super();
+    this.initX = initX;
+    this.initY = initY;
     this.initRadius = initRadius;
     this.minRadius = minRadius;
     this.maxRadius = maxRadius;
@@ -25,6 +29,8 @@ export default class TargetBall extends pixi.Graphics {
     this.moveSpeed = moveSpeed;
     this.score = 1000;
     this.isActive = false;
+
+    this.setPos(this.initX, this.initY);
   }
 
   show() {
@@ -42,6 +48,7 @@ export default class TargetBall extends pixi.Graphics {
   pop() {
     clearInterval(this.scoreIntervalID);
     this.clear();
+    this.isActive = false;
     return this.score;
   }
 
@@ -64,6 +71,21 @@ export default class TargetBall extends pixi.Graphics {
       this.width = 2 * this.radius;
       this.height = 2 * this.radius;
     }
+
+    //Prevent clipping out of boundaries when growing
+    //(Mainly when sliding along the edge)
+    this.setPos(
+      this.x < this.radius ? this.radius : this.x,
+      this.y < this.radius ? this.radius : this.y
+    );
+    this.setPos(
+      this.x > this.parent.hitArea.width - this.radius
+        ? this.parent.hitArea.width - this.radius
+        : this.x,
+      this.y > this.parent.hitArea.height - this.radius
+        ? this.parent.hitArea.height - this.radius
+        : this.y
+    );
   }
 
   resetRadius() {

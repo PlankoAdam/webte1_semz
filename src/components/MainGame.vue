@@ -106,7 +106,7 @@ player.setPos(mouseCoords.x, mouseCoords.y);
 const level = new GameLevel(levelsData[0]);
 for (const ball of level.targetBalls) {
   app.stage.addChild(ball);
-  ball.setPos(50, 50);
+  ball.setPos(app.screen.width - 40, app.screen.height - 40);
 }
 
 // const ball = new TargetBall(15, 15, 100, 0.01, { x: 1, y: 2 }, 3);

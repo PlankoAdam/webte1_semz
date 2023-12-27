@@ -6,6 +6,8 @@
     "maxIntervalms": 1000,
     "targetBallsData": [
       {
+        "initX": 50,
+        "initY": 50,
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 80,
@@ -17,6 +19,8 @@
         "moveSpeed": 10
       },
       {
+        "initX": 50,
+        "initY": 50,
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 120,
@@ -28,6 +32,8 @@
         "moveSpeed": 10
       },
       {
+        "initX": 50,
+        "initY": 50,
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 80,
@@ -39,6 +45,8 @@
         "moveSpeed": 7
       },
       {
+        "initX": 50,
+        "initY": 50,
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 120,

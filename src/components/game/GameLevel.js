@@ -17,6 +17,8 @@ export default class GameLevel {
     let totalInterval = 0;
     for (const data of this.targetBallsData) {
       const newBall = new TargetBall(
+        data.initX,
+        data.initY,
         data.initRadius,
         data.minRadius,
         data.maxRadius,
