@@ -123,16 +123,17 @@ function startGameLoop() {
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
-  for (const targetBall of level.targetBalls) {
-    if (targetBall.isActive) {
-      targetBall.grow(delta);
-      targetBall.move(delta);
-      if (targetBall.containsPoint(player.position)) {
-        scoreCount.value += targetBall.pop();
+    for (const targetBall of level.targetBalls) {
+      if (targetBall.isActive) {
+        targetBall.grow(delta);
+        targetBall.move(delta);
+        if (targetBall.containsPoint(player.position)) {
+          scoreCount.value += targetBall.pop();
+        }
       }
     }
-  }
-});
+  });
+}
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
