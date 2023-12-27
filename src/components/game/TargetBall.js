@@ -24,6 +24,7 @@ export default class TargetBall extends pixi.Graphics {
     }
     this.moveSpeed = moveSpeed;
     this.doGrow = true;
+    this.flag = 1;
   }
 
   setPos(x, y) {
@@ -63,11 +64,24 @@ export default class TargetBall extends pixi.Graphics {
       this.x - this.radius > 0 &&
       this.y - this.radius > 0
     ) {
-      this.x += this.moveDirection.x * this.moveSpeed * delta;
-      this.y += this.moveDirection.y * this.moveSpeed * delta;
+      this.x += this.moveDirection.x * this.moveSpeed * delta * this.flag;
+      this.y += this.moveDirection.y * this.moveSpeed * delta * this.flag;
     } else {
-      this.doGrow = false;
+      // this.doGrow = false;
+      if (this.flag == 1) {
+        this.flag = -1;
+      } else {
+        this.flag = 1;
+      }
+      this.x += this.moveDirection.x * this.moveSpeed * delta * this.flag;
+      this.y += this.moveDirection.y * this.moveSpeed * delta * this.flag;
+      this.setRandDir();
     }
+  }
+
+  respawn() {
+    this.setRandPos();
+    this.resetRadius();
   }
 
   setRandDir() {
