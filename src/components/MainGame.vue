@@ -1,4 +1,6 @@
 <template>
+  <Modal v-if="modalVisible" @update-modal-visible="updateModalVisible">
+  </Modal>
   <div class="flex flex-col">
     <div class="flex-row absolute top-0 left-0 w-full my-3">
       <div class="flex justify-between w-full">
@@ -15,6 +17,13 @@
 </template>
 
 <script setup>
+import Modal from "./ModalGenyou.vue";
+let modalVisible = true;
+
+const updateModalVisible = () => {
+  startGameLoop();
+};
+
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import TargetBall from "./game/TargetBall.js";
@@ -107,38 +116,40 @@ app.stage.addChild(ball);
 ball.setRandPos();
 
 //Game loop
-let tickerStop = false;
-app.ticker.add((delta) => {
-  player.followPointer(mouseCoords, delta);
+function startGameLoop() {
+  let tickerStop = false;
+  app.ticker.add((delta) => {
+    player.followPointer(mouseCoords, delta);
 
-  ball.grow(delta);
-  //If player object touches the ball
-  if (ball.containsPoint(player.position)) {
-    scoreCount.value += Math.floor(
-      ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
-    );
-    ball.setRandPos();
-    ball.setRandDir();
-    ball.resetRadius();
-  }
+    ball.grow(delta);
+    //If player object touches the ball
+    if (ball.containsPoint(player.position)) {
+      scoreCount.value += Math.floor(
+        ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
+      );
+      ball.setRandPos();
+      ball.setRandDir();
+      ball.resetRadius();
+    }
 
-  if (levelCount.value == 1) {
-  } else if (levelCount.value == 2) {
-    ball.move(delta);
-  } else if (levelCount.value == 3 && !tickerStop) {
-    tickerStop = true;
-    let randomSeconds = Math.random() * (5 - 2) + 2;
-    let randomMilliseconds = randomSeconds * 500;
-    setTimeout(() => {
-      ball.respawn();
-      tickerStop = false;
-    }, randomMilliseconds);
-  }
-  if (scoreCount.value > 100) {
-    scoreCount.value = 0;
-    levelCount.value++;
-  }
-});
+    if (levelCount.value == 1) {
+    } else if (levelCount.value == 2) {
+      ball.move(delta);
+    } else if (levelCount.value == 3 && !tickerStop) {
+      tickerStop = true;
+      let randomSeconds = Math.random() * (5 - 2) + 2;
+      let randomMilliseconds = randomSeconds * 500;
+      setTimeout(() => {
+        ball.respawn();
+        tickerStop = false;
+      }, randomMilliseconds);
+    }
+    if (scoreCount.value > 100) {
+      scoreCount.value = 0;
+      levelCount.value++;
+    }
+  });
+}
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
