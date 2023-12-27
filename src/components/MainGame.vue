@@ -19,7 +19,9 @@ import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import TargetBall from "./game/TargetBall.js";
 import Player from "./game/Player.js";
+import GameLevel from "./game/GameLevel";
 import * as color from "./game/colors.json";
+import levelsData from "./game/levels.json";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -102,42 +104,53 @@ const player = new Player(0.15);
 app.stage.addChild(player);
 player.setPos(mouseCoords.x, mouseCoords.y);
 
-const ball = new TargetBall(15, 15, 100, 0.01, { x: 1, y: 2 }, 3);
-app.stage.addChild(ball);
-ball.setRandPos();
+const level = new GameLevel(levelsData[0], app);
+for (const ball of level.targetBalls) {
+  app.stage.addChild(ball);
+  ball.setRandPos();
+}
+
+// const ball = new TargetBall(15, 15, 100, 0.01, { x: 1, y: 2 }, 3);
+// app.stage.addChild(ball);
+// ball.setRandPos();
 
 //Game loop
-let tickerStop = false;
+// let tickerStop = false;
 app.ticker.add((delta) => {
   player.followPointer(mouseCoords, delta);
 
-  ball.grow(delta);
-  //If player object touches the ball
-  if (ball.containsPoint(player.position)) {
-    scoreCount.value += Math.floor(
-      ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
-    );
-    ball.setRandPos();
-    ball.setRandDir();
-    ball.resetRadius();
+  for (const targetBall of level.targetBalls) {
+    targetBall.grow(delta);
+    targetBall.move(delta);
   }
 
-  if (levelCount.value == 1) {
-  } else if (levelCount.value == 2) {
-    ball.move(delta);
-  } else if (levelCount.value == 3 && !tickerStop) {
-    tickerStop = true;
-    let randomSeconds = Math.random() * (5 - 2) + 2;
-    let randomMilliseconds = randomSeconds * 500;
-    setTimeout(() => {
-      ball.respawn();
-      tickerStop = false;
-    }, randomMilliseconds);
-  }
-  if (scoreCount.value > 100) {
-    scoreCount.value = 0;
-    levelCount.value++;
-  }
+  // ball.grow(delta);
+  //If player object touches the ball
+  // if (ball.containsPoint(player.position)) {
+  //   scoreCount.value += Math.floor(
+  //     ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
+  //   );
+  //   ball.setRandPos();
+  //   ball.setRandDir();
+  //   ball.resetRadius();
+  // }
+
+  // if (levelCount.value == 1) {
+  // } else if (levelCount.value == 2) {
+  //   ball.move(delta);
+  // } else if (levelCount.value == 3 && !tickerStop) {
+  //   tickerStop = true;
+  //   let randomSeconds = Math.random() * (5 - 2) + 2;
+  //   let randomMilliseconds = randomSeconds * 500;
+  //   setTimeout(() => {
+  //     ball.respawn();
+  //     tickerStop = false;
+  //   }, randomMilliseconds);
+  // }
+  // if (scoreCount.value > 100) {
+  //   scoreCount.value = 0;
+  //   levelCount.value++;
+  // }
 });
 
 onMounted(() => {

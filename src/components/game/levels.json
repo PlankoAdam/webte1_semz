@@ -1,0 +1,32 @@
+[
+  {
+    "scoreGoal": "100",
+    "timeLimitSec": "30",
+    "minIntervalms": "1000",
+    "maxIntervalms": "3000",
+    "targetBallsData": [
+      {
+        "initRadius": "20",
+        "minRadius": "20",
+        "maxRadius": "80",
+        "growthRate": "0.01",
+        "moveDirection": {
+          "x": "2",
+          "y": "5"
+        },
+        "moveSpeed": "3"
+      },
+      {
+        "initRadius": "20",
+        "minRadius": "20",
+        "maxRadius": "80",
+        "growthRate": "0.01",
+        "moveDirection": {
+          "x": "2",
+          "y": "5"
+        },
+        "moveSpeed": "3"
+      }
+    ]
+  }
+]

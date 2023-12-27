@@ -11,20 +11,24 @@ export default class TargetBall extends pixi.Graphics {
     moveDirection,
     moveSpeed
   ) {
-    super().beginFill(color.target).drawCircle(0, 0, initRadius).endFill();
-    this.initRadius = initRadius;
-    this.minRadius = minRadius;
-    this.maxRadius = maxRadius;
-    this.growthRate = growthRate;
-    this.radius = initRadius;
+    super();
+    this.initRadius = Number(initRadius);
+    this.minRadius = Number(minRadius);
+    this.maxRadius = Number(maxRadius);
+    this.growthRate = Number(growthRate);
+    this.radius = this.initRadius;
     if (moveDirection == 0) {
       this.moveDirection = { x: 0, y: 0 };
     } else {
       this.moveDirection = normalize2DVect(moveDirection);
     }
-    this.moveSpeed = moveSpeed;
+    this.moveSpeed = Number(moveSpeed);
     this.doGrow = true;
     this.flag = 1;
+  }
+
+  show() {
+    this.beginFill(color.target).drawCircle(0, 0, this.initRadius).endFill();
   }
 
   setPos(x, y) {
