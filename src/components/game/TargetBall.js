@@ -23,8 +23,6 @@ export default class TargetBall extends pixi.Graphics {
       this.moveDirection = normalize2DVect(moveDirection);
     }
     this.moveSpeed = Number(moveSpeed);
-    this.doGrow = true;
-    this.flag = 1;
   }
 
   show() {
@@ -45,12 +43,10 @@ export default class TargetBall extends pixi.Graphics {
   }
 
   grow(delta) {
-    if (this.doGrow) {
-      if (this.radius <= this.maxRadius && this.radius >= this.minRadius) {
-        this.radius += this.radius * this.growthRate * delta;
-        this.width = 2 * this.radius;
-        this.height = 2 * this.radius;
-      }
+    if (this.radius <= this.maxRadius && this.radius >= this.minRadius) {
+      this.radius += this.radius * this.growthRate * delta;
+      this.width = 2 * this.radius;
+      this.height = 2 * this.radius;
     }
   }
 
@@ -58,28 +54,33 @@ export default class TargetBall extends pixi.Graphics {
     this.radius = this.initRadius;
     this.width = 2 * this.radius;
     this.height = 2 * this.radius;
-    this.doGrow = true;
   }
 
   move(delta) {
+    const newX = this.x + this.moveDirection.x * this.moveSpeed * delta;
+    const newY = this.y + this.moveDirection.y * this.moveSpeed * delta;
     if (
-      this.radius + this.x < this.parent.hitArea.width &&
-      this.radius + this.y < this.parent.hitArea.height &&
-      this.x - this.radius > 0 &&
-      this.y - this.radius > 0
+      newX + this.radius < this.parent.hitArea.width &&
+      newX - this.radius > 0
     ) {
-      this.x += this.moveDirection.x * this.moveSpeed * delta * this.flag;
-      this.y += this.moveDirection.y * this.moveSpeed * delta * this.flag;
+      this.x = newX;
     } else {
-      // this.doGrow = false;
-      if (this.flag == 1) {
-        this.flag = -1;
-      } else {
-        this.flag = 1;
-      }
-      this.x += this.moveDirection.x * this.moveSpeed * delta * this.flag;
-      this.y += this.moveDirection.y * this.moveSpeed * delta * this.flag;
-      this.setRandDir();
+      this.moveDirection.x =
+        -this.moveDirection.x +
+        ((Math.random() - 0.5) * Math.abs(this.moveDirection.x)) / 2;
+      this.moveDirection = normalize2DVect(this.moveDirection);
+    }
+
+    if (
+      newY + this.radius < this.parent.hitArea.height &&
+      newY - this.radius > 0
+    ) {
+      this.y = newY;
+    } else {
+      this.moveDirection.y =
+        -this.moveDirection.y +
+        ((Math.random() - 0.5) * Math.abs(this.moveDirection.y)) / 2;
+      this.moveDirection = normalize2DVect(this.moveDirection);
     }
   }
 

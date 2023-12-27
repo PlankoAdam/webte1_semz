@@ -14,18 +14,18 @@
           "x": "2",
           "y": "5"
         },
-        "moveSpeed": "3"
+        "moveSpeed": "10"
       },
       {
         "initRadius": "20",
-        "minRadius": "20",
-        "maxRadius": "80",
-        "growthRate": "0.01",
+        "minRadius": "40",
+        "maxRadius": "60",
+        "growthRate": "0",
         "moveDirection": {
           "x": "2",
           "y": "5"
         },
-        "moveSpeed": "3"
+        "moveSpeed": "10"
       }
     ]
   }
