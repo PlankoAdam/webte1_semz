@@ -12,22 +12,23 @@ export default class TargetBall extends pixi.Graphics {
     moveSpeed
   ) {
     super();
-    this.initRadius = Number(initRadius);
-    this.minRadius = Number(minRadius);
-    this.maxRadius = Number(maxRadius);
-    this.growthRate = Number(growthRate);
+    this.initRadius = initRadius;
+    this.minRadius = minRadius;
+    this.maxRadius = maxRadius;
+    this.growthRate = growthRate;
     this.radius = this.initRadius;
     if (moveDirection == 0) {
       this.moveDirection = { x: 0, y: 0 };
     } else {
       this.moveDirection = normalize2DVect(moveDirection);
     }
-    this.moveSpeed = Number(moveSpeed);
+    this.moveSpeed = moveSpeed;
+    this.score = 1000;
+    this.isActive = false;
   }
 
   show() {
     this.beginFill(color.target).drawCircle(0, 0, this.initRadius).endFill();
-    this.score = 1000;
     this.scoreIntervalID = setInterval(() => {
       this.score = Math.floor(this.score * 0.95);
       if (this.score <= 1) {
@@ -35,6 +36,7 @@ export default class TargetBall extends pixi.Graphics {
         this.score = 1;
       }
     }, 50);
+    this.isActive = true;
   }
 
   pop() {

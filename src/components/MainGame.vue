@@ -103,10 +103,10 @@ const player = new Player(0.15);
 app.stage.addChild(player);
 player.setPos(mouseCoords.x, mouseCoords.y);
 
-const level = new GameLevel(levelsData[0], app);
+const level = new GameLevel(levelsData[0]);
 for (const ball of level.targetBalls) {
   app.stage.addChild(ball);
-  ball.setRandPos();
+  ball.setPos(50, 50);
 }
 
 // const ball = new TargetBall(15, 15, 100, 0.01, { x: 1, y: 2 }, 3);
@@ -119,10 +119,12 @@ app.ticker.add((delta) => {
   player.followPointer(mouseCoords, delta);
 
   for (const targetBall of level.targetBalls) {
-    targetBall.grow(delta);
-    targetBall.move(delta);
-    if (targetBall.containsPoint(player.position)) {
-      scoreCount.value += targetBall.pop();
+    if (targetBall.isActive) {
+      targetBall.grow(delta);
+      targetBall.move(delta);
+      if (targetBall.containsPoint(player.position)) {
+        scoreCount.value += targetBall.pop();
+      }
     }
   }
 
