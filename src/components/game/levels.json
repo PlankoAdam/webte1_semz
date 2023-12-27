@@ -18,9 +18,9 @@
       },
       {
         "initRadius": "20",
-        "minRadius": "40",
-        "maxRadius": "60",
-        "growthRate": "0",
+        "minRadius": "20",
+        "maxRadius": "120",
+        "growthRate": "0.02",
         "moveDirection": {
           "x": "2",
           "y": "5"

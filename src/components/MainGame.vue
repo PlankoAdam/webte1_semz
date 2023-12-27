@@ -17,7 +17,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
-import TargetBall from "./game/TargetBall.js";
 import Player from "./game/Player.js";
 import GameLevel from "./game/GameLevel";
 import * as color from "./game/colors.json";
@@ -122,6 +121,9 @@ app.ticker.add((delta) => {
   for (const targetBall of level.targetBalls) {
     targetBall.grow(delta);
     targetBall.move(delta);
+    if (targetBall.containsPoint(player.position)) {
+      scoreCount.value += targetBall.pop();
+    }
   }
 
   // ball.grow(delta);

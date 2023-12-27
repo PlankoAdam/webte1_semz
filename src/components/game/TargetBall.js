@@ -27,6 +27,20 @@ export default class TargetBall extends pixi.Graphics {
 
   show() {
     this.beginFill(color.target).drawCircle(0, 0, this.initRadius).endFill();
+    this.score = 1000;
+    this.scoreIntervalID = setInterval(() => {
+      this.score = Math.floor(this.score * 0.95);
+      if (this.score <= 1) {
+        clearInterval(this.scoreIntervalID);
+        this.score = 1;
+      }
+    }, 50);
+  }
+
+  pop() {
+    clearInterval(this.scoreIntervalID);
+    this.clear();
+    return this.score;
   }
 
   setPos(x, y) {
