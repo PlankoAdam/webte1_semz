@@ -1,0 +1,62 @@
+[
+  {
+    "scoreGoal": 100,
+    "timeLimitSec": 30,
+    "minIntervalms": 1000,
+    "maxIntervalms": 1000,
+    "targetBallsData": [
+      {
+        "initX": 50,
+        "initY": 50,
+        "initRadius": 20,
+        "minRadius": 20,
+        "maxRadius": 80,
+        "growthRate": 0.01,
+        "moveDirection": {
+          "x": 2,
+          "y": 0
+        },
+        "moveSpeed": 10
+      },
+      {
+        "initX": 50,
+        "initY": 50,
+        "initRadius": 20,
+        "minRadius": 20,
+        "maxRadius": 120,
+        "growthRate": 0.02,
+        "moveDirection": {
+          "x": 2,
+          "y": 5
+        },
+        "moveSpeed": 10
+      },
+      {
+        "initX": 50,
+        "initY": 50,
+        "initRadius": 20,
+        "minRadius": 20,
+        "maxRadius": 80,
+        "growthRate": 0.01,
+        "moveDirection": {
+          "x": 0,
+          "y": 5
+        },
+        "moveSpeed": 7
+      },
+      {
+        "initX": 50,
+        "initY": 50,
+        "initRadius": 20,
+        "minRadius": 20,
+        "maxRadius": 120,
+        "growthRate": 0.02,
+        "moveDirection": {
+          "x": -2,
+          "y": 5
+        },
+        "moveSpeed": 7
+      }
+    ]
+  }
+]
