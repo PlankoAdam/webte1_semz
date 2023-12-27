@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div ref="gameWindow"></div>
+    <div ref="gameWindow" class="cursor-none"></div>
   </div>
 </template>
 
