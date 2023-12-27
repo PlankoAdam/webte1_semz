@@ -2,12 +2,12 @@
   <div class="flex flex-col">
     <div class="flex-row absolute top-0 left-0 w-full my-3">
       <div class="flex justify-between w-full">
-        <h1 class="py-0 my-0 text-start text-6xl font-thin">
+        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
           LEVEL: {{ levelCount }}
         </h1>
-        <div class="flex justify-center">
-          <h1 class="py-0 my-0 text-6xl font-thin">SCORE: {{ scoreCount }}</h1>
-        </div>
+        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
+          SCORE: {{ scoreCount }}
+        </h1>
       </div>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
@@ -106,15 +106,9 @@ player.setPos(mouseCoords.x, mouseCoords.y);
 const level = new GameLevel(levelsData[0]);
 for (const ball of level.targetBalls) {
   app.stage.addChild(ball);
-  ball.setPos(app.screen.width - 40, app.screen.height - 40);
 }
 
-// const ball = new TargetBall(15, 15, 100, 0.01, { x: 1, y: 2 }, 3);
-// app.stage.addChild(ball);
-// ball.setRandPos();
-
 //Game loop
-// let tickerStop = false;
 app.ticker.add((delta) => {
   player.followPointer(mouseCoords, delta);
 
@@ -127,34 +121,6 @@ app.ticker.add((delta) => {
       }
     }
   }
-
-  // ball.grow(delta);
-  //If player object touches the ball
-  // if (ball.containsPoint(player.position)) {
-  //   scoreCount.value += Math.floor(
-  //     ball.maxRadius * (1 / (ball.radius - ball.initRadius + 1))
-  //   );
-  //   ball.setRandPos();
-  //   ball.setRandDir();
-  //   ball.resetRadius();
-  // }
-
-  // if (levelCount.value == 1) {
-  // } else if (levelCount.value == 2) {
-  //   ball.move(delta);
-  // } else if (levelCount.value == 3 && !tickerStop) {
-  //   tickerStop = true;
-  //   let randomSeconds = Math.random() * (5 - 2) + 2;
-  //   let randomMilliseconds = randomSeconds * 500;
-  //   setTimeout(() => {
-  //     ball.respawn();
-  //     tickerStop = false;
-  //   }, randomMilliseconds);
-  // }
-  // if (scoreCount.value > 100) {
-  //   scoreCount.value = 0;
-  //   levelCount.value++;
-  // }
 });
 
 onMounted(() => {
