@@ -113,13 +113,10 @@ app.stage.addChild(player);
 player.setPos(mouseCoords.x, mouseCoords.y);
 
 const level = new GameLevel(levelsData[0]);
-for (const ball of level.targetBalls) {
-  app.stage.addChild(ball);
-}
 
 //Game loop
 function startGameLoop() {
-  let tickerStop = false;
+  level.start(app);
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 

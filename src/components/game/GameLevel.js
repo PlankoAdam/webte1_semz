@@ -14,7 +14,6 @@ export default class GameLevel {
   }
 
   initBalls() {
-    let totalInterval = 0;
     for (const data of this.targetBallsData) {
       const newBall = new TargetBall(
         data.relativeInitPos,
@@ -27,8 +26,15 @@ export default class GameLevel {
         data.orbitDirection
       );
       this.targetBalls.push(newBall);
+    }
+  }
+
+  start(app) {
+    let totalInterval = 0;
+    for (const ball of this.targetBalls) {
+      app.stage.addChild(ball);
       setTimeout(() => {
-        newBall.show();
+        ball.show();
       }, totalInterval);
       totalInterval +=
         Math.random() * (this.maxIntervalms - this.minIntervalms) +
