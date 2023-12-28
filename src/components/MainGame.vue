@@ -1,16 +1,12 @@
 <template>
   <Modal v-if="modalVisible" @update-modal-visible="updateModalVisible">
   </Modal>
-  <div class="flex flex-col">
+  <div class="flex flex-col select-none cursor-none">
     <div class="flex flex-row justify-between absolute top-0 left-0 w-full">
-      <h1
-        class="p-0 mx-5 my-5 sm:text-6xl text-3xl select-none cursor-none max-w-fit"
-      >
+      <h1 class="p-0 mx-5 my-5 sm:text-6xl text-3xl max-w-fit">
         LEVEL<br />{{ levelCount }}
       </h1>
-      <h1
-        class="p-0 mx-5 my-5 sm:text-6xl text-3xl select-none cursor-none max-w-fit text-end"
-      >
+      <h1 class="p-0 mx-5 my-5 sm:text-6xl text-3xl max-w-fit text-end">
         SCORE<br />{{ scoreCount }}
       </h1>
     </div>
@@ -44,6 +40,7 @@ import Player from "./game/Player.js";
 import GameLevel from "./game/GameLevel";
 import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
+import Asteroid from "./game/Asteroid";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -125,23 +122,35 @@ if (window.DeviceOrientationEvent) {
 const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
 app.stage.addChild(player.trail, player);
 
-const level = new GameLevel(levelsData[0]);
+const ast = new Asteroid({ x: -1.5, y: -1 }, 40, { x: 3, y: 1 }, 5);
+app.stage.addChild(ast);
+ast.show();
+
+// const level = new GameLevel(levelsData[0]);
 
 //Game loop
 function startGameLoop() {
-  level.start(app);
+  // level.start(app);
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
-    for (const targetBall of level.targetBalls) {
-      if (targetBall.isActive) {
-        targetBall.grow(delta);
-        targetBall.move(delta);
-        if (targetBall.containsPoint(player.position)) {
-          scoreCount.value += targetBall.pop();
-        }
+    ast.move(delta);
+    if (ast.isActive) {
+      if (ast.containsPoint(player.position) && player.isVulnerable) {
+        scoreCount.value += ast.pop();
+        player.damage();
       }
     }
+
+    // for (const targetBall of level.targetBalls) {
+    //   if (targetBall.isActive) {
+    //     targetBall.grow(delta);
+    //     targetBall.move(delta);
+    //     if (targetBall.containsPoint(player.position)) {
+    //       scoreCount.value += targetBall.pop();
+    //     }
+    //   }
+    // }
   });
 }
 

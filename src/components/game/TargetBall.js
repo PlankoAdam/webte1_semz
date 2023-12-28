@@ -14,7 +14,8 @@ export default class TargetBall extends pixi.Graphics {
     //if == 0 -> doesn't orbit
     //if > 0  -> orbits clock-wise
     //if < 0  -> orbits counter clock-wise
-    orbitDirection
+    orbitDirection,
+    isBouncy
   ) {
     super();
     this.relativeInitPos = relativeInitPos;
@@ -30,12 +31,15 @@ export default class TargetBall extends pixi.Graphics {
     }
     this.moveSpeed = moveSpeed;
     this.orbitDirection = orbitDirection;
+    this.isBouncy = isBouncy;
     this.score = 1000;
     this.isActive = false;
   }
 
   show() {
-    this.beginFill(color.target).drawCircle(0, 0, this.initRadius).endFill();
+    this.beginFill("000000", 0.0001)
+      .drawCircle(0, 0, this.initRadius)
+      .endFill();
     this.setPos(
       (this.relativeInitPos.x * this.parent.hitArea.width) / 2 +
         this.parent.hitArea.width / 2,
@@ -112,11 +116,12 @@ export default class TargetBall extends pixi.Graphics {
     const newX = this.x + this.moveDirection.x * this.moveSpeed * delta;
     const newY = this.y + this.moveDirection.y * this.moveSpeed * delta;
     if (
-      newX + this.radius < this.parent.hitArea.width &&
-      newX - this.radius > 0
+      (newX + this.radius < this.parent.hitArea.width &&
+        newX - this.radius > 0) ||
+      !this.isBouncy
     ) {
       this.x = newX;
-    } else {
+    } else if (this.isBouncy) {
       this.moveDirection.x =
         -this.moveDirection.x +
         ((Math.random() - 0.5) * Math.abs(this.moveDirection.x)) / 2;
@@ -124,11 +129,12 @@ export default class TargetBall extends pixi.Graphics {
     }
 
     if (
-      newY + this.radius < this.parent.hitArea.height &&
-      newY - this.radius > 0
+      (newY + this.radius < this.parent.hitArea.height &&
+        newY - this.radius > 0) ||
+      !this.isBouncy
     ) {
       this.y = newY;
-    } else {
+    } else if (this.isBouncy) {
       this.moveDirection.y =
         -this.moveDirection.y +
         ((Math.random() - 0.5) * Math.abs(this.moveDirection.y)) / 2;

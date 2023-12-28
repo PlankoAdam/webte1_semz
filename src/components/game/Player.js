@@ -13,7 +13,7 @@ export default class Player extends pixi.Graphics {
     this.setPos(initX, initY);
 
     this.history = [];
-    this.historySize = 50;
+    this.historySize = 30;
     for (let i = 0; i < this.historySize; i++) {
       this.history.push({ x: initX, y: initY });
     }
@@ -21,6 +21,9 @@ export default class Player extends pixi.Graphics {
       pixi.Texture.from("src/assets/trail.png"),
       this.history
     );
+
+    this.isVulnerable = true;
+    this.flashIntervalID;
   }
 
   setPos(x, y) {
@@ -67,5 +70,17 @@ export default class Player extends pixi.Graphics {
       y: this.y,
     });
     this.history.splice(0, 1);
+  }
+
+  damage() {
+    this.isVulnerable = false;
+    this.flashIntervalID = setInterval(() => {
+      this.alpha = this.alpha == 1 ? 0 : 1;
+      this.trail.alpha = this.alpha;
+    }, 100);
+    setTimeout(() => {
+      clearInterval(this.flashIntervalID);
+      this.isVulnerable = true;
+    }, 2000);
   }
 }
