@@ -108,9 +108,8 @@ if (window.DeviceOrientationEvent) {
 ////Speed controls END
 
 //Player object
-const player = new Player(0.15);
-app.stage.addChild(player);
-player.setPos(mouseCoords.x, mouseCoords.y);
+const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
+app.stage.addChild(player.trail, player);
 
 const level = new GameLevel(levelsData[0]);
 

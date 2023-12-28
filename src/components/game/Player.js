@@ -3,13 +3,24 @@ import { distance } from "./utils.js";
 import * as color from "./colors.json";
 
 export default class Player extends pixi.Graphics {
-  constructor(moveSpeed) {
+  constructor(moveSpeed, initX, initY) {
     super()
       .beginFill(color.player)
       .drawPolygon(0, -25, 15, 25, 0, 15, -15, 25)
       .endFill();
     this.moveSpeed = moveSpeed;
     this.acceleration = { x: 0, y: 0 };
+    this.setPos(initX, initY);
+
+    this.history = [];
+    this.historySize = 50;
+    for (let i = 0; i < this.historySize; i++) {
+      this.history.push({ x: initX, y: initY });
+    }
+    this.trail = new pixi.SimpleRope(
+      pixi.Texture.from("src/assets/trail.png"),
+      this.history
+    );
   }
 
   setPos(x, y) {
@@ -46,5 +57,15 @@ export default class Player extends pixi.Graphics {
 
     this.x += this.acceleration.x * timeDelta;
     this.y += this.acceleration.y * timeDelta;
+
+    this.updateTrail();
+  }
+
+  updateTrail() {
+    this.history.push({
+      x: this.x,
+      y: this.y,
+    });
+    this.history.splice(0, 1);
   }
 }
