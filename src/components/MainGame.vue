@@ -2,19 +2,33 @@
   <Modal v-if="modalVisible" @update-modal-visible="updateModalVisible">
   </Modal>
   <div class="flex flex-col">
-    <div class="flex-row absolute top-0 left-0 w-full my-3">
-      <div class="flex justify-between w-full">
-        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
-          LEVEL: {{ levelCount }}
-        </h1>
-        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
-          SCORE: {{ scoreCount }}
-        </h1>
-      </div>
+    <div class="flex flex-row justify-between absolute top-0 left-0 w-full">
+      <h1
+        class="p-0 mx-5 my-5 sm:text-6xl text-3xl select-none cursor-none max-w-fit"
+      >
+        LEVEL<br />{{ levelCount }}
+      </h1>
+      <h1
+        class="p-0 mx-5 my-5 sm:text-6xl text-3xl select-none cursor-none max-w-fit text-end"
+      >
+        SCORE<br />{{ scoreCount }}
+      </h1>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
   </div>
 </template>
+
+<style>
+@font-face {
+  font-family: larabie;
+  src: url("src/assets/fonts/larabiefont rg.otf");
+}
+
+h1 {
+  font-family: larabie;
+  color: white;
+}
+</style>
 
 <script setup>
 import Modal from "./ModalGenyou.vue";
