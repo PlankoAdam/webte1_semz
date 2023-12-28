@@ -122,9 +122,17 @@ if (window.DeviceOrientationEvent) {
 const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
 app.stage.addChild(player.trail, player);
 
-const ast = new Asteroid({ x: -1.5, y: -1 }, 40, { x: 3, y: 1 }, 5);
-app.stage.addChild(ast);
-ast.show();
+const asts = [
+  new Asteroid({ x: -1.5, y: -1 }, 40, { x: 3, y: 1 }, 5),
+  new Asteroid({ x: -1, y: -1.2 }, 20, { x: 3, y: 1 }, 8),
+  new Asteroid({ x: -1.5, y: -0.6 }, 30, { x: 3, y: 1 }, 6),
+  new Asteroid({ x: -1.1, y: -0.7 }, 15, { x: 3, y: 1 }, 8),
+  new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
+];
+for (const ast of asts) {
+  app.stage.addChild(ast);
+  ast.show();
+}
 
 // const level = new GameLevel(levelsData[0]);
 
@@ -134,14 +142,15 @@ function startGameLoop() {
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
-    ast.move(delta);
-    if (ast.isActive) {
-      if (ast.containsPoint(player.position) && player.isVulnerable) {
-        scoreCount.value += ast.pop();
-        player.damage();
+    for (const ast of asts) {
+      ast.move(delta);
+      if (ast.isActive) {
+        if (ast.containsPoint(player.position) && player.isVulnerable) {
+          scoreCount.value += ast.pop();
+          player.damage();
+        }
       }
     }
-
     // for (const targetBall of level.targetBalls) {
     //   if (targetBall.isActive) {
     //     targetBall.grow(delta);
