@@ -1,6 +1,5 @@
 <template>
-  <Modal v-if="modalVisible" @update-modal-visible="updateModalVisible">
-  </Modal>
+  <ModalStart @update-modal-visible="updateModalVisible"> </ModalStart>
   <div class="flex flex-col">
     <div class="flex-row absolute top-0 left-0 w-full my-3">
       <div class="flex justify-between w-full">
@@ -17,7 +16,8 @@
 </template>
 
 <script setup>
-import Modal from "./ModalGenyou.vue";
+import ModalStart from "./ModalStart.vue";
+import ModalNextLevel from "./ModalNextLevel.vue";
 let modalVisible = true;
 
 const updateModalVisible = () => {
@@ -131,6 +131,9 @@ function startGameLoop() {
           scoreCount.value += targetBall.pop();
         }
       }
+    }
+    if (scoreCount.value > 100) {
+      levelCount.value++;
     }
   });
 }
