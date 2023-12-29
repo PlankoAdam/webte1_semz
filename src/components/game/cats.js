@@ -16,6 +16,10 @@ export class CatOne extends SpaceCat {
     );
 
     this.hitBoxScale = 150;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/cat1.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.45, 0.4);
@@ -43,6 +47,10 @@ export class CatTwo extends SpaceCat {
     );
 
     this.hitBoxScale = 130;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/cat3.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5, 0.5);
@@ -70,6 +78,10 @@ export class GoldCat extends SpaceCat {
     );
 
     this.hitBoxScale = 130;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/goldcat.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.42, 0.5);

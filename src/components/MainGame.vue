@@ -49,17 +49,6 @@ let scoreCount = ref(0);
 let levelCount = ref(1);
 const modalVisible = ref(true);
 
-const updateModalVisible = () => {
-  modalVisible.value = false;
-  startLevel(level);
-};
-
-const updateModalVisiblee = (value, value2) => {
-  modalVisible.value = value;
-  scoreCount.value = value2;
-  startLevel(level);
-};
-
 //Size of game area
 let gameWidth = window.innerWidth;
 let gameHeight = window.innerHeight;
@@ -98,81 +87,138 @@ app.stage.on("mousemove", (e) => {
 //Add listener for change in device orientation on mobile devices
 //Two types of controls available on mobile (comment out the unused one)
 
+let calibrated = false;
+let xOffset = 0;
+let yOffset = 0;
 ////Centered controls BEGIN
-// const centereCtrlsMultiX = 7;
-// const centereCtrlsMultiY = 10;
-// if (window.DeviceOrientationEvent) {
-//   window.addEventListener("deviceorientation", (e) => {
-//     const newX =
-//       centereCtrlsMultiX * (e.gamma / 180) * (gameWidth / 2) + gameWidth / 2;
-//     const newY =
-//       centereCtrlsMultiY * (e.beta / 180) * (gameHeight / 2) + gameHeight / 2;
-//     if (newX < gameWidth && newX >= 0) {
-//       mouseCoords.x = newX;
-//     }
-//     if (newY < gameHeight && newY >= 0) {
-//       mouseCoords.y = newY;
-//     }
-//   });
-//}
-////Centered controls END
-
-////Speed controls BEGIN
-const speedCtrlsMultiX = 0.3;
-const speedCtrlsMultiY = 0.5;
+const centereCtrlsMultiX = 7;
+const centereCtrlsMultiY = 10;
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", (e) => {
-    if (
-      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) < gameWidth &&
-      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) > 0
-    ) {
-      mouseCoords.x += Math.floor(e.gamma * speedCtrlsMultiX);
+    if (!calibrated) {
+      xOffset = -e.gamma;
+      yOffset = -e.beta;
     }
-    if (
-      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) < gameHeight &&
-      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) > 0
-    ) {
-      mouseCoords.y += Math.floor(e.beta * speedCtrlsMultiY);
+    const newX =
+      centereCtrlsMultiX * ((xOffset + e.gamma) / 180) * (gameWidth / 2) +
+      gameWidth / 2;
+    const newY =
+      centereCtrlsMultiY * ((yOffset + e.beta) / 180) * (gameHeight / 2) +
+      gameHeight / 2;
+    if (newX < gameWidth && newX >= 0) {
+      mouseCoords.x = newX;
+    }
+    if (newY < gameHeight && newY >= 0) {
+      mouseCoords.y = newY;
     }
   });
 }
+////Centered controls END
+
+////Speed controls BEGIN
+// const speedCtrlsMultiX = 0.3;
+// const speedCtrlsMultiY = 0.5;
+// if (window.DeviceOrientationEvent) {
+//   window.addEventListener("deviceorientation", (e) => {
+//     if (!calibrated) {
+//       xOffset = -e.gamma;
+//       yOffset = -e.beta;
+//     }
+//     if (
+//       mouseCoords.x + Math.floor((xOffset + e.gamma) * speedCtrlsMultiX) <
+//         gameWidth &&
+//       mouseCoords.x + Math.floor((xOffset + e.gamma) * speedCtrlsMultiX) > 0
+//     ) {
+//       mouseCoords.x += Math.floor((xOffset + e.gamma) * speedCtrlsMultiX);
+//     }
+//     if (
+//       mouseCoords.y + Math.floor((yOffset + e.beta) * speedCtrlsMultiY) <
+//         gameHeight &&
+//       mouseCoords.y + Math.floor((yOffset + e.beta) * speedCtrlsMultiY) > 0
+//     ) {
+//       mouseCoords.y += Math.floor((yOffset + e.beta) * speedCtrlsMultiY);
+//     }
+//   });
+// }
 ////Speed controls END
 
 //Player object
 const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
-app.stage.addChild(player.trail, player);
 
-const level = new GameLevel(levelsData[0]);
+let levels = [];
+let currentLevelIndex = 0;
+let scoreCounterID = 0;
 
+function startGame() {
+  app.stage.addChild(player.trail, player);
+
+  for (const data of levelsData) {
+    levels.push(new GameLevel(data));
+  }
+  currentLevelIndex = 0;
+  startLevel(levels[currentLevelIndex]);
+}
+
+let gameLoopfn;
 //Game loop
 function startLevel(level) {
+  calibrated = true;
   level.start(app);
-  app.ticker.add((delta) => {
-    player.followPointer(mouseCoords, delta);
-    for (const asteroid of level.asteroids) {
-      if (asteroid.isActive) {
-        asteroid.move(delta);
-        if (asteroid.checkCollision(player.position) && player.isVulnerable) {
-          scoreCount.value += asteroid.pop();
-          player.damage();
-        }
-      }
-    }
+  scoreCounterID = setInterval(() => {
+    scoreCount.value += Math.floor((level.score - scoreCount.value) / 2);
+  }, 50);
 
-    for (const cat of level.cats) {
-      if (cat.isActive) {
-        cat.move(delta);
-        cat.grow(delta);
-        if (cat.checkCollision(player.position)) {
-          scoreCount.value += cat.pop();
+  app.ticker.add(
+    (gameLoopfn = (delta) => {
+      player.followPointer(mouseCoords, delta);
+      for (const asteroid of level.asteroids) {
+        if (asteroid.isActive) {
+          asteroid.move(delta);
+          if (asteroid.checkCollision(player.position) && player.isVulnerable) {
+            level.score += asteroid.pop();
+            player.damage();
+          }
         }
       }
-    }
-  });
+
+      for (const cat of level.cats) {
+        if (cat.isActive) {
+          cat.move(delta);
+          cat.grow(delta);
+          if (cat.checkCollision(player.position)) {
+            level.score += cat.pop();
+          }
+        }
+      }
+
+      if (level.score >= level.scoreGoal) {
+        stopLevel(level);
+      }
+    })
+  );
+}
+
+function stopLevel(level) {
+  level.stop(app);
+  app.ticker.remove(gameLoopfn);
+  calibrated = false;
+  clearInterval(scoreCounterID);
+  scoreCount.value = level.score;
+  //TODO show next level modal
 }
 
 function stopGameLoop() {
   app.ticker.stop();
+}
+
+function updateModalVisible() {
+  modalVisible.value = false;
+  startGame();
+}
+
+function updateModalVisiblee(value, value2) {
+  modalVisible.value = value;
+  scoreCount.value = 0;
 }
 
 onMounted(() => {

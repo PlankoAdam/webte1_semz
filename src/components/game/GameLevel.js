@@ -11,7 +11,6 @@ export default class GameLevel {
     this.score = 0;
     this.asteroids = [];
     this.cats = [];
-    // this.initBalls();
 
     for (const data of levelData.asteroids) {
       this.asteroids.push(
@@ -42,6 +41,7 @@ export default class GameLevel {
       }
       this.cats.push(newCat);
     }
+    this.timeouts = [];
   }
 
   start(app) {
@@ -51,13 +51,33 @@ export default class GameLevel {
       return 0.5 - Math.random();
     });
     for (const target of allTargets) {
-      setTimeout(() => {
-        app.stage.addChild(target);
-        target.show();
-      }, totalInterval);
+      app.stage.addChild(target);
+      this.timeouts.push(
+        setTimeout(() => {
+          target.show();
+        }, totalInterval)
+      );
       totalInterval +=
         Math.random() * (this.maxIntervalms - this.minIntervalms) +
         this.minIntervalms;
+    }
+  }
+
+  stop(app) {
+    for (const timeout of this.timeouts) {
+      clearTimeout(timeout);
+    }
+    for (const ast of this.asteroids) {
+      app.stage.removeChild(ast);
+      if (ast.isActive) {
+        ast.pop();
+      }
+    }
+    for (const cat of this.cats) {
+      app.stage.removeChild(cat);
+      if (cat.isActive) {
+        cat.pop();
+      }
     }
   }
 }

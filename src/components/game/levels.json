@@ -1,7 +1,7 @@
 [
   {
-    "scoreGoal": 100,
-    "timeLimitSec": 30,
+    "scoreGoal": 5000,
+    "timeLimitSec": 0,
     "minIntervalms": 1000,
     "maxIntervalms": 1000,
     "asteroids": [
