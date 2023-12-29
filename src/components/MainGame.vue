@@ -20,6 +20,18 @@
   </div>
 </template>
 
+<style>
+@font-face {
+  font-family: larabie;
+  src: url("src/assets/fonts/larabiefont rg.otf");
+}
+
+h1 {
+  font-family: larabie;
+  color: white;
+}
+</style>
+
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
@@ -34,6 +46,8 @@ import Player from "./game/Player.js";
 import GameLevel from "./game/GameLevel";
 import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
+import Asteroid from "./game/Asteroid";
+import Background from "./game/Background";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -63,6 +77,12 @@ let app = new PIXI.Application({
   antialias: true,
   background: color.background,
   resizeTo: window,
+});
+
+//Background
+const bg = new Background(app);
+const bgTicker = app.ticker.add((delta) => {
+  bg.animate(delta);
 });
 
 //DESKTOP CONTROLS
@@ -119,36 +139,48 @@ if (window.DeviceOrientationEvent) {
 ////Speed controls END
 
 //Player object
-const player = new Player(0.15);
-app.stage.addChild(player);
-player.setPos(mouseCoords.x, mouseCoords.y);
+const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
+app.stage.addChild(player.trail, player);
 
-const level = new GameLevel(levelsData[0]);
-for (const ball of level.targetBalls) {
-  app.stage.addChild(ball);
+const asts = [
+  new Asteroid({ x: -1.5, y: -1 }, 40, { x: 3, y: 1 }, 5),
+  new Asteroid({ x: -1, y: -1.2 }, 20, { x: 3, y: 1 }, 8),
+  new Asteroid({ x: -1.5, y: -0.6 }, 30, { x: 3, y: 1 }, 6),
+  new Asteroid({ x: -1.1, y: -0.7 }, 15, { x: 3, y: 1 }, 8),
+  new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
+];
+for (const ast of asts) {
+  app.stage.addChild(ast);
+  ast.show();
 }
 
-//Game loop ennek lesz egy level object parameterje ami elindit egy uj tickert
-// modal lehetne blurred
+// const level = new GameLevel(levelsData[0]);
+
+//Game loop
 function startGameLoop() {
-  app.ticker.start();
+  // level.start(app);
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
-    for (const targetBall of level.targetBalls) {
-      if (targetBall.isActive) {
-        targetBall.grow(delta);
-        targetBall.move(delta);
-        if (targetBall.containsPoint(player.position)) {
-          scoreCount.value += targetBall.pop();
+    for (const ast of asts) {
+      ast.move(delta);
+      if (ast.isActive) {
+        if (ast.containsPoint(player.position) && player.isVulnerable) {
+          scoreCount.value += ast.pop();
+          player.damage();
+          bg.warp();
         }
       }
     }
-    if (scoreCount.value > 100) {
-      levelCount.value++;
-      stopGameLoop();
-      modalVisible.value = true;
-    }
+    // for (const targetBall of level.targetBalls) {
+    //   if (targetBall.isActive) {
+    //     targetBall.grow(delta);
+    //     targetBall.move(delta);
+    //     if (targetBall.containsPoint(player.position)) {
+    //       scoreCount.value += targetBall.pop();
+    //     }
+    //   }
+    // }
   });
 }
 

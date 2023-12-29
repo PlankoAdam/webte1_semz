@@ -6,8 +6,10 @@
     "maxIntervalms": 1000,
     "targetBallsData": [
       {
-        "initX": 50,
-        "initY": 50,
+        "relativeInitPos": {
+          "x": -1,
+          "y": 0
+        },
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 80,
@@ -16,11 +18,14 @@
           "x": 2,
           "y": 0
         },
-        "moveSpeed": 10
+        "moveSpeed": 10,
+        "orbitDirection": 0
       },
       {
-        "initX": 50,
-        "initY": 50,
+        "relativeInitPos": {
+          "x": -0.7,
+          "y": 1
+        },
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 120,
@@ -29,11 +34,14 @@
           "x": 2,
           "y": 5
         },
-        "moveSpeed": 10
+        "moveSpeed": 10,
+        "orbitDirection": 1
       },
       {
-        "initX": 50,
-        "initY": 50,
+        "relativeInitPos": {
+          "x": -0.7,
+          "y": 0
+        },
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 80,
@@ -42,11 +50,14 @@
           "x": 0,
           "y": 5
         },
-        "moveSpeed": 7
+        "moveSpeed": 7,
+        "orbitDirection": 1
       },
       {
-        "initX": 50,
-        "initY": 50,
+        "relativeInitPos": {
+          "x": -0.7,
+          "y": 0
+        },
         "initRadius": 20,
         "minRadius": 20,
         "maxRadius": 120,
@@ -55,7 +66,8 @@
           "x": -2,
           "y": 5
         },
-        "moveSpeed": 7
+        "moveSpeed": 7,
+        "orbitDirection": -1
       }
     ]
   }
