@@ -1,8 +1,7 @@
 import * as pixi from "pixi.js";
-import { normalize2DVect } from "./utils";
-import * as color from "./colors.json";
+import { distance, normalize2DVect } from "./utils";
 
-export default class TargetBall extends pixi.Graphics {
+export default class HitBall extends pixi.Container {
   constructor(
     relativeInitPos,
     initRadius,
@@ -32,14 +31,11 @@ export default class TargetBall extends pixi.Graphics {
     this.moveSpeed = moveSpeed;
     this.orbitDirection = orbitDirection;
     this.isBouncy = isBouncy;
-    this.score = 1000;
     this.isActive = false;
   }
 
   show() {
-    this.beginFill("000000", 0.0001)
-      .drawCircle(0, 0, this.initRadius)
-      .endFill();
+    // this.beginFill("000000", 0.001).drawCircle(0, 0, this.initRadius);
     this.setPos(
       (this.relativeInitPos.x * this.parent.hitArea.width) / 2 +
         this.parent.hitArea.width / 2,
@@ -47,21 +43,11 @@ export default class TargetBall extends pixi.Graphics {
       (this.relativeInitPos.y * this.parent.hitArea.height) / 2 +
         this.parent.hitArea.height / 2
     );
-    this.scoreIntervalID = setInterval(() => {
-      this.score = Math.floor(this.score * 0.95);
-      if (this.score <= 1) {
-        clearInterval(this.scoreIntervalID);
-        this.score = 1;
-      }
-    }, 50);
     this.isActive = true;
   }
 
   pop() {
-    clearInterval(this.scoreIntervalID);
-    this.clear();
     this.isActive = false;
-    return this.score;
   }
 
   setPos(x, y) {
@@ -80,30 +66,8 @@ export default class TargetBall extends pixi.Graphics {
   grow(delta) {
     if (this.radius <= this.maxRadius && this.radius >= this.minRadius) {
       this.radius += this.radius * this.growthRate * delta;
-      this.width = 2 * this.radius;
-      this.height = 2 * this.radius;
+      // this.clear().beginFill("ff0000", 0.001).drawCircle(0, 0, this.radius);
     }
-
-    //Prevent clipping out of boundaries when growing
-    //(Mainly when sliding along the edge)
-    this.setPos(
-      this.x < this.radius ? this.radius : this.x,
-      this.y < this.radius ? this.radius : this.y
-    );
-    this.setPos(
-      this.x > this.parent.hitArea.width - this.radius
-        ? this.parent.hitArea.width - this.radius
-        : this.x,
-      this.y > this.parent.hitArea.height - this.radius
-        ? this.parent.hitArea.height - this.radius
-        : this.y
-    );
-  }
-
-  resetRadius() {
-    this.radius = this.initRadius;
-    this.width = 2 * this.radius;
-    this.height = 2 * this.radius;
   }
 
   move(delta) {
@@ -153,15 +117,17 @@ export default class TargetBall extends pixi.Graphics {
     });
   }
 
-  respawn() {
-    this.setRandPos();
-    this.resetRadius();
+  checkCollision(point) {
+    if (distance(point, this.position) <= this.radius) {
+      return true;
+    }
+    return false;
   }
 
-  setRandDir() {
-    this.moveDirection = normalize2DVect({
-      x: Math.random() - 0.5,
-      y: Math.random() - 0.5,
-    });
-  }
+  // setRandDir() {
+  //   this.moveDirection = normalize2DVect({
+  //     x: Math.random() - 0.5,
+  //     y: Math.random() - 0.5,
+  //   });
+  // }
 }

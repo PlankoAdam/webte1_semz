@@ -9,13 +9,13 @@ export default class Background {
 
     this.starTexture = pixi.Texture.from("src/assets/star.png");
 
-    this.starAmount = 1000;
+    this.starAmount = (1000 * this.app.view.width) / 1000;
     this.cameraZ = 0;
     this.fov = 20;
     this.baseSpeed = 0.03;
     this.speed = 0;
     this.warpSpeed = 0;
-    this.starStretch = 7;
+    this.starStretch = (3 * this.app.view.width) / 1000;
     this.starBaseSize = 0.05;
 
     this.stars = [];
@@ -92,7 +92,7 @@ export default class Background {
 
   warp() {
     if (this.warpSpeed == 0) {
-      this.warpSpeed = 2.5;
+      this.warpSpeed = 3;
       setTimeout(() => {
         this.warpSpeed = 0;
       }, 4000);

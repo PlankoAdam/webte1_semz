@@ -1,7 +1,7 @@
-import TargetBall from "./TargetBall";
+import HitBall from "./HitBall.js";
 import * as pixi from "pixi.js";
 
-export default class Asteroid extends TargetBall {
+export default class Asteroid extends HitBall {
   constructor(relativeInitPos, radius, moveDirection, moveSpeed) {
     super(
       relativeInitPos,
@@ -42,6 +42,6 @@ export default class Asteroid extends TargetBall {
   }
 
   pop() {
-    return -100;
+    return -1000;
   }
 }

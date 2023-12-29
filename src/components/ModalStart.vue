@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-if="showModal">
+  <div class="modal cursor-default z-10" v-if="showModal">
     <div class="modal-content">
       <div class="image-container">
         <img

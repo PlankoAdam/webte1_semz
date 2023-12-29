@@ -1,4 +1,4 @@
-import TargetBall from "./TargetBall";
+import HitBall from "./HitBall.js";
 
 export default class GameLevel {
   constructor(levelData) {
@@ -15,7 +15,7 @@ export default class GameLevel {
 
   initBalls() {
     for (const data of this.targetBallsData) {
-      const newBall = new TargetBall(
+      const newBall = new HitBall(
         data.relativeInitPos,
         data.initRadius,
         data.minRadius,
