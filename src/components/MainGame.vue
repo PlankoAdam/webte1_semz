@@ -1,5 +1,10 @@
 <template>
   <ModalStart @update-modal-visible="updateModalVisible"> </ModalStart>
+  <ModalNextLevel
+    :showModal="modalVisible"
+    :score="scoreCount"
+    @update-modal-visible="updateModalVisiblee"
+  ></ModalNextLevel>
   <div class="flex flex-col">
     <div class="flex-row absolute top-0 left-0 w-full my-3">
       <div class="flex justify-between w-full">
@@ -18,7 +23,6 @@
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
-let modalVisible = true;
 
 const updateModalVisible = () => {
   startGameLoop();
@@ -34,6 +38,13 @@ import levelsData from "./game/levels.json";
 let gameWindow = ref(null);
 let scoreCount = ref(0);
 let levelCount = ref(1);
+const modalVisible = ref(false);
+
+const updateModalVisiblee = (value, value2) => {
+  modalVisible.value = value;
+  scoreCount.value = value2;
+  startGameLoop();
+};
 
 //Size of game area
 let gameWidth = window.innerWidth;
@@ -117,9 +128,10 @@ for (const ball of level.targetBalls) {
   app.stage.addChild(ball);
 }
 
-//Game loop
+//Game loop ennek lesz egy level object parameterje ami elindit egy uj tickert
+// modal lehetne blurred
 function startGameLoop() {
-  let tickerStop = false;
+  app.ticker.start();
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
@@ -134,8 +146,14 @@ function startGameLoop() {
     }
     if (scoreCount.value > 100) {
       levelCount.value++;
+      stopGameLoop();
+      modalVisible.value = true;
     }
   });
+}
+
+function stopGameLoop() {
+  app.ticker.stop();
 }
 
 onMounted(() => {
