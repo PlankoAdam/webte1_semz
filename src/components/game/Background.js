@@ -51,7 +51,9 @@ export default class Background {
 
   animate(delta) {
     // Simple easing. This should be changed to proper easing function when used for real.
-    this.speed += (this.warpSpeed - this.speed) / 30;
+    this.speed +=
+      (this.warpSpeed - this.speed) / (this.warpSpeed === 0 ? 10 : 100);
+
     this.cameraZ += delta * 10 * (this.speed + this.baseSpeed);
     for (let i = 0; i < this.starAmount; i++) {
       const star = this.stars[i];
@@ -90,10 +92,10 @@ export default class Background {
 
   warp() {
     if (this.warpSpeed == 0) {
-      this.warpSpeed = 1.5;
+      this.warpSpeed = 2.5;
       setTimeout(() => {
         this.warpSpeed = 0;
-      }, 3000);
+      }, 4000);
     }
   }
 }
