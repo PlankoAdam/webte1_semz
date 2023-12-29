@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps } from "vue";
 
 const emits = defineEmits(["update-modal-visible"]);
 

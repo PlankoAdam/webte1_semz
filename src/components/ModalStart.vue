@@ -1,10 +1,25 @@
 <template>
   <div class="modal" v-if="showModal">
     <div class="modal-content">
-      <img src="./photos/title.png" />
+      <div class="image-container">
+        <img
+          src="./photos/deepspace.png"
+          class="w-full sm:w-3/5 -my-8 lg:-my-24"
+        />
+      </div>
       <div class="buttons">
-        <button @click="closeModal" class="start"></button>
-        <button @click="showDesc" class="gamedesc"></button>
+        <button
+          @click="closeModal"
+          class="start md:text-4xl text-2xl m-0 max-w-fit"
+        >
+          START!
+        </button>
+        <button
+          @click="showDesc"
+          class="gamedesc md:text-2xl m-0 text-1xl max-w-fit"
+        >
+          Game Description
+        </button>
         <div v-if="description">
           <p class="text">
             Ball Destroyer is a game whose purpose is to destroy the randomly
@@ -47,6 +62,11 @@ function showDesc() {
 </script>
 
 <style>
+@font-face {
+  font-family: spaceRanger;
+  src: url("src/assets/fonts/space_ranger/spaceranger.ttf");
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -74,32 +94,42 @@ function showDesc() {
 
 .start,
 .gamedesc {
-  min-width: 100%;
-  min-height: 75px;
-  background-image: url("./photos/startOrange.png");
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-  cursor: pointer;
-  transition: background-image 0.3s ease;
+  min-width: 10%;
+  min-height: fit-content;
+  color: aliceblue;
+  font-family: spaceRanger;
+  transition: 0.3s ease;
+  margin: 0;
+}
+
+.start {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .gamedesc {
-  background-image: url("./photos/gameDescOrange.png");
 }
 
-.start:hover {
-  background-image: url("./photos/startCyan.png");
-}
-
+.start:hover,
 .gamedesc:hover {
-  background-image: url("./photos/gameDescCyan.png");
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
+    0 0 40px #00ffff, 0 0 50px #00ffff;
+  transition: 0.3s ease;
 }
 
 .text {
   color: aliceblue;
   max-width: 1000px;
   width: auto;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 65%;
+  height: auto;
 }
 </style>
