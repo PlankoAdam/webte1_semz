@@ -55,9 +55,9 @@ let scoreCount = ref(0);
 let levelCount = ref(1);
 const modalVisible = ref(false);
 
-const updateModalVisiblee = (value, value2) => {
+const updateModalVisiblee = (value) => {
   modalVisible.value = value;
-  scoreCount.value = value2;
+  scoreCount.value = 0;
   startGameLoop();
 };
 
@@ -151,7 +151,7 @@ const asts = [
   new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
 ];
 
-const cat = new cats.CatOne({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
+const cat = new cats.CatTwo({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
 
 // const level = new GameLevel(levelsData[0]);
 
@@ -164,6 +164,7 @@ function startGameLoop() {
   }
   app.stage.addChild(cat);
   cat.show();
+  app.ticker.start();
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
@@ -184,12 +185,19 @@ function startGameLoop() {
         scoreCount.value += cat.pop();
       }
     }
+    if (scoreCount.value >= 100) {
+      levelCount.value++;
+      stopGameLoop();
+      modalVisible.value = true;
+    }
   });
 }
 
 function stopGameLoop() {
   app.ticker.stop();
 }
+
+function nextLevel() {}
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);

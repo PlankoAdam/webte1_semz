@@ -107,9 +107,6 @@ function showDesc() {
   margin-bottom: 1rem;
 }
 
-.gamedesc {
-}
-
 .start:hover,
 .gamedesc:hover {
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
@@ -126,10 +123,5 @@ function showDesc() {
 .image-container {
   display: flex;
   justify-content: center;
-}
-
-.logo {
-  max-width: 65%;
-  height: auto;
 }
 </style>
