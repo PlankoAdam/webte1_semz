@@ -1,27 +1,27 @@
 <template>
-  <div class="modal cursor-default z-10" v-if="showModal">
-    <div class="modal-content">
-      <div class="image-container">
+  <div class="modal cursor-default z-10 backdrop-blur-sm" v-if="showModal">
+    <div class="modal-content m-0 p-0">
+      <div class="image-container p-0 m-0">
         <img
           src="./photos/deepspace.png"
-          class="w-full sm:w-3/5 -my-8 lg:-my-24"
+          class="w-full lg:w-4/5 -my-8 lg:-my-24 xl:-my-32 -mx-10"
         />
       </div>
-      <div class="buttons">
+      <div class="buttons content-center w-full">
         <button
           @click="closeModal"
-          class="start md:text-4xl text-2xl m-0 max-w-fit"
+          class="start md:text-4xl text-3xl m-0 max-w-fit"
         >
           START!
         </button>
         <button
           @click="showDesc"
-          class="gamedesc md:text-2xl m-0 text-1xl max-w-fit"
+          class="gamedesc md:text-2xl text-2xl max-w-fit mb-8"
         >
           Game Description
         </button>
-        <div v-if="description">
-          <p class="text">
+        <div v-if="description" class="max-h-0 md:w-3/5 w-4/5 self-center">
+          <p class="text text-justify">
             Ball Destroyer is a game whose purpose is to destroy the randomly
             generated balls as quickly as possible, which keep getting bigger
             and bigger. The faster a ball can be knocked out, the more points
@@ -76,12 +76,11 @@ function showDesc() {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.85);
+  /* background-color: rgba(0, 0, 0, 0); */
 }
 
 .modal-content {
   background-color: #ffffff00;
-  padding: 20px;
   border-radius: 5px;
 }
 
@@ -99,15 +98,12 @@ function showDesc() {
   color: aliceblue;
   font-family: spaceRanger;
   transition: 0.3s ease;
-  margin: 0;
+  /* margin: 0; */
 }
 
 .start {
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-
-.gamedesc {
 }
 
 .start:hover,
@@ -119,8 +115,8 @@ function showDesc() {
 
 .text {
   color: aliceblue;
-  max-width: 1000px;
-  width: auto;
+  /* max-width: 1000px; */
+  /* width: auto; */
 }
 
 .image-container {

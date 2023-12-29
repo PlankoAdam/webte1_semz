@@ -2,21 +2,15 @@ import * as pixi from "pixi.js";
 import SpaceCat from "./SpaceCat.js";
 
 export class CatOne extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       true,
       1000
     );
@@ -35,21 +29,15 @@ export class CatOne extends SpaceCat {
 }
 
 export class CatTwo extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       true,
       2000
     );
@@ -68,21 +56,15 @@ export class CatTwo extends SpaceCat {
 }
 
 export class GoldCat extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       false,
       10000
     );

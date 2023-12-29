@@ -29,7 +29,7 @@ function closeModal() {
 </script>
 
 <style>
-.modal {
+/* .modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -75,7 +75,7 @@ function closeModal() {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-}
+} */
 
 a {
   color: aliceblue;

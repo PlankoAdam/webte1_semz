@@ -35,7 +35,6 @@ export default class HitBall extends pixi.Container {
   }
 
   show() {
-    // this.beginFill("000000", 0.001).drawCircle(0, 0, this.initRadius);
     this.setPos(
       (this.relativeInitPos.x * this.parent.hitArea.width) / 2 +
         this.parent.hitArea.width / 2,
@@ -66,7 +65,23 @@ export default class HitBall extends pixi.Container {
   grow(delta) {
     if (this.radius <= this.maxRadius && this.radius >= this.minRadius) {
       this.radius += this.radius * this.growthRate * delta;
-      // this.clear().beginFill("ff0000", 0.001).drawCircle(0, 0, this.radius);
+    }
+
+    //Prevent clipping out of boundaries when growing
+    //(Mainly when sliding along the edge)
+    if (this.isBouncy) {
+      this.setPos(
+        this.x < this.radius ? this.radius : this.x,
+        this.y < this.radius ? this.radius : this.y
+      );
+      this.setPos(
+        this.x > this.parent.hitArea.width - this.radius
+          ? this.parent.hitArea.width - this.radius
+          : this.x,
+        this.y > this.parent.hitArea.height - this.radius
+          ? this.parent.hitArea.height - this.radius
+          : this.y
+      );
     }
   }
 

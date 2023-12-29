@@ -7,6 +7,7 @@
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
+      v-if="modalVisible == false"
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
     >
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
@@ -35,30 +36,28 @@ h1 {
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
-
-const updateModalVisible = () => {
-  startGameLoop();
-};
-
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
 import GameLevel from "./game/GameLevel.js";
-import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
-import Asteroid from "./game/Asteroid.js";
+import * as color from "./game/colors.json";
 import Background from "./game/Background.js";
-import * as cats from "./game/cats.js";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
 let levelCount = ref(1);
-const modalVisible = ref(false);
+const modalVisible = ref(true);
+
+const updateModalVisible = () => {
+  modalVisible.value = false;
+  startLevel(level);
+};
 
 const updateModalVisiblee = (value, value2) => {
   modalVisible.value = value;
   scoreCount.value = value2;
-  startGameLoop();
+  startLevel(level);
 };
 
 //Size of game area
@@ -68,8 +67,6 @@ window.onResize = () => {
   gameWidth = window.innerWidth;
   gameHeight = window.innerHeight;
 };
-
-let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
 //Init PIXI app
 let app = new PIXI.Application({
@@ -86,6 +83,8 @@ const bg = new Background(app);
 const bgTicker = app.ticker.add((delta) => {
   bg.animate(delta);
 });
+
+let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
 //DESKTOP CONTROLS
 //Set up mouse listener inside game area
@@ -143,45 +142,30 @@ if (window.DeviceOrientationEvent) {
 const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
 app.stage.addChild(player.trail, player);
 
-const asts = [
-  new Asteroid({ x: -0.5, y: -0.9 }, 40, { x: 3, y: 1 }, 5),
-  new Asteroid({ x: -1, y: -1.2 }, 20, { x: 3, y: 1 }, 8),
-  new Asteroid({ x: -1.5, y: -0.6 }, 30, { x: 3, y: 1 }, 6),
-  new Asteroid({ x: -1.1, y: -0.7 }, 15, { x: 3, y: 1 }, 8),
-  new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
-];
-
-const cat = new cats.CatOne({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
-
-// const level = new GameLevel(levelsData[0]);
+const level = new GameLevel(levelsData[0]);
 
 //Game loop
-function startGameLoop() {
-  // level.start(app);
-  for (const ast of asts) {
-    app.stage.addChild(ast);
-    ast.show();
-  }
-  app.stage.addChild(cat);
-  cat.show();
+function startLevel(level) {
+  level.start(app);
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
-
-    for (const ast of asts) {
-      ast.move(delta);
-      if (ast.isActive) {
-        if (ast.checkCollision(player.position) && player.isVulnerable) {
-          scoreCount.value += ast.pop();
+    for (const asteroid of level.asteroids) {
+      if (asteroid.isActive) {
+        asteroid.move(delta);
+        if (asteroid.checkCollision(player.position) && player.isVulnerable) {
+          scoreCount.value += asteroid.pop();
           player.damage();
-          bg.warp();
         }
       }
     }
-    if (cat.isActive) {
-      cat.move(delta);
-      cat.grow(delta);
-      if (cat.checkCollision(player.position)) {
-        scoreCount.value += cat.pop();
+
+    for (const cat of level.cats) {
+      if (cat.isActive) {
+        cat.move(delta);
+        cat.grow(delta);
+        if (cat.checkCollision(player.position)) {
+          scoreCount.value += cat.pop();
+        }
       }
     }
   });
