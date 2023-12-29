@@ -6,15 +6,15 @@
     @update-modal-visible="updateModalVisiblee"
   ></ModalNextLevel>
   <div class="flex flex-col">
-    <div class="flex-row absolute top-0 left-0 w-full my-3">
-      <div class="flex justify-between w-full">
-        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
-          LEVEL: {{ levelCount }}
-        </h1>
-        <h1 class="py-0 mx-5 my-0 text-6xl font-thin select-none cursor-none">
-          SCORE: {{ scoreCount }}
-        </h1>
-      </div>
+    <div
+      class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
+    >
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
+        LEVEL<br />{{ levelCount }}
+      </h1>
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-end">
+        SCORE<br />{{ scoreCount }}
+      </h1>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
   </div>
@@ -43,11 +43,13 @@ const updateModalVisible = () => {
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
-import GameLevel from "./game/GameLevel";
+import GameLevel from "./game/GameLevel.js";
 import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
-import Asteroid from "./game/Asteroid";
-import Background from "./game/Background";
+import Asteroid from "./game/Asteroid.js";
+import Background from "./game/Background.js";
+import SpaceCat from "./game/SpaceCat.js";
+import CatOne from "./game/cats/CatOne.js";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -78,6 +80,7 @@ let app = new PIXI.Application({
   background: color.background,
   resizeTo: window,
 });
+app.stage.hitArea = app.screen;
 
 //Background
 const bg = new Background(app);
@@ -88,7 +91,6 @@ const bgTicker = app.ticker.add((delta) => {
 //DESKTOP CONTROLS
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
-app.stage.hitArea = app.screen;
 app.stage.on("mousemove", (e) => {
   mouseCoords.x = e.global.x;
   mouseCoords.y = e.global.y;
@@ -143,22 +145,26 @@ const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
 app.stage.addChild(player.trail, player);
 
 const asts = [
-  new Asteroid({ x: -1.5, y: -1 }, 40, { x: 3, y: 1 }, 5),
+  new Asteroid({ x: -0.5, y: -0.9 }, 40, { x: 3, y: 1 }, 5),
   new Asteroid({ x: -1, y: -1.2 }, 20, { x: 3, y: 1 }, 8),
   new Asteroid({ x: -1.5, y: -0.6 }, 30, { x: 3, y: 1 }, 6),
   new Asteroid({ x: -1.1, y: -0.7 }, 15, { x: 3, y: 1 }, 8),
   new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
 ];
-for (const ast of asts) {
-  app.stage.addChild(ast);
-  ast.show();
-}
+
+const cat = new CatOne({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
 
 // const level = new GameLevel(levelsData[0]);
 
 //Game loop
 function startGameLoop() {
   // level.start(app);
+  for (const ast of asts) {
+    app.stage.addChild(ast);
+    ast.show();
+  }
+  app.stage.addChild(cat);
+  cat.show();
   app.ticker.add((delta) => {
     player.followPointer(mouseCoords, delta);
 
@@ -172,15 +178,13 @@ function startGameLoop() {
         }
       }
     }
-    // for (const targetBall of level.targetBalls) {
-    //   if (targetBall.isActive) {
-    //     targetBall.grow(delta);
-    //     targetBall.move(delta);
-    //     if (targetBall.containsPoint(player.position)) {
-    //       scoreCount.value += targetBall.pop();
-    //     }
-    //   }
-    // }
+    if (cat.isActive) {
+      cat.move(delta);
+      cat.grow(delta);
+      if (cat.containsPoint(player.position)) {
+        scoreCount.value += cat.pop();
+      }
+    }
   });
 }
 
