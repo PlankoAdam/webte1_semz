@@ -44,10 +44,10 @@
 import { ref } from "vue";
 
 let description = ref(false);
-const emits = defineEmits(["update-modal-visible"]);
+const emits = defineEmits(["update-modal-start"]);
 
 function closeModal() {
-  emits("update-modal-visible", false, true);
+  emits("update-modal-start", false, true);
 }
 
 function showDesc() {

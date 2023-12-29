@@ -1,11 +1,11 @@
 <template>
-  <ModalStart @update-modal-visible="closeStartModal" v-if="showStartModal">
+  <ModalStart @update-modal-start="closeStartModal" v-if="showStartModal">
   </ModalStart>
   <ModalNextLevel
     v-if="showNextLevelModal"
     :showModal="modalVisible"
     :score="scoreCount"
-    @update-modal-visible="updateNextLevelModal"
+    @update-modal-next-level="updateNextLevelModal"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div

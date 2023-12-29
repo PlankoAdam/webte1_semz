@@ -25,14 +25,14 @@
 <script setup>
 import { defineProps } from "vue";
 
-const emits = defineEmits(["update-modal-visible"]);
+const emits = defineEmits(["update-modal-next-level"]);
 
 const props = defineProps({
   score: Number,
 });
 
 function closeModal() {
-  emits("update-modal-visible", false, true);
+  emits("update-modal-next-level", false, true);
 }
 </script>
 
