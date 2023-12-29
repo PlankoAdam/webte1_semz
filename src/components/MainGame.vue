@@ -48,8 +48,7 @@ import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
 import Asteroid from "./game/Asteroid.js";
 import Background from "./game/Background.js";
-import SpaceCat from "./game/SpaceCat.js";
-import CatOne from "./game/cats/CatOne.js";
+import * as cats from "./game/cats.js";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -152,7 +151,7 @@ const asts = [
   new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
 ];
 
-const cat = new CatOne({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
+const cat = new cats.CatOne({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
 
 // const level = new GameLevel(levelsData[0]);
 
@@ -171,7 +170,7 @@ function startGameLoop() {
     for (const ast of asts) {
       ast.move(delta);
       if (ast.isActive) {
-        if (ast.containsPoint(player.position) && player.isVulnerable) {
+        if (ast.checkCollision(player.position) && player.isVulnerable) {
           scoreCount.value += ast.pop();
           player.damage();
           bg.warp();
@@ -181,7 +180,7 @@ function startGameLoop() {
     if (cat.isActive) {
       cat.move(delta);
       cat.grow(delta);
-      if (cat.containsPoint(player.position)) {
+      if (cat.checkCollision(player.position)) {
         scoreCount.value += cat.pop();
       }
     }

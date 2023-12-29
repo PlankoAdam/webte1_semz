@@ -1,7 +1,7 @@
 import * as pixi from "pixi.js";
-import TargetBall from "./TargetBall";
+import HitBall from "./HitBall.js";
 
-export default class SpaceCat extends TargetBall {
+export default class SpaceCat extends HitBall {
   constructor(
     relativeInitPos,
     initRadius,
@@ -49,9 +49,9 @@ export default class SpaceCat extends TargetBall {
     const startScore = this.score;
     this.scoreIntervalID = setInterval(() => {
       this.score -= startScore / 1000;
-      if (this.score <= 1) {
+      if (this.score <= startScore / 10) {
         clearInterval(this.scoreIntervalID);
-        this.score = 1;
+        this.score = startScore / 10;
       }
     }, 5);
   }
