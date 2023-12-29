@@ -80,6 +80,8 @@ export default class Player extends pixi.Graphics {
     }, 100);
     setTimeout(() => {
       clearInterval(this.flashIntervalID);
+      this.alpha = 1;
+      this.trail.alpha = 1;
       this.isVulnerable = true;
     }, 2000);
   }

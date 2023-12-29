@@ -41,6 +41,7 @@ import GameLevel from "./game/GameLevel";
 import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
 import Asteroid from "./game/Asteroid";
+import Background from "./game/Background";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -63,6 +64,12 @@ let app = new PIXI.Application({
   antialias: true,
   background: color.background,
   resizeTo: window,
+});
+
+//Background
+const bg = new Background(app);
+const bgTicker = app.ticker.add((delta) => {
+  bg.animate(delta);
 });
 
 //DESKTOP CONTROLS
@@ -148,6 +155,7 @@ function startGameLoop() {
         if (ast.containsPoint(player.position) && player.isVulnerable) {
           scoreCount.value += ast.pop();
           player.damage();
+          bg.warp();
         }
       }
     }
