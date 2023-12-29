@@ -47,7 +47,7 @@ let description = ref(false);
 const emits = defineEmits(["update-modal-visible"]);
 
 function closeModal() {
-  emits("update-modal-visible", false);
+  emits("update-modal-visible", false, true);
 }
 
 function showDesc() {

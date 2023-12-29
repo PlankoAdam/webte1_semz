@@ -28,12 +28,11 @@ import { defineProps } from "vue";
 const emits = defineEmits(["update-modal-visible"]);
 
 const props = defineProps({
-  showModal: Boolean,
   score: Number,
 });
 
 function closeModal() {
-  emits("update-modal-visible", false);
+  emits("update-modal-visible", false, true);
 }
 </script>
 

@@ -10,6 +10,7 @@
   <div class="flex flex-col">
     <div
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
+      v-if="showText"
     >
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
         LEVEL<br />{{ levelCount }}
@@ -38,8 +39,9 @@ h1 {
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
 
-const closeStartModal = (value) => {
+const closeStartModal = (value, value2) => {
   showStartModal.value = value;
+  showText.value = value2;
   startGameLoop();
 };
 
@@ -59,9 +61,11 @@ let levelCount = ref(1);
 const modalVisible = ref(false);
 let showStartModal = ref(true);
 let showNextLevelModal = ref(false);
+let showText = ref(false);
 
-const updateNextLevelModal = (value) => {
+const updateNextLevelModal = (value, value2) => {
   showNextLevelModal.value = value;
+  showText.value = value2;
   scoreCount.value = 0;
   startGameLoop();
 };
@@ -194,6 +198,7 @@ function startGameLoop() {
       levelCount.value++;
       stopGameLoop();
       showNextLevelModal.value = true;
+      showText.value = false;
     }
   });
 }
