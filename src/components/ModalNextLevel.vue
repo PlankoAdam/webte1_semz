@@ -1,5 +1,5 @@
 <template>
-  <div class="modal cursor-default z-10" v-if="showModal">
+  <div class="modal cursor-default z-10">
     <div class="modal-content">
       <div class="logo">
         <img
@@ -88,7 +88,7 @@ a {
   max-width: 100%;
   height: auto;
   display: block;
-  margin: auto; /* Center the image horizontally */
+  margin: auto;
 }
 
 .level {
@@ -107,7 +107,7 @@ a {
 }
 
 .image {
-  max-width: 75%; /* Set a maximum width */
-  height: auto; /* Allow the height to adjust proportionally */
+  max-width: 75%;
+  height: auto;
 }
 </style>

@@ -1,9 +1,11 @@
 <template>
-  <ModalStart @update-modal-visible="updateModalVisible"> </ModalStart>
+  <ModalStart @update-modal-visible="closeStartModal" v-if="showStartModal">
+  </ModalStart>
   <ModalNextLevel
+    v-if="showNextLevelModal"
     :showModal="modalVisible"
     :score="scoreCount"
-    @update-modal-visible="updateModalVisiblee"
+    @update-modal-visible="updateNextLevelModal"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
@@ -36,7 +38,8 @@ h1 {
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
 
-const updateModalVisible = () => {
+const closeStartModal = (value) => {
+  showStartModal.value = value;
   startGameLoop();
 };
 
@@ -54,9 +57,11 @@ let gameWindow = ref(null);
 let scoreCount = ref(0);
 let levelCount = ref(1);
 const modalVisible = ref(false);
+let showStartModal = ref(true);
+let showNextLevelModal = ref(false);
 
-const updateModalVisiblee = (value) => {
-  modalVisible.value = value;
+const updateNextLevelModal = (value) => {
+  showNextLevelModal.value = value;
   scoreCount.value = 0;
   startGameLoop();
 };
@@ -188,7 +193,7 @@ function startGameLoop() {
     if (scoreCount.value >= 100) {
       levelCount.value++;
       stopGameLoop();
-      modalVisible.value = true;
+      showNextLevelModal.value = true;
     }
   });
 }

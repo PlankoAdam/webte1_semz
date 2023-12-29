@@ -1,5 +1,5 @@
 <template>
-  <div class="modal cursor-default z-10" v-if="showModal">
+  <div class="modal cursor-default z-10" @click.stop="closeDesc">
     <div class="modal-content">
       <div class="image-container">
         <img
@@ -15,7 +15,7 @@
           START!
         </button>
         <button
-          @click="showDesc"
+          @click.stop="showDesc"
           class="gamedesc md:text-2xl m-0 text-1xl max-w-fit"
         >
           Game Description
@@ -43,13 +43,11 @@
 <script setup>
 import { ref } from "vue";
 
-const showModal = ref(true);
 let description = ref(false);
 const emits = defineEmits(["update-modal-visible"]);
 
 function closeModal() {
-  showModal.value = false;
-  emits("update-modal-visible");
+  emits("update-modal-visible", false);
 }
 
 function showDesc() {
@@ -57,6 +55,12 @@ function showDesc() {
     description.value = false;
   } else {
     description.value = true;
+  }
+}
+
+function closeDesc() {
+  if (description.value == true) {
+    description.value = false;
   }
 }
 </script>
