@@ -1,7 +1,7 @@
 [
   {
     "scoreGoal": 200,
-    "timeLimitSec": 0,
+    "timeLimitSec": 30,
     "minIntervalms": 1000,
     "maxIntervalms": 1000,
     "asteroids": [],
@@ -19,7 +19,8 @@
           "y": 0
         },
         "orbitDirection": 0,
-        "moveSpeed": 10
+        "moveSpeed": 10,
+        "delay": 5000
       },
       {
         "type": "two",

@@ -4,25 +4,34 @@
     ref="modalNextLevel"
     :score="scoreCount"
     @next-level="nextLevel"
+    @restart-level="restartLevel"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
-      class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
+      class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0 mt-5"
       v-if="showHUDText"
     >
-      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
-        LEVEL<br />{{ levelCount }}
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl">
+        LEVEL<br />{{ currentLevelIndex + 1 }}
       </h1>
       <h1
         v-if="showHUDTimer"
-        class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-center"
+        class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center"
       >
         {{ ("0" + Math.floor(timer / 60)).substr(-2) }}:{{
           ("0" + (timer % 60)).substr(-2)
         }}
       </h1>
-      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-end">
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-end">
         SCORE<br />{{ scoreCount }}
+      </h1>
+    </div>
+    <div
+      class="flex flex-row justify-end fixed bottom-0 right-0 w-full select-none cursor-none z-0 mb-10"
+      v-if="showHUDText"
+    >
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center font-bold">
+        ||
       </h1>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
@@ -169,15 +178,25 @@ function startGame() {
   for (const data of levelsData) {
     levels.push(new GameLevel(data));
   }
-  currentLevelIndex = 0;
+  currentLevelIndex = -1;
   nextLevel();
 }
 
 //Ticker callback function for controlling the player object
 let playerTickerfn;
-let timerIntervalID;
+let prevLevelScore = 0;
 
 function nextLevel() {
+  currentLevelIndex++; //TODO
+  resetLevel();
+
+  bg.warp();
+  setTimeout(() => {
+    startLevel(levels[currentLevelIndex]);
+  }, bg.warpTime + 1000);
+}
+
+function resetLevel() {
   showHUDText.value = true;
   calibrated = true;
   app.ticker.add(
@@ -186,7 +205,7 @@ function nextLevel() {
     })
   );
 
-  const prevLevelScore = levels[currentLevelIndex].score;
+  //Roll score hud to 0
   let scoreResetID = setInterval(() => {
     scoreCount.value -= Math.floor(prevLevelScore / 40);
     if (
@@ -197,7 +216,7 @@ function nextLevel() {
       clearInterval(scoreResetID);
     }
   }, 50);
-  currentLevelIndex++; //TODO
+
   if (currentLevelIndex == 3) {
     currentLevelIndex = 0;
   }
@@ -206,15 +225,18 @@ function nextLevel() {
     timer.value = levels[currentLevelIndex].timeLimitSec;
     showHUDTimer = true;
   }
+}
 
-  bg.warp();
+function restartLevel() {
+  resetLevel();
   setTimeout(() => {
     startLevel(levels[currentLevelIndex]);
-  }, bg.warpTime + 1000);
+  }, 2000);
 }
 
 let gameLoopfn;
 let activeCatsCount;
+let timerIntervalID;
 //Game loop
 function startLevel(level) {
   level.start(app);
@@ -283,8 +305,11 @@ function stopLevel(level) {
   app.ticker.remove(playerTickerfn);
   app.ticker.remove(gameLoopfn);
   calibrated = false;
+
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
+  prevLevelScore = level.score;
+
   showHUDText.value = false;
   showHUDTimer = false;
   modalNextLevel.value.show();
