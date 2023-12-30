@@ -9,6 +9,7 @@
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
+      v-if="modalVisible == false"
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
       v-if="showText"
     >
@@ -49,11 +50,9 @@ import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
 import GameLevel from "./game/GameLevel.js";
-import * as color from "./game/colors.json";
 import levelsData from "./game/levels.json";
-import Asteroid from "./game/Asteroid.js";
+import * as color from "./game/colors.json";
 import Background from "./game/Background.js";
-import * as cats from "./game/cats.js";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
@@ -78,8 +77,6 @@ window.onResize = () => {
   gameHeight = window.innerHeight;
 };
 
-let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
-
 //Init PIXI app
 let app = new PIXI.Application({
   width: gameWidth,
@@ -92,9 +89,11 @@ app.stage.hitArea = app.screen;
 
 //Background
 const bg = new Background(app);
-const bgTicker = app.ticker.add((delta) => {
+app.ticker.add((delta) => {
   bg.animate(delta);
 });
+
+let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
 //DESKTOP CONTROLS
 //Set up mouse listener inside game area
@@ -108,90 +107,136 @@ app.stage.on("mousemove", (e) => {
 //Add listener for change in device orientation on mobile devices
 //Two types of controls available on mobile (comment out the unused one)
 
+let calibrated = false;
+let xOffset = 0;
+let yOffset = 0;
 ////Centered controls BEGIN
-// const centereCtrlsMultiX = 7;
-// const centereCtrlsMultiY = 10;
-// if (window.DeviceOrientationEvent) {
-//   window.addEventListener("deviceorientation", (e) => {
-//     const newX =
-//       centereCtrlsMultiX * (e.gamma / 180) * (gameWidth / 2) + gameWidth / 2;
-//     const newY =
-//       centereCtrlsMultiY * (e.beta / 180) * (gameHeight / 2) + gameHeight / 2;
-//     if (newX < gameWidth && newX >= 0) {
-//       mouseCoords.x = newX;
-//     }
-//     if (newY < gameHeight && newY >= 0) {
-//       mouseCoords.y = newY;
-//     }
-//   });
-//}
-////Centered controls END
-
-////Speed controls BEGIN
-const speedCtrlsMultiX = 0.3;
-const speedCtrlsMultiY = 0.5;
+const centereCtrlsMultiX = 7;
+const centereCtrlsMultiY = 10;
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", (e) => {
-    if (
-      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) < gameWidth &&
-      mouseCoords.x + Math.floor(e.gamma * speedCtrlsMultiX) > 0
-    ) {
-      mouseCoords.x += Math.floor(e.gamma * speedCtrlsMultiX);
+    if (!calibrated) {
+      xOffset = -e.gamma;
+      yOffset = -e.beta;
     }
-    if (
-      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) < gameHeight &&
-      mouseCoords.y + Math.floor(e.beta * speedCtrlsMultiY) > 0
-    ) {
-      mouseCoords.y += Math.floor(e.beta * speedCtrlsMultiY);
+    const newX =
+      centereCtrlsMultiX * ((xOffset + e.gamma) / 180) * (gameWidth / 2) +
+      gameWidth / 2;
+    const newY =
+      centereCtrlsMultiY * ((yOffset + e.beta) / 180) * (gameHeight / 2) +
+      gameHeight / 2;
+    if (newX < gameWidth && newX >= 0) {
+      mouseCoords.x = newX;
+    }
+    if (newY < gameHeight && newY >= 0) {
+      mouseCoords.y = newY;
     }
   });
 }
+////Centered controls END
+
+////Speed controls BEGIN
+// const speedCtrlsMultiX = 0.3;
+// const speedCtrlsMultiY = 0.5;
+// if (window.DeviceOrientationEvent) {
+//   window.addEventListener("deviceorientation", (e) => {
+//     if (!calibrated) {
+//       xOffset = -e.gamma;
+//       yOffset = -e.beta;
+//     }
+//     if (
+//       mouseCoords.x + Math.floor((xOffset + e.gamma) * speedCtrlsMultiX) <
+//         gameWidth &&
+//       mouseCoords.x + Math.floor((xOffset + e.gamma) * speedCtrlsMultiX) > 0
+//     ) {
+//       mouseCoords.x += Math.floor((xOffset + e.gamma) * speedCtrlsMultiX);
+//     }
+//     if (
+//       mouseCoords.y + Math.floor((yOffset + e.beta) * speedCtrlsMultiY) <
+//         gameHeight &&
+//       mouseCoords.y + Math.floor((yOffset + e.beta) * speedCtrlsMultiY) > 0
+//     ) {
+//       mouseCoords.y += Math.floor((yOffset + e.beta) * speedCtrlsMultiY);
+//     }
+//   });
+// }
 ////Speed controls END
 
 //Player object
 const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
-app.stage.addChild(player.trail, player);
 
-const asts = [
-  new Asteroid({ x: -0.5, y: -0.9 }, 40, { x: 3, y: 1 }, 5),
-  new Asteroid({ x: -1, y: -1.2 }, 20, { x: 3, y: 1 }, 8),
-  new Asteroid({ x: -1.5, y: -0.6 }, 30, { x: 3, y: 1 }, 6),
-  new Asteroid({ x: -1.1, y: -0.7 }, 15, { x: 3, y: 1 }, 8),
-  new Asteroid({ x: -1.1, y: -0.2 }, 40, { x: 3, y: 1 }, 5),
-];
+let levels = [];
+let currentLevelIndex = 0;
+let scoreCounterID = 0;
 
-const cat = new cats.CatTwo({ x: -0.7, y: 0 }, 60, 120, { x: 2, y: 1 }, 0);
+function startGame() {
+  app.stage.addChild(player.trail, player);
 
-// const level = new GameLevel(levelsData[0]);
-
-//Game loop
-function startGameLoop() {
-  // level.start(app);
-  for (const ast of asts) {
-    app.stage.addChild(ast);
-    ast.show();
+  for (const data of levelsData) {
+    levels.push(new GameLevel(data));
   }
-  app.stage.addChild(cat);
-  cat.show();
-  app.ticker.start();
-  app.ticker.add((delta) => {
-    player.followPointer(mouseCoords, delta);
+  currentLevelIndex = 0;
+  nextLevel();
+}
 
-    for (const ast of asts) {
-      ast.move(delta);
-      if (ast.isActive) {
-        if (ast.checkCollision(player.position) && player.isVulnerable) {
-          scoreCount.value += ast.pop();
-          player.damage();
-          bg.warp();
+let playerTickerfn;
+
+function nextLevel() {
+  calibrated = true;
+  app.ticker.add(
+    (playerTickerfn = (delta) => {
+      player.followPointer(mouseCoords, delta);
+    })
+  );
+  const prevLevelScore = levels[currentLevelIndex].score;
+  bg.warp();
+  let scoreResetID = setInterval(() => {
+    scoreCount.value -= Math.floor(prevLevelScore / 80);
+    if (scoreCount.value <= 0) {
+      scoreCount.value = 0;
+      clearInterval(scoreResetID);
+    }
+  }, 50);
+  currentLevelIndex = 0; //TODO
+  levels[currentLevelIndex].score = 0;
+  setTimeout(() => {
+    startLevel(levels[currentLevelIndex]);
+  }, 5000);
+}
+
+let gameLoopfn;
+//Game loop
+function startLevel(level) {
+  level.start(app);
+
+  scoreCounterID = setInterval(() => {
+    scoreCount.value += Math.floor((level.score - scoreCount.value) / 2);
+  }, 50);
+
+  app.ticker.add(
+    (gameLoopfn = (delta) => {
+      for (const asteroid of level.asteroids) {
+        if (asteroid.isActive) {
+          asteroid.move(delta);
+          if (asteroid.checkCollision(player.position) && player.isVulnerable) {
+            level.score += asteroid.pop();
+            player.damage();
+          }
         }
       }
-    }
-    if (cat.isActive) {
-      cat.move(delta);
-      cat.grow(delta);
-      if (cat.checkCollision(player.position)) {
-        scoreCount.value += cat.pop();
+
+      for (const cat of level.cats) {
+        if (cat.isActive) {
+          cat.move(delta);
+          cat.grow(delta);
+          if (cat.checkCollision(player.position)) {
+            level.score += cat.pop();
+          }
+        }
+      }
+
+      if (level.score >= level.scoreGoal) {
+        stopLevel(level);
       }
     }
     if (scoreCount.value >= 100) {
@@ -200,14 +245,31 @@ function startGameLoop() {
       showNextLevelModal.value = true;
       showText.value = false;
     }
-  });
+  }
+  );
 }
 
-function stopGameLoop() {
-  app.ticker.stop();
+function stopLevel(level) {
+  level.stop(app);
+  app.ticker.remove(gameLoopfn);
+  app.ticker.remove(playerTickerfn);
+  calibrated = false;
+  clearInterval(scoreCounterID);
+  scoreCount.value = level.score;
+  //TODO show next level modal
+  nextLevel();
 }
 
-function nextLevel() {}
+function updateModalVisible() {
+  modalVisible.value = false;
+  startGame();
+}
+
+function updateModalVisiblee(value, value2) {
+  modalVisible.value = value;
+  scoreCount.value = 0;
+}
+
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);

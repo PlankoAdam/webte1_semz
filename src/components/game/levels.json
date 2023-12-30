@@ -1,73 +1,89 @@
 [
   {
     "scoreGoal": 100,
-    "timeLimitSec": 30,
+    "timeLimitSec": 0,
     "minIntervalms": 1000,
     "maxIntervalms": 1000,
-    "targetBallsData": [
+    "asteroids": [
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -1
+        },
+        "radius": 40,
+        "moveDirection": {
+          "x": 2,
+          "y": 1
+        },
+        "moveSpeed": 10
+      },
       {
         "relativeInitPos": {
           "x": -1,
-          "y": 0
+          "y": -1.2
         },
-        "initRadius": 20,
-        "minRadius": 20,
-        "maxRadius": 80,
-        "growthRate": 0.01,
+        "radius": 20,
+        "moveDirection": {
+          "x": 1,
+          "y": 1
+        },
+        "moveSpeed": 15
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -1.2
+        },
+        "radius": 50,
         "moveDirection": {
           "x": 2,
-          "y": 0
+          "y": 3
         },
-        "moveSpeed": 10,
+        "moveSpeed": 8
+      }
+    ],
+    "cats": [
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": 0.8
+        },
+        "initRadius": 30,
+        "endRadius": 70,
+        "moveDirection": {
+          "x": 1,
+          "y": -4
+        },
+        "orbitDirection": -1
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 0.2
+        },
+        "initRadius": 20,
+        "endRadius": 60,
+        "moveDirection": {
+          "x": 2,
+          "y": -3
+        },
         "orbitDirection": 0
       },
       {
+        "type": "gold",
         "relativeInitPos": {
-          "x": -0.7,
-          "y": 1
+          "x": 0.8,
+          "y": 1.2
         },
-        "initRadius": 20,
-        "minRadius": 20,
-        "maxRadius": 120,
-        "growthRate": 0.02,
+        "initRadius": 25,
+        "endRadius": 25,
         "moveDirection": {
-          "x": 2,
-          "y": 5
+          "x": -1,
+          "y": -7
         },
-        "moveSpeed": 10,
-        "orbitDirection": 1
-      },
-      {
-        "relativeInitPos": {
-          "x": -0.7,
-          "y": 0
-        },
-        "initRadius": 20,
-        "minRadius": 20,
-        "maxRadius": 80,
-        "growthRate": 0.01,
-        "moveDirection": {
-          "x": 0,
-          "y": 5
-        },
-        "moveSpeed": 7,
-        "orbitDirection": 1
-      },
-      {
-        "relativeInitPos": {
-          "x": -0.7,
-          "y": 0
-        },
-        "initRadius": 20,
-        "minRadius": 20,
-        "maxRadius": 120,
-        "growthRate": 0.02,
-        "moveDirection": {
-          "x": -2,
-          "y": 5
-        },
-        "moveSpeed": 7,
-        "orbitDirection": -1
+        "orbitDirection": 0
       }
     ]
   }

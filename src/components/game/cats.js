@@ -2,26 +2,24 @@ import * as pixi from "pixi.js";
 import SpaceCat from "./SpaceCat.js";
 
 export class CatOne extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       true,
       1000
     );
 
     this.hitBoxScale = 150;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/cat1.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.45, 0.4);
@@ -35,26 +33,24 @@ export class CatOne extends SpaceCat {
 }
 
 export class CatTwo extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       true,
       2000
     );
 
     this.hitBoxScale = 130;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/cat3.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5, 0.5);
@@ -68,26 +64,24 @@ export class CatTwo extends SpaceCat {
 }
 
 export class GoldCat extends SpaceCat {
-  constructor(
-    relativeInitPos,
-    initRadius,
-    endRadius,
-    moveDirection,
-    orbitDirection
-  ) {
+  constructor(opts) {
     super(
-      relativeInitPos,
-      initRadius,
-      endRadius,
+      opts.relativeInitPos,
+      opts.initRadius,
+      opts.endRadius,
       0.001,
-      moveDirection,
+      opts.moveDirection,
       5,
-      orbitDirection,
+      opts.orbitDirection,
       false,
       10000
     );
 
     this.hitBoxScale = 130;
+  }
+
+  show() {
+    super.show();
     this.sprite = pixi.Sprite.from("src/assets/goldcat.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.42, 0.5);
