@@ -1,10 +1,12 @@
 <template>
-  <div class="modal cursor-default z-10">
+  <div
+    class="modal cursor-default z-10 backdrop-brightness-200 backdrop-blur-sm"
+  >
     <div class="modal-content">
       <div class="image-container">
         <img
           src="./photos/levelcomplete.png"
-          class="image w-full -my-8 sm:w-3/5"
+          class="w-full lg:w-4/5 -my-4 lg:-my-20 xl:-my-24 -mx-10"
         />
       </div>
       <div class="buttons">
@@ -12,7 +14,7 @@
           >Your Score: {{ score }}</a
         >
         <button
-          class="start md:text-2xl m-0 text-1xl max-w-fit"
+          class="start md:text-4xl text-3xl m-0 max-w-fit"
           @click="closeModal"
         >
           Next Level!
@@ -46,10 +48,5 @@ a {
   margin: 0;
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-
-.image {
-  max-width: 75%;
-  height: auto;
 }
 </style>

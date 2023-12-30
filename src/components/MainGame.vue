@@ -3,13 +3,11 @@
   </ModalStart>
   <ModalNextLevel
     v-if="showNextLevelModal"
-    :showModal="modalVisible"
     :score="scoreCount"
     @update-modal-next-level="updateNextLevelModal"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
-      v-if="modalVisible == false"
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
       v-if="showText"
     >
@@ -39,13 +37,6 @@ h1 {
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
-
-const closeStartModal = (value, value2) => {
-  showStartModal.value = value;
-  showText.value = value2;
-  startGameLoop();
-};
-
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
@@ -62,11 +53,16 @@ let showStartModal = ref(true);
 let showNextLevelModal = ref(false);
 let showText = ref(false);
 
+const closeStartModal = (value, value2) => {
+  showStartModal.value = value;
+  showText.value = value2;
+  startGame();
+};
+
 const updateNextLevelModal = (value, value2) => {
   showNextLevelModal.value = value;
   showText.value = value2;
-  scoreCount.value = 0;
-  startGameLoop();
+  nextLevel();
 };
 
 //Size of game area
@@ -238,14 +234,7 @@ function startLevel(level) {
       if (level.score >= level.scoreGoal) {
         stopLevel(level);
       }
-    }
-    if (scoreCount.value >= 100) {
-      levelCount.value++;
-      stopGameLoop();
-      showNextLevelModal.value = true;
-      showText.value = false;
-    }
-  }
+    })
   );
 }
 
@@ -257,7 +246,8 @@ function stopLevel(level) {
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
   //TODO show next level modal
-  nextLevel();
+  showNextLevelModal.value = true;
+  showText.value = false;
 }
 
 function updateModalVisible() {
@@ -269,7 +259,6 @@ function updateModalVisiblee(value, value2) {
   modalVisible.value = value;
   scoreCount.value = 0;
 }
-
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
