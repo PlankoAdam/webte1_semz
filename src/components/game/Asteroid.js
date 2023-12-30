@@ -14,9 +14,20 @@ export default class Asteroid extends HitBall {
       0,
       false
     );
+
+    this.scaleIntervalID = 0;
+    this.alphaIntervalID = 0;
+  }
+
+  reset() {
+    clearInterval(this.scaleIntervalID);
+    clearInterval(this.alphaIntervalID);
+    this.removeChildren();
+    this.isActive = false;
   }
 
   show() {
+    this.reset();
     super.show();
     this.sprite = pixi.Sprite.from("src/assets/asteroid.png");
     this.addChild(this.sprite);
@@ -46,8 +57,6 @@ export default class Asteroid extends HitBall {
   }
 
   pop() {
-    clearInterval(this.scaleIntervalID);
-    clearInterval(this.alphaIntervalID);
     return -1000;
   }
 }

@@ -1,6 +1,6 @@
 [
   {
-    "scoreGoal": 5000,
+    "scoreGoal": 100,
     "timeLimitSec": 0,
     "minIntervalms": 1000,
     "maxIntervalms": 1000,

@@ -70,7 +70,7 @@ export default class GameLevel {
     for (const ast of this.asteroids) {
       app.stage.removeChild(ast);
       if (ast.isActive) {
-        ast.pop();
+        ast.reset();
       }
     }
     for (const cat of this.cats) {

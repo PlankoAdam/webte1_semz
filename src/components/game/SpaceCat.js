@@ -40,18 +40,19 @@ export default class SpaceCat extends HitBall {
     }
 
     this.score = score;
+    this.startScore = score;
     this.scoreIntervalID = 0;
     this.spinRate = Math.random() - 0.5;
   }
 
   show() {
     super.show();
-    const startScore = this.score;
+    this.score = this.startScore;
     this.scoreIntervalID = setInterval(() => {
-      this.score -= startScore / 1000;
-      if (this.score <= startScore / 10) {
+      this.score -= Math.floor(this.startScore / 1000);
+      if (this.score <= this.startScore / 10) {
         clearInterval(this.scoreIntervalID);
-        this.score = startScore / 10;
+        this.score = Math.floor(this.startScore / 10);
       }
     }, 5);
   }

@@ -69,7 +69,7 @@ app.stage.hitArea = app.screen;
 
 //Background
 const bg = new Background(app);
-const bgTicker = app.ticker.add((delta) => {
+app.ticker.add((delta) => {
   bg.animate(delta);
 });
 
@@ -156,7 +156,31 @@ function startGame() {
     levels.push(new GameLevel(data));
   }
   currentLevelIndex = 0;
-  startLevel(levels[currentLevelIndex]);
+  nextLevel();
+}
+
+let playerTickerfn;
+
+function nextLevel() {
+  app.ticker.add(
+    (playerTickerfn = (delta) => {
+      player.followPointer(mouseCoords, delta);
+    })
+  );
+  const prevLevelScore = levels[currentLevelIndex].score;
+  bg.warp();
+  let scoreResetID = setInterval(() => {
+    scoreCount.value -= Math.floor(prevLevelScore / 80);
+    if (scoreCount.value <= 0) {
+      scoreCount.value = 0;
+      clearInterval(scoreResetID);
+    }
+  }, 50);
+  currentLevelIndex = 0; //TODO
+  levels[currentLevelIndex].score = 0;
+  setTimeout(() => {
+    startLevel(levels[currentLevelIndex]);
+  }, 5000);
 }
 
 let gameLoopfn;
@@ -164,13 +188,13 @@ let gameLoopfn;
 function startLevel(level) {
   calibrated = true;
   level.start(app);
+
   scoreCounterID = setInterval(() => {
     scoreCount.value += Math.floor((level.score - scoreCount.value) / 2);
   }, 50);
 
   app.ticker.add(
     (gameLoopfn = (delta) => {
-      player.followPointer(mouseCoords, delta);
       for (const asteroid of level.asteroids) {
         if (asteroid.isActive) {
           asteroid.move(delta);
@@ -201,14 +225,12 @@ function startLevel(level) {
 function stopLevel(level) {
   level.stop(app);
   app.ticker.remove(gameLoopfn);
+  app.ticker.remove(playerTickerfn);
   calibrated = false;
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
   //TODO show next level modal
-}
-
-function stopGameLoop() {
-  app.ticker.stop();
+  nextLevel();
 }
 
 function updateModalVisible() {
