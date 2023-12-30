@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="modalDiv"
-    class="modal cursor-default z-10 backdrop-brightness-200 backdrop-blur-sm hidden"
-  >
+  <div ref="modalDiv" class="modal cursor-default z-10 hidden">
     <div class="modal-content">
       <div class="image-container">
         <img
@@ -42,18 +39,31 @@ const props = defineProps({
 });
 
 function closeModal() {
-  modalDiv.value.classList.add("hidden");
   imgCont.value.classList.remove("drop1");
   scoreDisplay.value.classList.remove("drop2");
   nextLvlBtn.value.classList.remove("drop3");
+
+  imgCont.value.classList.add("slideupanim");
+  scoreDisplay.value.classList.add("slidedownanim2");
+  nextLvlBtn.value.classList.add("slidedownanim");
+
+  setTimeout(() => {
+    modalDiv.value.classList.add("hidden");
+  }, 1500);
+
   emits("next-level");
 }
 
 const show = () => {
   modalDiv.value.classList.remove("hidden");
+
   imgCont.value.classList.add("drop1");
   scoreDisplay.value.classList.add("drop2");
   nextLvlBtn.value.classList.add("drop3");
+
+  imgCont.value.classList.remove("slideupanim");
+  scoreDisplay.value.classList.remove("slidedownanim2");
+  nextLvlBtn.value.classList.remove("slidedownanim");
 };
 
 defineExpose({ show });
@@ -65,7 +75,6 @@ a {
   min-height: fit-content;
   color: aliceblue;
   font-family: spaceRanger;
-  transition: 0.3s ease;
   margin: 0;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -73,28 +82,57 @@ a {
 
 @keyframes anim {
   from {
-    transform: scale(5);
+    transform: scale(10);
+    opacity: 0;
   }
 
   to {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
 .drop1 {
-  animation-name: anim;
-  animation-duration: 1 s;
+  animation: anim 0.5s 0s both ease-in;
 }
 
 .drop2 {
-  animation-name: anim;
-  animation-duration: 1 s;
-  animation-delay: 0.5s;
+  animation: anim 0.5s 0.5s both ease-in;
 }
 
 .drop3 {
-  animation-name: anim;
-  animation-duration: 1 s;
-  animation-delay: 1s;
+  animation: anim 0.5s 1s both ease-in;
+}
+
+@keyframes slideup {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-1000px);
+  }
+}
+
+.slideupanim {
+  animation: slideup 1s 0s both ease-in;
+}
+
+@keyframes slidedown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(1000px);
+  }
+}
+
+.slidedownanim {
+  animation: slidedown 1s 0s both ease-in;
+}
+
+.slidedownanim2 {
+  animation: slidedown 1s 0.3s both ease-in;
 }
 </style>

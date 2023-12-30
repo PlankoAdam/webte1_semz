@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="modal cursor-default z-10 backdrop-brightness-200 backdrop-blur-sm"
-    @click.stop="closeDesc"
-  >
+  <div class="modal cursor-default z-10" @click.stop="closeDesc">
     <div class="modal-content">
       <div class="image-container">
         <img
