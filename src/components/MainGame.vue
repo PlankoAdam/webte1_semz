@@ -1,6 +1,5 @@
 <template>
-  <ModalStart @update-modal-start="closeStartModal" v-if="showStartModal">
-  </ModalStart>
+  <ModalStart ref="modalStart" @start-game="startGame"> </ModalStart>
   <ModalNextLevel
     ref="modalNextLevel"
     :score="scoreCount"
@@ -13,6 +12,14 @@
     >
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
         LEVEL<br />{{ levelCount }}
+      </h1>
+      <h1
+        v-if="showHUDTimer"
+        class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-center"
+      >
+        {{ ("0" + Math.floor(timer / 60)).substr(-2) }}:{{
+          ("0" + (timer % 60)).substr(-2)
+        }}
       </h1>
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-end">
         SCORE<br />{{ scoreCount }}
@@ -44,13 +51,16 @@ import GameLevel from "./game/GameLevel.js";
 import levelsData from "./game/levels.json";
 import * as color from "./game/colors.json";
 import Background from "./game/Background.js";
+import { distance } from "./game/utils";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
+let timer = ref(0);
 let levelCount = ref(1);
-let showStartModal = ref(true);
 let showHUDText = ref(false);
+let showHUDTimer = false;
 
+const modalStart = ref(null);
 const modalNextLevel = ref(null);
 
 //Size of game area
@@ -165,6 +175,7 @@ function startGame() {
 
 //Ticker callback function for controlling the player object
 let playerTickerfn;
+let timerIntervalID;
 
 function nextLevel() {
   showHUDText.value = true;
@@ -174,31 +185,54 @@ function nextLevel() {
       player.followPointer(pointerCoords, delta);
     })
   );
+
   const prevLevelScore = levels[currentLevelIndex].score;
-  bg.warp();
   let scoreResetID = setInterval(() => {
-    scoreCount.value -= Math.floor(prevLevelScore / 80);
-    if (scoreCount.value <= 0) {
+    scoreCount.value -= Math.floor(prevLevelScore / 40);
+    if (
+      (scoreCount.value <= 0 && prevLevelScore >= 0) ||
+      (scoreCount.value >= 0 && prevLevelScore < 0)
+    ) {
       scoreCount.value = 0;
       clearInterval(scoreResetID);
     }
   }, 50);
+
   currentLevelIndex = 0; //TODO
   levels[currentLevelIndex].score = 0;
+  if (levels[currentLevelIndex].timeLimitSec != 0) {
+    timer.value = levels[currentLevelIndex].timeLimitSec;
+    showHUDTimer = true;
+  }
+
+  bg.warp();
   setTimeout(() => {
     startLevel(levels[currentLevelIndex]);
-  }, 5000);
+  }, bg.warpTime + 1000);
 }
 
 let gameLoopfn;
+let activeCatsCount;
 //Game loop
 function startLevel(level) {
   level.start(app);
+  activeCatsCount = level.cats.length;
+
+  if (showHUDTimer) {
+    timerIntervalID = setInterval(() => {
+      if (timer.value == 0) {
+        clearInterval(timerIntervalID);
+        stopLevel(level);
+      }
+      timer.value--;
+    }, 1000);
+  }
 
   scoreCounterID = setInterval(() => {
     scoreCount.value += Math.floor((level.score - scoreCount.value) / 2);
   }, 50);
 
+  const allCats = level.cats.concat(level.goldCats);
   app.ticker.add(
     (gameLoopfn = (delta) => {
       for (const asteroid of level.asteroids) {
@@ -208,20 +242,34 @@ function startLevel(level) {
             level.score += asteroid.pop();
             player.damage();
           }
-        }
-      }
-
-      for (const cat of level.cats) {
-        if (cat.isActive) {
-          cat.move(delta);
-          cat.grow(delta);
-          if (cat.checkCollision(player.position)) {
-            level.score += cat.pop();
+          if (
+            distance(asteroid.position, {
+              x: gameWidth / 2,
+              y: gameHeight / 2,
+            }) >
+            3 * (gameWidth > gameHeight ? gameWidth : gameHeight)
+          ) {
+            asteroid.reset();
+            asteroid.show();
           }
         }
       }
 
-      if (level.score >= level.scoreGoal) {
+      for (const cat of allCats) {
+        if (cat.isActive) {
+          cat.animate(delta);
+          //Collect cat
+          if (cat.checkCollision(player.position)) {
+            level.score += cat.pop();
+            if (!cat.isGold) {
+              activeCatsCount--;
+            }
+          }
+        }
+      }
+
+      if (activeCatsCount <= 0) {
+        clearInterval(timerIntervalID);
         stopLevel(level);
       }
     })
@@ -236,16 +284,12 @@ function stopLevel(level) {
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
   showHUDText.value = false;
+  showHUDTimer = false;
   modalNextLevel.value.show();
 }
 
-const closeStartModal = (value, value2) => {
-  showStartModal.value = value;
-  showHUDText.value = value2;
-  startGame();
-};
-
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
+  modalStart.value.show();
 });
 </script>

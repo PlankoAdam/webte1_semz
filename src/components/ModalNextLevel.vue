@@ -39,6 +39,9 @@ const props = defineProps({
 });
 
 function closeModal() {
+  modalDiv.value.classList.add("select-none");
+  modalDiv.value.classList.add("cursor-none");
+
   imgCont.value.classList.remove("drop1");
   scoreDisplay.value.classList.remove("drop2");
   nextLvlBtn.value.classList.remove("drop3");
@@ -55,6 +58,8 @@ function closeModal() {
 }
 
 const show = () => {
+  modalDiv.value.classList.remove("select-none");
+  modalDiv.value.classList.remove("cursor-none");
   modalDiv.value.classList.remove("hidden");
 
   imgCont.value.classList.add("drop1");
@@ -80,7 +85,7 @@ a {
   margin-bottom: 1rem;
 }
 
-@keyframes anim {
+@keyframes drop {
   from {
     transform: scale(10);
     opacity: 0;
@@ -93,15 +98,15 @@ a {
 }
 
 .drop1 {
-  animation: anim 0.5s 0s both ease-in;
+  animation: drop 0.5s 0s both ease-in;
 }
 
 .drop2 {
-  animation: anim 0.5s 0.5s both ease-in;
+  animation: drop 0.5s 0.5s both ease-in;
 }
 
 .drop3 {
-  animation: anim 0.5s 1s both ease-in;
+  animation: drop 0.5s 1s both ease-in;
 }
 
 @keyframes slideup {

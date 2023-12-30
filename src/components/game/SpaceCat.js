@@ -43,6 +43,13 @@ export default class SpaceCat extends HitBall {
     this.startScore = score;
     this.scoreIntervalID = 0;
     this.spinRate = Math.random() - 0.5;
+
+    this.isGold = false;
+  }
+
+  animate(delta) {
+    this.move(delta);
+    this.grow(delta);
   }
 
   show() {
