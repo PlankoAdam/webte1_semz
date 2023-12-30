@@ -9,15 +9,22 @@
         />
       </div>
       <div class="buttons">
-        <a ref="scoreDisplay" class="md:text-4xl text-2xl m-0 max-w-fit"
+        <a ref="scoreDisplay" class="md:text-4xl text-2xl m-0 max-w-fit mb-7"
           >Your Score: {{ score }}</a
         >
         <button
+          ref="reLvlBtn"
+          class="start md:text-4xl text-3xl m-0 max-w-fit"
+          @click="closeModal('restart-level')"
+        >
+          Restart Level
+        </button>
+        <button
           ref="nextLvlBtn"
           class="start md:text-4xl text-3xl m-0 max-w-fit"
-          @click="closeModal"
+          @click="closeModal('next-level')"
         >
-          Next Level!
+          Next Level
         </button>
       </div>
     </div>
@@ -30,31 +37,34 @@ import { defineProps, ref } from "vue";
 const modalDiv = ref(null);
 const imgCont = ref(null);
 const scoreDisplay = ref(null);
+const reLvlBtn = ref(null);
 const nextLvlBtn = ref(null);
 
-const emits = defineEmits(["next-level"]);
+const emits = defineEmits(["next-level", "restart-level"]);
 
 const props = defineProps({
   score: Number,
 });
 
-function closeModal() {
+function closeModal(event) {
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 
   imgCont.value.classList.remove("drop1");
   scoreDisplay.value.classList.remove("drop2");
-  nextLvlBtn.value.classList.remove("drop3");
+  reLvlBtn.value.classList.remove("drop3");
+  nextLvlBtn.value.classList.remove("drop4");
 
   imgCont.value.classList.add("slideupanim");
-  scoreDisplay.value.classList.add("slidedownanim2");
-  nextLvlBtn.value.classList.add("slidedownanim");
+  scoreDisplay.value.classList.add("slidedownanim3");
+  reLvlBtn.value.classList.add("slidedownanim2");
+  nextLvlBtn.value.classList.add("slidedownanim1");
 
   setTimeout(() => {
     modalDiv.value.classList.add("hidden");
-  }, 1500);
+  }, 1600);
 
-  emits("next-level");
+  emits(event);
 }
 
 const show = () => {
@@ -64,11 +74,13 @@ const show = () => {
 
   imgCont.value.classList.add("drop1");
   scoreDisplay.value.classList.add("drop2");
-  nextLvlBtn.value.classList.add("drop3");
+  reLvlBtn.value.classList.add("drop3");
+  nextLvlBtn.value.classList.add("drop4");
 
   imgCont.value.classList.remove("slideupanim");
-  scoreDisplay.value.classList.remove("slidedownanim2");
-  nextLvlBtn.value.classList.remove("slidedownanim");
+  scoreDisplay.value.classList.remove("slidedownanim3");
+  reLvlBtn.value.classList.remove("slidedownanim2");
+  nextLvlBtn.value.classList.remove("slidedownanim1");
 };
 
 defineExpose({ show });
@@ -109,6 +121,10 @@ a {
   animation: drop 0.5s 1s both ease-in;
 }
 
+.drop4 {
+  animation: drop 0.5s 1.5s both ease-in;
+}
+
 @keyframes slideup {
   from {
     transform: translateY(0);
@@ -133,11 +149,15 @@ a {
   }
 }
 
-.slidedownanim {
+.slidedownanim1 {
   animation: slidedown 1s 0s both ease-in;
 }
 
 .slidedownanim2 {
   animation: slidedown 1s 0.3s both ease-in;
+}
+
+.slidedownanim3 {
+  animation: slidedown 1s 0.6s both ease-in;
 }
 </style>
