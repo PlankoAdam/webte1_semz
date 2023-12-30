@@ -162,6 +162,7 @@ function startGame() {
 let playerTickerfn;
 
 function nextLevel() {
+  calibrated = true;
   app.ticker.add(
     (playerTickerfn = (delta) => {
       player.followPointer(mouseCoords, delta);
@@ -186,7 +187,6 @@ function nextLevel() {
 let gameLoopfn;
 //Game loop
 function startLevel(level) {
-  calibrated = true;
   level.start(app);
 
   scoreCounterID = setInterval(() => {
