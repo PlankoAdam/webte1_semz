@@ -13,13 +13,13 @@
       <div class="buttons content-center w-full">
         <button
           @click="closeModal"
-          class="start md:text-4xl text-3xl m-0 max-w-fit"
+          class="start md:text-4xl text-4xl m-0 max-w-fit"
         >
           START!
         </button>
         <button
           @click.stop="showDesc"
-          class="gamedesc md:text-2xl m-0 text-1xl max-w-fit"
+          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit"
         >
           Game Description
         </button>
@@ -83,7 +83,6 @@ function closeDesc() {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: rgba(0, 0, 0, 0); */
 }
 
 .modal-content {
@@ -105,7 +104,6 @@ function closeDesc() {
   color: aliceblue;
   font-family: spaceRanger;
   transition: 0.3s ease;
-  /* margin: 0; */
 }
 
 .start {
@@ -122,8 +120,6 @@ function closeDesc() {
 
 .text {
   color: aliceblue;
-  /* max-width: 1000px; */
-  /* width: auto; */
 }
 
 .image-container {

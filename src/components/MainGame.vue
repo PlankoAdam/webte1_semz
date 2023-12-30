@@ -2,14 +2,14 @@
   <ModalStart @update-modal-start="closeStartModal" v-if="showStartModal">
   </ModalStart>
   <ModalNextLevel
-    v-if="showNextLevelModal"
+    ref="modalNextLevel"
     :score="scoreCount"
-    @update-modal-next-level="updateNextLevelModal"
+    @next-level="nextLevel"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
-      v-if="showText"
+      v-if="showHUDText"
     >
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
         LEVEL<br />{{ levelCount }}
@@ -48,22 +48,10 @@ import Background from "./game/Background.js";
 let gameWindow = ref(null);
 let scoreCount = ref(0);
 let levelCount = ref(1);
-const modalVisible = ref(false);
 let showStartModal = ref(true);
-let showNextLevelModal = ref(false);
-let showText = ref(false);
+let showHUDText = ref(false);
 
-const closeStartModal = (value, value2) => {
-  showStartModal.value = value;
-  showText.value = value2;
-  startGame();
-};
-
-const updateNextLevelModal = (value, value2) => {
-  showNextLevelModal.value = value;
-  showText.value = value2;
-  nextLevel();
-};
+const modalNextLevel = ref(null);
 
 //Size of game area
 let gameWidth = window.innerWidth;
@@ -89,14 +77,14 @@ app.ticker.add((delta) => {
   bg.animate(delta);
 });
 
-let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
+let pointerCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
 //DESKTOP CONTROLS
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
 app.stage.on("mousemove", (e) => {
-  mouseCoords.x = e.global.x;
-  mouseCoords.y = e.global.y;
+  pointerCoords.x = e.global.x;
+  pointerCoords.y = e.global.y;
 });
 
 //MOBILE CONTROLS
@@ -122,10 +110,10 @@ if (window.DeviceOrientationEvent) {
       centereCtrlsMultiY * ((yOffset + e.beta) / 180) * (gameHeight / 2) +
       gameHeight / 2;
     if (newX < gameWidth && newX >= 0) {
-      mouseCoords.x = newX;
+      pointerCoords.x = newX;
     }
     if (newY < gameHeight && newY >= 0) {
-      mouseCoords.y = newY;
+      pointerCoords.y = newY;
     }
   });
 }
@@ -159,7 +147,7 @@ if (window.DeviceOrientationEvent) {
 ////Speed controls END
 
 //Player object
-const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
+const player = new Player(0.15, pointerCoords.x, pointerCoords.y);
 
 let levels = [];
 let currentLevelIndex = 0;
@@ -175,13 +163,15 @@ function startGame() {
   nextLevel();
 }
 
+//Ticker callback function for controlling the player object
 let playerTickerfn;
 
 function nextLevel() {
+  showHUDText.value = true;
   calibrated = true;
   app.ticker.add(
     (playerTickerfn = (delta) => {
-      player.followPointer(mouseCoords, delta);
+      player.followPointer(pointerCoords, delta);
     })
   );
   const prevLevelScore = levels[currentLevelIndex].score;
@@ -240,25 +230,20 @@ function startLevel(level) {
 
 function stopLevel(level) {
   level.stop(app);
-  app.ticker.remove(gameLoopfn);
   app.ticker.remove(playerTickerfn);
+  app.ticker.remove(gameLoopfn);
   calibrated = false;
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
-  //TODO show next level modal
-  showNextLevelModal.value = true;
-  showText.value = false;
+  showHUDText.value = false;
+  modalNextLevel.value.show();
 }
 
-function updateModalVisible() {
-  modalVisible.value = false;
+const closeStartModal = (value, value2) => {
+  showStartModal.value = value;
+  showHUDText.value = value2;
   startGame();
-}
-
-function updateModalVisiblee(value, value2) {
-  modalVisible.value = value;
-  scoreCount.value = 0;
-}
+};
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
