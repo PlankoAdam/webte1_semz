@@ -26,6 +26,14 @@
         SCORE<br />{{ scoreCount }}
       </h1>
     </div>
+    <div
+      class="flex flex-row justify-end fixed bottom-0 right-0 w-full select-none cursor-none z-0 mb-10"
+      v-if="showHUDText"
+    >
+      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center font-bold">
+        ||
+      </h1>
+    </div>
     <div ref="gameWindow" class="cursor-none"></div>
   </div>
 </template>

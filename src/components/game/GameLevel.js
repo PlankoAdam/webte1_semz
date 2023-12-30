@@ -13,29 +13,33 @@ export default class GameLevel {
     this.goldCats = [];
 
     for (const data of levelData.asteroids) {
-      this.asteroids.push(
-        new Asteroid(
-          data.relativeInitPos,
-          data.radius,
-          data.moveDirection,
-          data.moveSpeed
-        )
+      const newAst = new Asteroid(
+        data.relativeInitPos,
+        data.radius,
+        data.moveDirection,
+        data.moveSpeed
       );
+      newAst.delay = data.delay;
+      this.asteroids.push(newAst);
     }
 
     for (const data of levelData.cats) {
+      let newCat;
       switch (data.type) {
-        case "one":
-          this.cats.push(new cat.CatOne(data));
-          break;
         case "two":
-          this.cats.push(new cat.CatTwo(data));
+          newCat = new cat.CatTwo(data);
+          newCat.delay = data.delay;
+          this.cats.push(newCat);
           break;
         case "gold":
-          this.goldCats.push(new cat.GoldCat(data));
+          newCat = new cat.GoldCat(data);
+          newCat.delay = data.delay;
+          this.goldCats.push(newCat);
           break;
         default:
-          this.cats.push(new cat.CatOne(data));
+          newCat = new cat.CatOne(data);
+          newCat.delay = data.delay;
+          this.cats.push(newCat);
           break;
       }
     }
@@ -43,21 +47,21 @@ export default class GameLevel {
   }
 
   start(app) {
-    let totalInterval = 0;
+    // let totalInterval = 0;
     let allTargets = this.asteroids.concat(this.cats).concat(this.goldCats);
-    allTargets = allTargets.sort((a, b) => {
-      return 0.5 - Math.random();
-    });
+    // allTargets = allTargets.sort((a, b) => {
+    //   return 0.5 - Math.random();
+    // });
     for (const target of allTargets) {
       app.stage.addChild(target);
       this.timeouts.push(
         setTimeout(() => {
           target.show();
-        }, totalInterval)
+        }, target.delay)
       );
-      totalInterval +=
-        Math.random() * (this.maxIntervalms - this.minIntervalms) +
-        this.minIntervalms;
+      // totalInterval +=
+      //   Math.random() * (this.maxIntervalms - this.minIntervalms) +
+      //   this.minIntervalms;
     }
   }
 
