@@ -78,6 +78,8 @@ export class GoldCat extends SpaceCat {
     );
 
     this.hitBoxScale = 130;
+
+    this.isGold = true;
   }
 
   show() {

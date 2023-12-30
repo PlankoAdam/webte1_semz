@@ -1,18 +1,25 @@
 <template>
-  <ModalStart @update-modal-start="closeStartModal" v-if="showStartModal">
-  </ModalStart>
+  <ModalStart ref="modalStart" @start-game="startGame"> </ModalStart>
   <ModalNextLevel
-    v-if="showNextLevelModal"
+    ref="modalNextLevel"
     :score="scoreCount"
-    @update-modal-next-level="updateNextLevelModal"
+    @next-level="nextLevel"
   ></ModalNextLevel>
   <div class="flex flex-col">
     <div
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0"
-      v-if="showText"
+      v-if="showHUDText"
     >
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl">
         LEVEL<br />{{ levelCount }}
+      </h1>
+      <h1
+        v-if="showHUDTimer"
+        class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-center"
+      >
+        {{ ("0" + Math.floor(timer / 60)).substr(-2) }}:{{
+          ("0" + (timer % 60)).substr(-2)
+        }}
       </h1>
       <h1 class="py-0 mx-5 my-0 sm:text-7xl text-4xl text-end">
         SCORE<br />{{ scoreCount }}
@@ -44,26 +51,17 @@ import GameLevel from "./game/GameLevel.js";
 import levelsData from "./game/levels.json";
 import * as color from "./game/colors.json";
 import Background from "./game/Background.js";
+import { distance } from "./game/utils";
 
 let gameWindow = ref(null);
 let scoreCount = ref(0);
+let timer = ref(0);
 let levelCount = ref(1);
-const modalVisible = ref(false);
-let showStartModal = ref(true);
-let showNextLevelModal = ref(false);
-let showText = ref(false);
+let showHUDText = ref(false);
+let showHUDTimer = false;
 
-const closeStartModal = (value, value2) => {
-  showStartModal.value = value;
-  showText.value = value2;
-  startGame();
-};
-
-const updateNextLevelModal = (value, value2) => {
-  showNextLevelModal.value = value;
-  showText.value = value2;
-  nextLevel();
-};
+const modalStart = ref(null);
+const modalNextLevel = ref(null);
 
 //Size of game area
 let gameWidth = window.innerWidth;
@@ -89,14 +87,14 @@ app.ticker.add((delta) => {
   bg.animate(delta);
 });
 
-let mouseCoords = { x: gameWidth / 2, y: gameHeight / 2 };
+let pointerCoords = { x: gameWidth / 2, y: gameHeight / 2 };
 
 //DESKTOP CONTROLS
 //Set up mouse listener inside game area
 app.stage.eventMode = "static";
 app.stage.on("mousemove", (e) => {
-  mouseCoords.x = e.global.x;
-  mouseCoords.y = e.global.y;
+  pointerCoords.x = e.global.x;
+  pointerCoords.y = e.global.y;
 });
 
 //MOBILE CONTROLS
@@ -122,10 +120,10 @@ if (window.DeviceOrientationEvent) {
       centereCtrlsMultiY * ((yOffset + e.beta) / 180) * (gameHeight / 2) +
       gameHeight / 2;
     if (newX < gameWidth && newX >= 0) {
-      mouseCoords.x = newX;
+      pointerCoords.x = newX;
     }
     if (newY < gameHeight && newY >= 0) {
-      mouseCoords.y = newY;
+      pointerCoords.y = newY;
     }
   });
 }
@@ -159,7 +157,7 @@ if (window.DeviceOrientationEvent) {
 ////Speed controls END
 
 //Player object
-const player = new Player(0.15, mouseCoords.x, mouseCoords.y);
+const player = new Player(0.15, pointerCoords.x, pointerCoords.y);
 
 let levels = [];
 let currentLevelIndex = 0;
@@ -175,20 +173,26 @@ function startGame() {
   nextLevel();
 }
 
+//Ticker callback function for controlling the player object
 let playerTickerfn;
+let timerIntervalID;
 
 function nextLevel() {
+  showHUDText.value = true;
   calibrated = true;
   app.ticker.add(
     (playerTickerfn = (delta) => {
-      player.followPointer(mouseCoords, delta);
+      player.followPointer(pointerCoords, delta);
     })
   );
+
   const prevLevelScore = levels[currentLevelIndex].score;
-  bg.warp();
   let scoreResetID = setInterval(() => {
-    scoreCount.value -= Math.floor(prevLevelScore / 80);
-    if (scoreCount.value <= 0) {
+    scoreCount.value -= Math.floor(prevLevelScore / 40);
+    if (
+      (scoreCount.value <= 0 && prevLevelScore >= 0) ||
+      (scoreCount.value >= 0 && prevLevelScore < 0)
+    ) {
       scoreCount.value = 0;
       clearInterval(scoreResetID);
     }
@@ -198,20 +202,39 @@ function nextLevel() {
     currentLevelIndex = 0;
   }
   levels[currentLevelIndex].score = 0;
+  if (levels[currentLevelIndex].timeLimitSec != 0) {
+    timer.value = levels[currentLevelIndex].timeLimitSec;
+    showHUDTimer = true;
+  }
+
+  bg.warp();
   setTimeout(() => {
     startLevel(levels[currentLevelIndex]);
-  }, 5000);
+  }, bg.warpTime + 1000);
 }
 
 let gameLoopfn;
+let activeCatsCount;
 //Game loop
 function startLevel(level) {
   level.start(app);
+  activeCatsCount = level.cats.length;
+
+  if (showHUDTimer) {
+    timerIntervalID = setInterval(() => {
+      if (timer.value == 0) {
+        clearInterval(timerIntervalID);
+        stopLevel(level);
+      }
+      timer.value--;
+    }, 1000);
+  }
 
   scoreCounterID = setInterval(() => {
     scoreCount.value += Math.floor((level.score - scoreCount.value) / 2);
   }, 50);
 
+  const allCats = level.cats.concat(level.goldCats);
   app.ticker.add(
     (gameLoopfn = (delta) => {
       for (const asteroid of level.asteroids) {
@@ -221,20 +244,34 @@ function startLevel(level) {
             level.score += asteroid.pop();
             player.damage();
           }
-        }
-      }
-
-      for (const cat of level.cats) {
-        if (cat.isActive) {
-          cat.move(delta);
-          cat.grow(delta);
-          if (cat.checkCollision(player.position)) {
-            level.score += cat.pop();
+          if (
+            distance(asteroid.position, {
+              x: gameWidth / 2,
+              y: gameHeight / 2,
+            }) >
+            3 * (gameWidth > gameHeight ? gameWidth : gameHeight)
+          ) {
+            asteroid.reset();
+            asteroid.show();
           }
         }
       }
 
-      if (level.score >= level.scoreGoal) {
+      for (const cat of allCats) {
+        if (cat.isActive) {
+          cat.animate(delta);
+          //Collect cat
+          if (cat.checkCollision(player.position)) {
+            level.score += cat.pop();
+            if (!cat.isGold) {
+              activeCatsCount--;
+            }
+          }
+        }
+      }
+
+      if (activeCatsCount <= 0) {
+        clearInterval(timerIntervalID);
         stopLevel(level);
       }
     })
@@ -243,27 +280,18 @@ function startLevel(level) {
 
 function stopLevel(level) {
   level.stop(app);
-  app.ticker.remove(gameLoopfn);
   app.ticker.remove(playerTickerfn);
+  app.ticker.remove(gameLoopfn);
   calibrated = false;
   clearInterval(scoreCounterID);
   scoreCount.value = level.score;
-  //TODO show next level modal
-  showNextLevelModal.value = true;
-  showText.value = false;
-}
-
-function updateModalVisible() {
-  modalVisible.value = false;
-  startGame();
-}
-
-function updateModalVisiblee(value, value2) {
-  modalVisible.value = value;
-  scoreCount.value = 0;
+  showHUDText.value = false;
+  showHUDTimer = false;
+  modalNextLevel.value.show();
 }
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
+  modalStart.value.show();
 });
 </script>

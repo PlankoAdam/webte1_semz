@@ -3,7 +3,6 @@ import * as cat from "./cats.js";
 
 export default class GameLevel {
   constructor(levelData) {
-    this.scoreGoal = levelData.scoreGoal;
     this.timeLimitSec = levelData.timeLimitSec;
     this.minIntervalms = levelData.minIntervalms;
     this.maxIntervalms = levelData.maxIntervalms;
@@ -11,6 +10,7 @@ export default class GameLevel {
     this.score = 0;
     this.asteroids = [];
     this.cats = [];
+    this.goldCats = [];
 
     for (const data of levelData.asteroids) {
       this.asteroids.push(
@@ -24,29 +24,27 @@ export default class GameLevel {
     }
 
     for (const data of levelData.cats) {
-      let newCat;
       switch (data.type) {
         case "one":
-          newCat = new cat.CatOne(data);
+          this.cats.push(new cat.CatOne(data));
           break;
         case "two":
-          newCat = new cat.CatTwo(data);
+          this.cats.push(new cat.CatTwo(data));
           break;
         case "gold":
-          newCat = new cat.GoldCat(data);
+          this.goldCats.push(new cat.GoldCat(data));
           break;
         default:
-          newCat = new cat.CatOne(data);
+          this.cats.push(new cat.CatOne(data));
           break;
       }
-      this.cats.push(newCat);
     }
     this.timeouts = [];
   }
 
   start(app) {
     let totalInterval = 0;
-    let allTargets = this.asteroids.concat(this.cats);
+    let allTargets = this.asteroids.concat(this.cats).concat(this.goldCats);
     allTargets = allTargets.sort((a, b) => {
       return 0.5 - Math.random();
     });
@@ -74,6 +72,13 @@ export default class GameLevel {
       }
     }
     for (const cat of this.cats) {
+      app.stage.removeChild(cat);
+      if (cat.isActive) {
+        cat.pop();
+      }
+    }
+
+    for (const cat of this.goldCats) {
       app.stage.removeChild(cat);
       if (cat.isActive) {
         cat.pop();

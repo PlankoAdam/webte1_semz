@@ -1,41 +1,36 @@
 <template>
-  <div
-    class="modal cursor-default z-10 backdrop-brightness-200 backdrop-blur-sm"
-    @click.stop="closeDesc"
-  >
+  <div ref="modalDiv" class="modal cursor-default z-10" @click.stop="closeDesc">
     <div class="modal-content">
       <div class="image-container">
         <img
+          ref="imgCont"
           src="./photos/deepspace.png"
           class="w-full lg:w-4/5 -my-8 lg:-my-24 xl:-my-32 -mx-10"
         />
       </div>
       <div class="buttons content-center w-full">
         <button
+          ref="startBtn"
           @click="closeModal"
-          class="start md:text-4xl text-3xl m-0 max-w-fit"
+          class="start md:text-4xl text-4xl m-0 max-w-fit"
         >
           START!
         </button>
         <button
+          ref="descBtn"
           @click.stop="showDesc"
-          class="gamedesc md:text-2xl m-0 text-1xl max-w-fit"
+          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3"
         >
           Game Description
         </button>
         <div v-if="description" class="max-h-0 md:w-3/5 w-4/5 self-center">
-          <p class="text text-justify">
-            Ball Destroyer is a game whose purpose is to destroy the randomly
-            generated balls as quickly as possible, which keep getting bigger
-            and bigger. The faster a ball can be knocked out, the more points
-            the player can score. The balls must be destroyed with the custom
-            cursor. The controls are very simple. On a computer, the cursor
-            follows the movement of the mouse, and on a phone, it moves where
-            you tilt the phone with the help of gyroscopes. The game has several
-            levels with different difficulties. The balls move with different
-            mechanisms depending on the level. Sometimes, however, they just
-            stand still. Try the ball destroyer yourself and find out how good
-            your reaction time is!
+          <p class="text text-justify lg:text-lg">
+            Greetings cosmic rescuer! Your mission involves skillfully
+            navigating your spacecraft through asteroid fields to save stranded
+            space kitties. Dodge the celestial obstacles with precision and
+            speed, proving your agility in the cosmic expanse. Are you ready to
+            embark on a heartwarming journey through the galactic frontier? Your
+            feline friends are counting on you!
           </p>
         </div>
       </div>
@@ -46,12 +41,12 @@
 <script setup>
 import { ref } from "vue";
 
+const modalDiv = ref(null);
+const imgCont = ref(null);
+const startBtn = ref(null);
+const descBtn = ref(null);
 let description = ref(false);
-const emits = defineEmits(["update-modal-start"]);
-
-function closeModal() {
-  emits("update-modal-start", false, true);
-}
+const emits = defineEmits(["start-game"]);
 
 function showDesc() {
   if (description.value == true) {
@@ -66,12 +61,36 @@ function closeDesc() {
     description.value = false;
   }
 }
+
+function closeModal() {
+  modalDiv.value.classList.add("select-none");
+  modalDiv.value.classList.add("cursor-none");
+
+  descBtn.value.classList.add("startanim1");
+  startBtn.value.classList.add("startanim2");
+  imgCont.value.classList.add("startanim3");
+
+  setTimeout(() => {
+    modalDiv.value.classList.add("hidden");
+  }, 2000);
+  emits("start-game");
+}
+
+const show = () => {
+  modalDiv.value.classList.remove("hidden");
+};
+
+defineExpose({ show });
 </script>
 
 <style>
 @font-face {
   font-family: spaceRanger;
   src: url("src/assets/fonts/space_ranger/spaceranger.ttf");
+}
+
+p {
+  font-family: larabie;
 }
 
 .modal {
@@ -83,7 +102,6 @@ function closeDesc() {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: rgba(0, 0, 0, 0); */
 }
 
 .modal-content {
@@ -105,7 +123,6 @@ function closeDesc() {
   color: aliceblue;
   font-family: spaceRanger;
   transition: 0.3s ease;
-  /* margin: 0; */
 }
 
 .start {
@@ -122,12 +139,36 @@ function closeDesc() {
 
 .text {
   color: aliceblue;
-  /* max-width: 1000px; */
-  /* width: auto; */
 }
 
 .image-container {
   display: flex;
   justify-content: center;
+}
+
+@keyframes shrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.startanim1 {
+  animation: shrink 0.8s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim2 {
+  animation: shrink 0.8s 0.3s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim3 {
+  animation: shrink 0.8s 0.6s ease-in-out both;
+  cursor: none !important;
 }
 </style>

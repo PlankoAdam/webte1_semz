@@ -18,6 +18,8 @@ export default class Background {
     this.starStretch = (3 * this.app.view.width) / 1000;
     this.starBaseSize = 0.05;
 
+    this.warpTime = 2000;
+
     this.stars = [];
 
     for (let i = 0; i < this.starAmount; i++) {
@@ -95,7 +97,7 @@ export default class Background {
       this.warpSpeed = 3;
       setTimeout(() => {
         this.warpSpeed = 0;
-      }, 4000);
+      }, this.warpTime);
     }
   }
 }
