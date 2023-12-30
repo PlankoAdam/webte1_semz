@@ -9,7 +9,7 @@ export class CatOne extends SpaceCat {
       opts.endRadius,
       0.001,
       opts.moveDirection,
-      5,
+      opts.moveSpeed,
       opts.orbitDirection,
       true,
       1000
@@ -40,7 +40,7 @@ export class CatTwo extends SpaceCat {
       opts.endRadius,
       0.001,
       opts.moveDirection,
-      5,
+      opts.moveSpeed,
       opts.orbitDirection,
       true,
       2000
@@ -71,7 +71,7 @@ export class GoldCat extends SpaceCat {
       opts.endRadius,
       0.001,
       opts.moveDirection,
-      5,
+      opts.moveSpeed,
       opts.orbitDirection,
       false,
       10000

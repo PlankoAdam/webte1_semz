@@ -193,7 +193,10 @@ function nextLevel() {
       clearInterval(scoreResetID);
     }
   }, 50);
-  currentLevelIndex = 0; //TODO
+  currentLevelIndex++; //TODO
+  if (currentLevelIndex == 3) {
+    currentLevelIndex = 0;
+  }
   levels[currentLevelIndex].score = 0;
   setTimeout(() => {
     startLevel(levels[currentLevelIndex]);
