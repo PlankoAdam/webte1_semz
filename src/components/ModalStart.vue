@@ -49,6 +49,7 @@ let description = ref(false);
 const emits = defineEmits(["start-game"]);
 
 function showDesc() {
+  descBtn.value.blur();
   if (description.value == true) {
     description.value = false;
   } else {
@@ -57,12 +58,15 @@ function showDesc() {
 }
 
 function closeDesc() {
+  descBtn.value.blur();
   if (description.value == true) {
     description.value = false;
   }
 }
 
 function closeModal() {
+  startBtn.value.blur();
+
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 

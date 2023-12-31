@@ -47,6 +47,9 @@ const props = defineProps({
 });
 
 function closeModal(event) {
+  reLvlBtn.value.blur();
+  nextLvlBtn.value.blur();
+
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 
