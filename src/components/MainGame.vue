@@ -6,6 +6,10 @@
     @next-level="nextLevel"
     @restart-level="restartLevel"
   ></ModalNextLevel>
+  <ModalFailLevel
+    ref="modalFailLevel"
+    @restart-level="restartLevel"
+  ></ModalFailLevel>
   <div class="flex flex-col">
     <div
       class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0 mt-5"
@@ -53,6 +57,7 @@ h1 {
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
+import ModalFailLevel from "./ModalFailLevel.vue";
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
@@ -71,6 +76,7 @@ let showHUDTimer = false;
 
 const modalStart = ref(null);
 const modalNextLevel = ref(null);
+const modalFailLevel = ref(null);
 
 //Size of game area
 let gameWidth = window.innerWidth;
@@ -217,7 +223,7 @@ function resetLevel() {
     }
   }, 50);
 
-  if (currentLevelIndex == 3) {
+  if (currentLevelIndex == 4) {
     currentLevelIndex = 0;
   }
   levels[currentLevelIndex].score = 0;
@@ -246,7 +252,7 @@ function startLevel(level) {
     timerIntervalID = setInterval(() => {
       if (timer.value == 0) {
         clearInterval(timerIntervalID);
-        stopLevel(level);
+        levelFail(level);
       }
       timer.value--;
     }, 1000);
@@ -294,7 +300,7 @@ function startLevel(level) {
 
       if (activeCatsCount <= 0) {
         clearInterval(timerIntervalID);
-        stopLevel(level);
+        levelComplete(level);
       }
     })
   );
@@ -312,7 +318,16 @@ function stopLevel(level) {
 
   showHUDText.value = false;
   showHUDTimer = false;
+}
+
+function levelComplete(level) {
+  stopLevel(level);
   modalNextLevel.value.show();
+}
+
+function levelFail(level) {
+  stopLevel(level);
+  modalFailLevel.value.show();
 }
 
 onMounted(() => {

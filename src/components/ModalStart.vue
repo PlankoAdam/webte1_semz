@@ -4,7 +4,7 @@
       <div class="image-container">
         <img
           ref="imgCont"
-          src="./photos/deepspace.png"
+          src="../assets/photos/deepspace.png"
           class="w-full lg:w-4/5 -my-8 lg:-my-24 xl:-my-32 -mx-10"
         />
       </div>

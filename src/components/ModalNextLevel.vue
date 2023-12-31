@@ -4,7 +4,7 @@
       <div class="image-container">
         <img
           ref="imgCont"
-          src="./photos/levelcomplete.png"
+          src="../assets/photos/levelcomplete.png"
           class="w-full lg:w-4/5 -my-4 lg:-my-20 xl:-my-24 -mx-10"
         />
       </div>
