@@ -188,7 +188,6 @@ function nextLevel() {
   bg.warp();
   setTimeout(() => {
     startLevel(currentLevel);
-    isRunning = true;
   }, bg.warpTime + 1000);
 }
 
@@ -226,10 +225,10 @@ function resetLevel() {
 }
 
 function restartLevel() {
+  console.log("restart level");
   resetLevel();
   setTimeout(() => {
     startLevel(currentLevel);
-    isRunning = true;
   }, 2000);
 }
 
@@ -239,6 +238,7 @@ let timerIntervalID;
 let isRunning = false;
 //Game loop
 function startLevel(level) {
+  isRunning = true;
   level.start(app);
   activeCatsCount = level.cats.length;
 
@@ -303,6 +303,7 @@ function startLevel(level) {
 }
 
 function stopLevel(level) {
+  isRunning = false;
   level.stop(app);
 
   app.ticker.remove(playerTickerfn);
@@ -316,7 +317,6 @@ function stopLevel(level) {
   showHUDText.value = false;
   showHUDTimer = false;
   modalNextLevel.value.show();
-  isRunning = false;
 }
 
 function togglePause() {
@@ -329,10 +329,6 @@ function togglePause() {
 
 function pause() {
   if (isRunning) {
-    isRunning = false;
-    setTimeout(() => {
-      isRunning = true;
-    }, 500);
     app.ticker.stop();
     isPaused = true;
     pauseScreen.value.pause();
@@ -342,29 +338,28 @@ function pause() {
 
 function resume() {
   if (isRunning) {
-    isRunning = false;
-    setTimeout(() => {
-      isRunning = true;
-    }, 500);
     isPaused = false;
     pauseScreen.value.resume();
     hudDiv.value.classList.remove("cursor");
 
     app.ticker.start();
-    app.renderer.clear();
   }
 }
 
+let keyup = true;
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
   modalStart.value.show();
   window.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
+    if (e.code === "Space" && keyup) {
       togglePause();
     }
-    // else if (e.code === "Enter") {
-    //   resume();
-    // }
+    keyup = false;
+  });
+  window.addEventListener("keyup", (e) => {
+    if (e.code === "Space") {
+      keyup = true;
+    }
   });
 });
 </script>
