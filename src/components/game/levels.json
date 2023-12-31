@@ -16,72 +16,140 @@
           "y": 1
         },
         "moveSpeed": 10
+      },
+      {
+        "relativeInitPos": {
+          "x": -1,
+          "y": 0
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 12,
+        "delay": 1000
+      },
+      {
+        "relativeInitPos": {
+          "x": 1,
+          "y": 0
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": -1,
+          "y": 0
+        },
+        "moveSpeed": 12,
+        "delay": 1000
+      },
+      {
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -1
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": 1
+        },
+        "moveSpeed": 5,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 1
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 5,
+        "delay": 5000
       }
     ],
     "cats": [
       {
         "type": "one",
         "relativeInitPos": {
-          "x": 0.5,
-          "y": -0.2
+          "x": -1,
+          "y": 0
         },
-        "initRadius": 30,
-        "endRadius": 70,
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": 1,
+          "y": 0
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": -1,
+          "y": 0
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "gold",
+        "relativeInitPos": {
+          "x": 0.75,
+          "y": -1
+        },
+        "initRadius": 50,
+        "endRadius": 50,
         "moveDirection": {
           "x": 1,
           "y": 4
         },
         "orbitDirection": -1,
-        "moveSpeed": 5,
-        "delay": 500
+        "moveSpeed": 15,
+        "delay": 3000
       },
       {
         "type": "one",
         "relativeInitPos": {
           "x": 0.5,
-          "y": -0.2
+          "y": -1
         },
-        "initRadius": 30,
-        "endRadius": 70,
+        "initRadius": 25,
+        "endRadius": 50,
         "moveDirection": {
-          "x": 1,
-          "y": 4
+          "x": 0,
+          "y": 1
         },
-        "orbitDirection": -1,
+        "orbitDirection": 0,
         "moveSpeed": 5,
-        "delay": 500
+        "delay": 5000
       },
       {
-        "type": "one",
+        "type": "two",
         "relativeInitPos": {
-          "x": 0.5,
-          "y": -0.2
+          "x": -0.5,
+          "y": 1
         },
-        "initRadius": 30,
-        "endRadius": 70,
+        "initRadius": 25,
+        "endRadius": 50,
         "moveDirection": {
-          "x": 1,
-          "y": 4
+          "x": 0,
+          "y": -1
         },
-        "orbitDirection": -1,
+        "orbitDirection": 0,
         "moveSpeed": 5,
-        "delay": 500
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": 0.5,
-          "y": -0.2
-        },
-        "initRadius": 30,
-        "endRadius": 70,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": -1,
-        "moveSpeed": 5,
-        "delay": 500
+        "delay": 5000
       }
     ]
   }
