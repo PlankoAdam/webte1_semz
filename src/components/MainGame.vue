@@ -65,7 +65,6 @@ import { distance } from "./game/utils";
 let gameWindow = ref(null);
 let scoreCount = ref(0);
 let timer = ref(0);
-let levelCount = ref(1);
 let showHUDText = ref(false);
 let showHUDTimer = false;
 
@@ -168,16 +167,13 @@ if (window.DeviceOrientationEvent) {
 //Player object
 const player = new Player(0.15, pointerCoords.x, pointerCoords.y);
 
-let levels = [];
+let currentLevel;
 let currentLevelIndex = 0;
 let scoreCounterID = 0;
 
 function startGame() {
   app.stage.addChild(player.trail, player);
 
-  for (const data of levelsData) {
-    levels.push(new GameLevel(data));
-  }
   currentLevelIndex = -1;
   nextLevel();
 }
@@ -187,12 +183,12 @@ let playerTickerfn;
 let prevLevelScore = 0;
 
 function nextLevel() {
-  currentLevelIndex++; //TODO
+  currentLevelIndex++;
   resetLevel();
 
   bg.warp();
   setTimeout(() => {
-    startLevel(levels[currentLevelIndex]);
+    startLevel(currentLevel);
   }, bg.warpTime + 1000);
 }
 
@@ -215,14 +211,15 @@ function resetLevel() {
       scoreCount.value = 0;
       clearInterval(scoreResetID);
     }
-  }, 50);
+  }, 40);
 
-  if (currentLevelIndex == 3) {
+  if (currentLevelIndex >= levelsData.length) {
     currentLevelIndex = 0;
   }
-  levels[currentLevelIndex].score = 0;
-  if (levels[currentLevelIndex].timeLimitSec != 0) {
-    timer.value = levels[currentLevelIndex].timeLimitSec;
+  currentLevel = new GameLevel(levelsData[currentLevelIndex]);
+  currentLevel.score = 0;
+  if (currentLevel.timeLimitSec != 0) {
+    timer.value = currentLevel.timeLimitSec;
     showHUDTimer = true;
   }
 }
@@ -230,7 +227,7 @@ function resetLevel() {
 function restartLevel() {
   resetLevel();
   setTimeout(() => {
-    startLevel(levels[currentLevelIndex]);
+    startLevel(currentLevel);
   }, 2000);
 }
 
