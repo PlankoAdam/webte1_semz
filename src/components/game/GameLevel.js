@@ -47,11 +47,7 @@ export default class GameLevel {
   }
 
   start(app) {
-    // let totalInterval = 0;
     let allTargets = this.asteroids.concat(this.cats).concat(this.goldCats);
-    // allTargets = allTargets.sort((a, b) => {
-    //   return 0.5 - Math.random();
-    // });
     for (const target of allTargets) {
       app.stage.addChild(target);
       this.timeouts.push(
@@ -59,9 +55,6 @@ export default class GameLevel {
           target.show();
         }, target.delay)
       );
-      // totalInterval +=
-      //   Math.random() * (this.maxIntervalms - this.minIntervalms) +
-      //   this.minIntervalms;
     }
   }
 
