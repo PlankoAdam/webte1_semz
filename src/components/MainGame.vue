@@ -6,53 +6,48 @@
     @next-level="nextLevel"
     @restart-level="restartLevel"
   ></ModalNextLevel>
+  <PauseScreen ref="pauseScreen"></PauseScreen>
   <div class="flex flex-col">
-    <div
-      class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 select-none cursor-none z-0 mt-5"
-      v-if="showHUDText"
-    >
-      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl">
-        LEVEL<br />{{ currentLevelIndex + 1 }}
-      </h1>
-      <h1
-        v-if="showHUDTimer"
-        class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center"
+    <div ref="hudDiv" class="cursor-none select-none z-0">
+      <div
+        class="flex flex-row justify-between fixed top-0 left-0 w-full my-3 mt-5"
+        v-if="showHUDText"
       >
-        {{ ("0" + Math.floor(timer / 60)).substr(-2) }}:{{
-          ("0" + (timer % 60)).substr(-2)
-        }}
-      </h1>
-      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-end">
-        SCORE<br />{{ scoreCount }}
-      </h1>
-    </div>
-    <div
-      class="flex flex-row justify-end fixed bottom-0 right-0 w-full select-none cursor-none z-0 mb-10"
-      v-if="showHUDText"
-    >
-      <h1 class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center font-bold">
-        ||
-      </h1>
+        <h1 class="py-0 mx-5 my-0 lg:text-7xl text-3xl">
+          LEVEL<br />{{ currentLevelIndex + 1 }}
+        </h1>
+        <h1
+          v-if="showHUDTimer"
+          class="py-0 mx-5 my-0 lg:text-7xl text-3xl text-center"
+        >
+          {{ ("0" + Math.floor(timer / 60)).substr(-2) }}:{{
+            ("0" + (timer % 60)).substr(-2)
+          }}
+        </h1>
+        <h1 class="py-0 mx-5 my-0 lg:text-7xl text-3xl text-end">
+          SCORE<br />{{ scoreCount }}
+        </h1>
+      </div>
+      <div
+        class="flex flex-row justify-end fixed bottom-0 right-0 w-full mb-10"
+        v-if="showHUDText"
+      >
+        <h1
+          @click="togglePause"
+          class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center font-bold opacity-1 lg:opacity-0"
+        >
+          ||
+        </h1>
+      </div>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
   </div>
 </template>
 
-<style>
-@font-face {
-  font-family: larabie;
-  src: url("src/assets/fonts/larabiefont rg.otf");
-}
-
-h1 {
-  font-family: larabie;
-  color: white;
-}
-</style>
-
 <script setup>
 import ModalStart from "./ModalStart.vue";
 import ModalNextLevel from "./ModalNextLevel.vue";
+import PauseScreen from "./PauseScreen.vue";
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
 import Player from "./game/Player.js";
@@ -67,9 +62,12 @@ let scoreCount = ref(0);
 let timer = ref(0);
 let showHUDText = ref(false);
 let showHUDTimer = false;
+let isPaused = false;
 
+const hudDiv = ref(null);
 const modalStart = ref(null);
 const modalNextLevel = ref(null);
+const pauseScreen = ref(null);
 
 //Size of game area
 let gameWidth = window.innerWidth;
@@ -88,6 +86,7 @@ let app = new PIXI.Application({
   resizeTo: window,
 });
 app.stage.hitArea = app.screen;
+app.ticker.autoStart = false;
 
 //Background
 const bg = new Background(app);
@@ -189,6 +188,7 @@ function nextLevel() {
   bg.warp();
   setTimeout(() => {
     startLevel(currentLevel);
+    isRunning = true;
   }, bg.warpTime + 1000);
 }
 
@@ -218,6 +218,7 @@ function resetLevel() {
   }
   currentLevel = new GameLevel(levelsData[currentLevelIndex]);
   currentLevel.score = 0;
+
   if (currentLevel.timeLimitSec != 0) {
     timer.value = currentLevel.timeLimitSec;
     showHUDTimer = true;
@@ -228,24 +229,28 @@ function restartLevel() {
   resetLevel();
   setTimeout(() => {
     startLevel(currentLevel);
+    isRunning = true;
   }, 2000);
 }
 
 let gameLoopfn;
 let activeCatsCount;
 let timerIntervalID;
+let isRunning = false;
 //Game loop
 function startLevel(level) {
   level.start(app);
   activeCatsCount = level.cats.length;
 
-  if (showHUDTimer) {
+  if (showHUDTimer && timer.value != 0) {
     timerIntervalID = setInterval(() => {
-      if (timer.value == 0) {
-        clearInterval(timerIntervalID);
-        stopLevel(level);
+      if (!isPaused) {
+        if (timer.value == 0) {
+          clearInterval(timerIntervalID);
+          stopLevel(level);
+        }
+        timer.value--;
       }
-      timer.value--;
     }, 1000);
   }
 
@@ -299,6 +304,7 @@ function startLevel(level) {
 
 function stopLevel(level) {
   level.stop(app);
+
   app.ticker.remove(playerTickerfn);
   app.ticker.remove(gameLoopfn);
   calibrated = false;
@@ -310,10 +316,71 @@ function stopLevel(level) {
   showHUDText.value = false;
   showHUDTimer = false;
   modalNextLevel.value.show();
+  isRunning = false;
+}
+
+function togglePause() {
+  if (isPaused) {
+    resume();
+  } else {
+    pause();
+  }
+}
+
+function pause() {
+  if (isRunning) {
+    isRunning = false;
+    setTimeout(() => {
+      isRunning = true;
+    }, 500);
+    app.ticker.stop();
+    isPaused = true;
+    pauseScreen.value.pause();
+    hudDiv.value.classList.add("cursor");
+  }
+}
+
+function resume() {
+  if (isRunning) {
+    isRunning = false;
+    setTimeout(() => {
+      isRunning = true;
+    }, 500);
+    isPaused = false;
+    pauseScreen.value.resume();
+    hudDiv.value.classList.remove("cursor");
+
+    app.ticker.start();
+    app.renderer.clear();
+  }
 }
 
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
   modalStart.value.show();
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+      togglePause();
+    }
+    // else if (e.code === "Enter") {
+    //   resume();
+    // }
+  });
 });
 </script>
+
+<style>
+@font-face {
+  font-family: larabie;
+  src: url("src/assets/fonts/larabiefont rg.otf");
+}
+
+h1 {
+  font-family: larabie;
+  color: white;
+}
+
+.cursor {
+  cursor: default !important;
+}
+</style>
