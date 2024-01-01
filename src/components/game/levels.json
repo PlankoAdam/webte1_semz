@@ -1,367 +1,6 @@
 [
   {
-    "scoreGoal": 500,
-    "timeLimitSec": 30,
-    "minIntervalms": 1000,
-    "maxIntervalms": 1000,
-    "asteroids": [
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -1
-        },
-        "radius": 30,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "moveSpeed": 10.1,
-        "delay": 5000
-      },
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -0.7
-        },
-        "radius": 40,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "moveSpeed": 10.2,
-        "delay": 5000
-      },
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -0.5
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "moveSpeed": 10.1,
-        "delay": 5000
-      },
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": 1
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": 2,
-          "y": -1
-        },
-        "moveSpeed": 15,
-        "delay": 1100
-      },
-      {
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": -1
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": -2,
-          "y": 1
-        },
-        "moveSpeed": 15,
-        "delay": 1100
-      },
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -1
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "moveSpeed": 15,
-        "delay": 1100
-      },
-      {
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": 1
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": -2,
-          "y": -1
-        },
-        "moveSpeed": 15,
-        "delay": 1100
-      },
-      {
-        "relativeInitPos": {
-          "x": 0.25,
-          "y": -1.2
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": 0,
-          "y": 1
-        },
-        "moveSpeed": 12.5,
-        "delay": 3100
-      },
-      {
-        "relativeInitPos": {
-          "x": -0.25,
-          "y": 1.2
-        },
-        "radius": 25,
-        "moveDirection": {
-          "x": 0,
-          "y": -1
-        },
-        "moveSpeed": 12.5,
-        "delay": 3100
-      },
-      {
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": 0.5
-        },
-        "radius": 35,
-        "moveDirection": {
-          "x": 1,
-          "y": 0
-        },
-        "moveSpeed": 10,
-        "delay": 8000
-      },
-      {
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": -0.5
-        },
-        "radius": 35,
-        "moveDirection": {
-          "x": -1,
-          "y": 0
-        },
-        "moveSpeed": 10,
-        "delay": 8000
-      },
-      {
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": -0.5
-        },
-        "radius": 70,
-        "moveDirection": {
-          "x": -1,
-          "y": 0.5
-        },
-        "moveSpeed": 3,
-        "delay": 10000
-      }
-    ],
-    "cats": [
-      {
-        "type": "gold",
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -0.7
-        },
-        "initRadius": 30,
-        "endRadius": 70,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 10,
-        "delay": 6000
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": -0.5,
-          "y": -0.5
-        },
-        "initRadius": 20,
-        "endRadius": 50,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 7.5,
-        "delay": 300
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": 0.5,
-          "y": -0.5
-        },
-        "initRadius": 20,
-        "endRadius": 50,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 5,
-        "delay": 400
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "initRadius": 10,
-        "endRadius": 40,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": -1,
-        "moveSpeed": 8,
-        "delay": 500
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": -0.5,
-          "y": -0.5
-        },
-        "initRadius": 10,
-        "endRadius": 60,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": 1,
-        "moveSpeed": 5,
-        "delay": 600
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": 0,
-          "y": 0
-        },
-        "initRadius": 10,
-        "endRadius": 150,
-        "moveDirection": {
-          "x": 0,
-          "y": 0
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 1,
-        "delay": 700
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -1
-        },
-        "initRadius": 10,
-        "endRadius": 70,
-        "moveDirection": {
-          "x": 1,
-          "y": 4
-        },
-        "orbitDirection": -1,
-        "moveSpeed": 15,
-        "delay": 4000
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": 1
-        },
-        "initRadius": 40,
-        "endRadius": 50,
-        "moveDirection": {
-          "x": -1,
-          "y": 4
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 1,
-        "delay": 4500
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": 1.2,
-          "y": -1
-        },
-        "initRadius": 20,
-        "endRadius": 60,
-        "moveDirection": {
-          "x": 2,
-          "y": 1
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 10,
-        "delay": 5000
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": -0.5,
-          "y": 0.5
-        },
-        "initRadius": 30,
-        "endRadius": 50,
-        "moveDirection": {
-          "x": 1,
-          "y": 5
-        },
-        "orbitDirection": -1,
-        "moveSpeed": 8,
-        "delay": 9000
-      },
-      {
-        "type": "two",
-        "relativeInitPos": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "initRadius": 20,
-        "endRadius": 50,
-        "moveDirection": {
-          "x": -1,
-          "y": 2
-        },
-        "orbitDirection": 1,
-        "moveSpeed": 5,
-        "delay": 10000
-      },
-      {
-        "type": "one",
-        "relativeInitPos": {
-          "x": -1.2,
-          "y": -1
-        },
-        "initRadius": 30,
-        "endRadius": 40,
-        "moveDirection": {
-          "x": 1,
-          "y": 0
-        },
-        "orbitDirection": 0,
-        "moveSpeed": 8,
-        "delay": 11000
-      }
-    ]
-  },
-  {
-    "scoreGoal": 200,
     "timeLimitSec": 0,
-    "minIntervalms": 1000,
-    "maxIntervalms": 1000,
     "asteroids": [],
     "cats": [
       {
@@ -397,10 +36,7 @@
     ]
   },
   {
-    "scoreGoal": 500,
     "timeLimitSec": 0,
-    "minIntervalms": 500,
-    "maxIntervalms": 750,
     "asteroids": [
       {
         "relativeInitPos": {
@@ -521,10 +157,7 @@
     ]
   },
   {
-    "scoreGoal": 500,
     "timeLimitSec": 10,
-    "minIntervalms": 500,
-    "maxIntervalms": 750,
     "asteroids": [
       {
         "relativeInitPos": {
@@ -675,10 +308,272 @@
     ]
   },
   {
-    "scoreGoal": 500,
+    "timeLimitSec": 0,
+    "asteroids": [
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -1
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 8,
+        "delay": 2000
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -0.5
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 8,
+        "delay": 2000
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": 0
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 8,
+        "delay": 2000
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": 0.5
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 8,
+        "delay": 2000
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": 1
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 8,
+        "delay": 2000
+      },
+      {
+        "relativeInitPos": {
+          "x": -1,
+          "y": 1.2
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 8,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 1.2
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 8,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": 0,
+          "y": 1.2
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 8,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 8,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": 1,
+          "y": 1.2
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 8,
+        "delay": 5000
+      }
+    ],
+    "cats": [
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -0.5
+        },
+        "initRadius": 30,
+        "endRadius": 60,
+        "moveDirection": {
+          "x": 1,
+          "y": 2
+        },
+        "orbitDirection": 1,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 0.5
+        },
+        "initRadius": 30,
+        "endRadius": 60,
+        "moveDirection": {
+          "x": 2,
+          "y": 1
+        },
+        "orbitDirection": -1,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": -1,
+          "y": -1
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 2
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 10,
+        "delay": 3500
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -1,
+          "y": 1
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": -2
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 10,
+        "delay": 3500
+      },
+      {
+        "type": "gold",
+        "relativeInitPos": {
+          "x": -1,
+          "y": -1
+        },
+        "initRadius": 40,
+        "endRadius": 40,
+        "moveDirection": {
+          "x": 1,
+          "y": 0.5
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 12.5,
+        "delay": 5000
+      },
+      {
+        "type": "gold",
+        "relativeInitPos": {
+          "x": 1,
+          "y": -1
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": -0.5,
+          "y": 1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 12.5,
+        "delay": 8000
+      },
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0,
+          "y": 0
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": -1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 10,
+        "delay": 10000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": 0,
+          "y": 0
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": -1,
+          "y": 1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 10,
+        "delay": 10000
+      }
+    ]
+  },
+  {
     "timeLimitSec": 30,
-    "minIntervalms": 1000,
-    "maxIntervalms": 1000,
     "asteroids": [
       {
         "relativeInitPos": {
@@ -860,7 +755,7 @@
           "x": -0.5,
           "y": -0.5
         },
-        "initRadius": 20,
+        "initRadius": 30,
         "endRadius": 50,
         "moveDirection": {
           "x": 1,
@@ -876,7 +771,7 @@
           "x": 0.5,
           "y": -0.5
         },
-        "initRadius": 20,
+        "initRadius": 25,
         "endRadius": 50,
         "moveDirection": {
           "x": 1,
@@ -892,7 +787,7 @@
           "x": 0.5,
           "y": 0.5
         },
-        "initRadius": 10,
+        "initRadius": 25,
         "endRadius": 40,
         "moveDirection": {
           "x": 1,
@@ -908,7 +803,7 @@
           "x": -0.5,
           "y": -0.5
         },
-        "initRadius": 10,
+        "initRadius": 30,
         "endRadius": 60,
         "moveDirection": {
           "x": 1,
@@ -940,7 +835,7 @@
           "x": -1.2,
           "y": -1
         },
-        "initRadius": 10,
+        "initRadius": 25,
         "endRadius": 70,
         "moveDirection": {
           "x": 1,
@@ -972,7 +867,7 @@
           "x": 1.2,
           "y": -1
         },
-        "initRadius": 20,
+        "initRadius": 30,
         "endRadius": 60,
         "moveDirection": {
           "x": 2,
@@ -1004,7 +899,7 @@
           "x": 0.5,
           "y": 0.5
         },
-        "initRadius": 20,
+        "initRadius": 25,
         "endRadius": 50,
         "moveDirection": {
           "x": -1,
