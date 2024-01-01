@@ -39,7 +39,7 @@
           Game Description
         </button>
         <div v-if="description" class="max-h-0 md:w-3/5 w-4/5 self-center">
-          <p class="text text-justify text-xs lg:text-lg">
+          <p class="text text-justify text-xs lg:text-base">
             Greetings cosmic rescuer! Your mission involves skillfully
             navigating your spacecraft through asteroid fields to save stranded
             space kitties. Dodge the celestial obstacles with precision and
