@@ -138,11 +138,4 @@ export default class HitBall extends pixi.Container {
     }
     return false;
   }
-
-  // setRandDir() {
-  //   this.moveDirection = normalize2DVect({
-  //     x: Math.random() - 0.5,
-  //     y: Math.random() - 0.5,
-  //   });
-  // }
 }

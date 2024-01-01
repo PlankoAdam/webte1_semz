@@ -18,7 +18,7 @@ export default class Player extends pixi.Graphics {
       this.history.push({ x: initX, y: initY });
     }
     this.trail = new pixi.SimpleRope(
-      pixi.Texture.from("src/assets/trail.png"),
+      pixi.Texture.from("game-assets/trail.png"),
       this.history
     );
 

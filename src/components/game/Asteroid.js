@@ -29,7 +29,7 @@ export default class Asteroid extends HitBall {
   show() {
     this.reset();
     super.show();
-    this.sprite = pixi.Sprite.from("src/assets/asteroid.png");
+    this.sprite = pixi.Sprite.from("game-assets/asteroid.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.037, 0.5);
     this.sprite.scale.set(this.radius / 40);

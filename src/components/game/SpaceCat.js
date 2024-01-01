@@ -1,4 +1,3 @@
-import * as pixi from "pixi.js";
 import HitBall from "./HitBall.js";
 
 export default class SpaceCat extends HitBall {

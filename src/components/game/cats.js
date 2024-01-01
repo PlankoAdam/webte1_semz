@@ -20,7 +20,7 @@ export class CatOne extends SpaceCat {
 
   show() {
     super.show();
-    this.sprite = pixi.Sprite.from("src/assets/cat1.png");
+    this.sprite = pixi.Sprite.from("game-assets/cat1.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.45, 0.4);
     this.sprite.scale.set(this.radius / this.hitBoxScale);
@@ -51,7 +51,7 @@ export class CatTwo extends SpaceCat {
 
   show() {
     super.show();
-    this.sprite = pixi.Sprite.from("src/assets/cat3.png");
+    this.sprite = pixi.Sprite.from("game-assets/cat3.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5, 0.5);
     this.sprite.scale.set(this.radius / this.hitBoxScale);
@@ -84,7 +84,7 @@ export class GoldCat extends SpaceCat {
 
   show() {
     super.show();
-    this.sprite = pixi.Sprite.from("src/assets/goldcat.png");
+    this.sprite = pixi.Sprite.from("game-assets/goldcat.png");
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.42, 0.5);
     this.sprite.scale.set(this.radius / this.hitBoxScale);

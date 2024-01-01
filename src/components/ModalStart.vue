@@ -118,7 +118,7 @@ defineExpose({ show });
 <style>
 @font-face {
   font-family: spaceRanger;
-  src: url("src/assets/fonts/space_ranger/spaceranger.ttf");
+  src: url("../assets/fonts/space_ranger/spaceranger.ttf");
 }
 
 p {

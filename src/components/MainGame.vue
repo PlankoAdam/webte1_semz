@@ -437,7 +437,7 @@ onMounted(() => {
 <style>
 @font-face {
   font-family: larabie;
-  src: url("src/assets/fonts/larabiefont rg.otf");
+  src: url("../assets/fonts/larabiefont rg.otf");
 }
 
 h1 {
