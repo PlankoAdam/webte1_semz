@@ -1,5 +1,322 @@
 [
   {
+    "scoreGoal": 200,
+    "timeLimitSec": 0,
+    "minIntervalms": 1000,
+    "maxIntervalms": 1000,
+    "asteroids": [],
+    "cats": [
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -0.2
+        },
+        "initRadius": 30,
+        "endRadius": 70,
+        "moveDirection": {
+          "x": 0,
+          "y": 0
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 10,
+        "delay": 5000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 0.5
+        },
+        "initRadius": 30,
+        "endRadius": 70,
+        "moveDirection": {
+          "x": 0,
+          "y": 0
+        },
+        "orbitDirection": 0
+      }
+    ]
+  },
+  {
+    "scoreGoal": 500,
+    "timeLimitSec": 0,
+    "minIntervalms": 500,
+    "maxIntervalms": 750,
+    "asteroids": [
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -1
+        },
+        "radius": 40,
+        "moveDirection": {
+          "x": 2,
+          "y": 1
+        },
+        "moveSpeed": 10
+      },
+      {
+        "relativeInitPos": {
+          "x": 1.2,
+          "y": -1
+        },
+        "radius": 30,
+        "moveDirection": {
+          "x": -2,
+          "y": 1
+        },
+        "moveSpeed": 10
+      },
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -0.5
+        },
+        "radius": 150,
+        "moveDirection": {
+          "x": 1,
+          "y": 0.5
+        },
+        "moveSpeed": 3,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": 0,
+          "y": -1.2
+        },
+        "radius": 70,
+        "moveDirection": {
+          "x": -2,
+          "y": 1
+        },
+        "moveSpeed": 10,
+        "delay": 8000
+      }
+    ],
+    "cats": [
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -0.2
+        },
+        "initRadius": 30,
+        "endRadius": 70,
+        "moveDirection": {
+          "x": 1,
+          "y": 4
+        },
+        "orbitDirection": -1,
+        "moveSpeed": 5,
+        "delay": 500
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 0.2
+        },
+        "initRadius": 20,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 3,
+          "y": 1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "gold",
+        "relativeInitPos": {
+          "x": 0,
+          "y": -1
+        },
+        "initRadius": 30,
+        "endRadius": 30,
+        "moveDirection": {
+          "x": 0,
+          "y": 1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 5500
+      },
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": -1,
+          "y": -1
+        },
+        "initRadius": 20,
+        "endRadius": 100,
+        "moveDirection": {
+          "x": 0,
+          "y": 1
+        },
+        "orbitDirection": 1,
+        "moveSpeed": 10,
+        "delay": 8000
+      }
+    ]
+  },
+  {
+    "scoreGoal": 500,
+    "timeLimitSec": 10,
+    "minIntervalms": 500,
+    "maxIntervalms": 750,
+    "asteroids": [
+      {
+        "relativeInitPos": {
+          "x": -1.2,
+          "y": -1
+        },
+        "radius": 40,
+        "moveDirection": {
+          "x": 2,
+          "y": 1
+        },
+        "moveSpeed": 10
+      },
+      {
+        "relativeInitPos": {
+          "x": -1,
+          "y": 0
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "moveSpeed": 12,
+        "delay": 1000
+      },
+      {
+        "relativeInitPos": {
+          "x": 1,
+          "y": 0
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": -1,
+          "y": 0
+        },
+        "moveSpeed": 12,
+        "delay": 1000
+      },
+      {
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -1
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": 1
+        },
+        "moveSpeed": 5,
+        "delay": 5000
+      },
+      {
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 1
+        },
+        "radius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "moveSpeed": 5,
+        "delay": 5000
+      }
+    ],
+    "cats": [
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": -1,
+          "y": 0
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 0
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": 1,
+          "y": 0
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": -1,
+          "y": 0
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 8,
+        "delay": 1000
+      },
+      {
+        "type": "gold",
+        "relativeInitPos": {
+          "x": 0.75,
+          "y": -1
+        },
+        "initRadius": 50,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 1,
+          "y": 4
+        },
+        "orbitDirection": -1,
+        "moveSpeed": 15,
+        "delay": 3000
+      },
+      {
+        "type": "one",
+        "relativeInitPos": {
+          "x": 0.5,
+          "y": -1
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": 1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 5,
+        "delay": 5000
+      },
+      {
+        "type": "two",
+        "relativeInitPos": {
+          "x": -0.5,
+          "y": 1
+        },
+        "initRadius": 25,
+        "endRadius": 50,
+        "moveDirection": {
+          "x": 0,
+          "y": -1
+        },
+        "orbitDirection": 0,
+        "moveSpeed": 5,
+        "delay": 5000
+      }
+    ]
+  },
+  {
     "timeLimitSec": 0,
     "asteroids": [],
     "cats": [

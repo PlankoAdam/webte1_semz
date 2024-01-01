@@ -7,7 +7,7 @@ export default class Background {
   constructor(app) {
     this.app = app;
 
-    this.starTexture = pixi.Texture.from("src/assets/star.png");
+    this.starTexture = pixi.Texture.from("game-assets/star.png");
 
     this.starAmount = (1000 * this.app.view.width) / 1000;
     this.cameraZ = 0;

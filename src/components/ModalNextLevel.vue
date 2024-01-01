@@ -14,14 +14,14 @@
         >
         <button
           ref="reLvlBtn"
-          class="start md:text-4xl text-3xl m-0 max-w-fit"
+          class="menubtn md:text-4xl text-3xl m-0 max-w-fit"
           @click="closeModal('restart-level')"
         >
           Restart Level
         </button>
         <button
           ref="nextLvlBtn"
-          class="start md:text-4xl text-3xl m-0 max-w-fit"
+          class="menubtn md:text-4xl text-3xl m-0 max-w-fit"
           @click="closeModal('next-level')"
         >
           Next Level

@@ -10,21 +10,36 @@
       </div>
       <div class="buttons content-center w-full">
         <button
-          ref="startBtn"
-          @click="closeModal"
-          class="start md:text-4xl text-4xl m-0 max-w-fit"
+          :disabled="!continueAvailable"
+          ref="continueBtn"
+          @click="closeModal('continue-game')"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
         >
-          START!
+          CONTINUE
+        </button>
+        <button
+          ref="newGameBtn"
+          @click="closeModal('new-game')"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
+        >
+          NEW GAME
+        </button>
+        <button
+          ref="randomBtn"
+          @click="closeModal('random')"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
+        >
+          RANDOM LEVELS
         </button>
         <button
           ref="descBtn"
           @click.stop="showDesc"
-          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3"
+          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3 mt-5"
         >
           Game Description
         </button>
         <div v-if="description" class="max-h-0 md:w-3/5 w-4/5 self-center">
-          <p class="text text-justify lg:text-lg">
+          <p class="text text-justify text-xs lg:text-base">
             Greetings cosmic rescuer! Your mission involves skillfully
             navigating your spacecraft through asteroid fields to save stranded
             space kitties. Dodge the celestial obstacles with precision and
@@ -43,10 +58,19 @@ import { ref } from "vue";
 
 const modalDiv = ref(null);
 const imgCont = ref(null);
-const startBtn = ref(null);
+const continueBtn = ref(null);
+const newGameBtn = ref(null);
+const randomBtn = ref(null);
 const descBtn = ref(null);
 let description = ref(false);
-const emits = defineEmits(["start-game"]);
+const emits = defineEmits(["new-game", "continue-game", "random"]);
+
+const props = defineProps({
+  continueAvailable: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 function showDesc() {
   descBtn.value.blur();
@@ -64,20 +88,24 @@ function closeDesc() {
   }
 }
 
-function closeModal() {
-  startBtn.value.blur();
+function closeModal(event) {
+  newGameBtn.value.blur();
+  continueBtn.value.blur();
+  randomBtn.value.blur();
 
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 
   descBtn.value.classList.add("startanim1");
-  startBtn.value.classList.add("startanim2");
-  imgCont.value.classList.add("startanim3");
+  randomBtn.value.classList.add("startanim2");
+  newGameBtn.value.classList.add("startanim3");
+  continueBtn.value.classList.add("startanim4");
+  imgCont.value.classList.add("startanim5");
 
   setTimeout(() => {
     modalDiv.value.classList.add("hidden");
   }, 2000);
-  emits("start-game");
+  emits(event);
 }
 
 const show = () => {
@@ -90,7 +118,7 @@ defineExpose({ show });
 <style>
 @font-face {
   font-family: spaceRanger;
-  src: url("src/assets/fonts/space_ranger/spaceranger.ttf");
+  src: url("../assets/fonts/space_ranger/spaceranger.ttf");
 }
 
 p {
@@ -120,25 +148,41 @@ p {
   align-items: center;
 }
 
-.start,
+.menubtn,
 .gamedesc {
   min-width: 10%;
   min-height: fit-content;
   color: aliceblue;
   font-family: spaceRanger;
   transition: 0.3s ease;
+  user-select: none;
 }
 
-.start {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+.menubtn {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
-.start:hover,
-.gamedesc:hover {
+.menubtn:active,
+.gamedesc:active {
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
     0 0 40px #00ffff, 0 0 50px #00ffff;
   transition: 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .menubtn:hover,
+  .gamedesc:hover {
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
+      0 0 40px #00ffff, 0 0 50px #00ffff;
+    transition: 0.3s ease;
+  }
+}
+
+.menubtn:disabled {
+  text-shadow: none !important;
+  cursor: default !important;
+  opacity: 0.4 !important;
 }
 
 .text {
@@ -167,12 +211,22 @@ p {
 }
 
 .startanim2 {
-  animation: shrink 0.8s 0.3s ease-in-out both;
+  animation: shrink 0.8s 0.2s ease-in-out both;
   cursor: none !important;
 }
 
 .startanim3 {
+  animation: shrink 0.8s 0.4s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim4 {
   animation: shrink 0.8s 0.6s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim5 {
+  animation: shrink 0.8s 0.8s ease-in-out both;
   cursor: none !important;
 }
 </style>
