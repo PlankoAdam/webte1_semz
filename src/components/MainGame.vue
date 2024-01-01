@@ -1,5 +1,11 @@
 <template>
-  <ModalStart ref="modalStart" @start-game="startGame"> </ModalStart>
+  <ModalStart
+    ref="modalStart"
+    @continue-game="continueGame"
+    @new-game="newGame"
+    :continue-available="continueAvailable"
+  >
+  </ModalStart>
   <ModalNextLevel
     ref="modalNextLevel"
     :score="scoreCount"
@@ -176,10 +182,16 @@ let currentLevel;
 let currentLevelIndex = 0;
 let scoreCounterID = 0;
 
-function startGame() {
+function continueGame() {
   app.stage.addChild(player.trail, player);
+  currentLevelIndex = Number(localStorage.getItem("userLevel"));
+  nextLevel();
+}
 
+function newGame() {
+  app.stage.addChild(player.trail, player);
   currentLevelIndex = -1;
+  localStorage.removeItem("userLevel");
   nextLevel();
 }
 
@@ -327,6 +339,7 @@ function stopLevel(level) {
 function levelComplete(level) {
   stopLevel(level);
   modalNextLevel.value.show();
+  localStorage.setItem("userLevel", currentLevelIndex);
 }
 
 function levelFail(level) {
@@ -361,6 +374,7 @@ function resume() {
   }
 }
 
+let continueAvailable = ref(false);
 let keyup = true;
 onMounted(() => {
   gameWindow.value.appendChild(app.view);
@@ -376,6 +390,10 @@ onMounted(() => {
       keyup = true;
     }
   });
+
+  if (localStorage.getItem("userLevel")) {
+    continueAvailable.value = true;
+  }
 });
 </script>
 

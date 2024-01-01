@@ -10,16 +10,24 @@
       </div>
       <div class="buttons content-center w-full">
         <button
-          ref="startBtn"
-          @click="closeModal"
+          :disabled="!continueAvailable"
+          ref="continueBtn"
+          @click="closeModal('continue-game')"
           class="start md:text-4xl text-4xl m-0 max-w-fit"
         >
-          START!
+          CONTINUE
+        </button>
+        <button
+          ref="newGameBtn"
+          @click="closeModal('new-game')"
+          class="start md:text-4xl text-4xl m-0 max-w-fit"
+        >
+          NEW GAME
         </button>
         <button
           ref="descBtn"
           @click.stop="showDesc"
-          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3"
+          class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3 mt-5"
         >
           Game Description
         </button>
@@ -43,10 +51,18 @@ import { ref } from "vue";
 
 const modalDiv = ref(null);
 const imgCont = ref(null);
-const startBtn = ref(null);
+const continueBtn = ref(null);
+const newGameBtn = ref(null);
 const descBtn = ref(null);
 let description = ref(false);
-const emits = defineEmits(["start-game"]);
+const emits = defineEmits(["new-game", "continue-game"]);
+
+const props = defineProps({
+  continueAvailable: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 function showDesc() {
   descBtn.value.blur();
@@ -64,20 +80,22 @@ function closeDesc() {
   }
 }
 
-function closeModal() {
-  startBtn.value.blur();
+function closeModal(event) {
+  newGameBtn.value.blur();
+  continueBtn.value.blur();
 
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 
   descBtn.value.classList.add("startanim1");
-  startBtn.value.classList.add("startanim2");
-  imgCont.value.classList.add("startanim3");
+  newGameBtn.value.classList.add("startanim2");
+  continueBtn.value.classList.add("startanim3");
+  imgCont.value.classList.add("startanim4");
 
   setTimeout(() => {
     modalDiv.value.classList.add("hidden");
   }, 2000);
-  emits("start-game");
+  emits(event);
 }
 
 const show = () => {
@@ -130,8 +148,8 @@ p {
 }
 
 .start {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
 .start:hover,
@@ -139,6 +157,11 @@ p {
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
     0 0 40px #00ffff, 0 0 50px #00ffff;
   transition: 0.3s ease;
+}
+
+.start:disabled {
+  text-shadow: none !important;
+  cursor: default !important;
 }
 
 .text {
@@ -167,11 +190,16 @@ p {
 }
 
 .startanim2 {
-  animation: shrink 0.8s 0.3s ease-in-out both;
+  animation: shrink 0.8s 0.2s ease-in-out both;
   cursor: none !important;
 }
 
 .startanim3 {
+  animation: shrink 0.8s 0.4s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim4 {
   animation: shrink 0.8s 0.6s ease-in-out both;
   cursor: none !important;
 }
