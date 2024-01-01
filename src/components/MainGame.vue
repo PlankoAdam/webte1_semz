@@ -41,14 +41,34 @@
       </div>
       <div
         class="flex flex-row justify-end fixed bottom-0 right-0 w-full mb-10"
-        v-if="showHUDText"
+        v-if="showHUDText && isRunning"
       >
-        <h1
+        <button
           @click="togglePause"
-          class="py-0 mx-5 my-0 sm:text-7xl text-3xl text-center font-bold opacity-1 lg:opacity-0"
+          class="py-0 mx-5 my-0 text-white lg:hidden"
         >
-          ||
-        </h1>
+          <svg
+            v-if="!isPaused"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M224 432h-80V80h80Zm144 0h-80V80h80Z"
+            />
+          </svg>
+          <svg
+            v-if="isPaused"
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 512 512"
+          >
+            <path fill="currentColor" d="m96 448l320-192L96 64z" />
+          </svg>
+        </button>
       </div>
     </div>
     <div ref="gameWindow" class="cursor-none"></div>
@@ -74,7 +94,7 @@ let scoreCount = ref(0);
 let timer = ref(0);
 let showHUDText = ref(false);
 let showHUDTimer = false;
-let isPaused = false;
+let isPaused = ref(false);
 let levelIndexes = [];
 let randomized = false;
 
@@ -268,16 +288,16 @@ function restartLevel() {
 let gameLoopfn;
 let activeCatsCount;
 let timerIntervalID;
-let isRunning = false;
+let isRunning = ref(false);
 //Game loop
 function startLevel(level) {
-  isRunning = true;
+  isRunning.value = true;
   level.start(app);
   activeCatsCount = level.cats.length;
 
   if (showHUDTimer && timer.value != 0) {
     timerIntervalID = setInterval(() => {
-      if (!isPaused) {
+      if (!isPaused.value) {
         if (timer.value == 0) {
           clearInterval(timerIntervalID);
           levelFail(level);
@@ -336,7 +356,7 @@ function startLevel(level) {
 }
 
 function stopLevel(level) {
-  isRunning = false;
+  isRunning.value = false;
   level.stop(app);
 
   app.ticker.remove(playerTickerfn);
@@ -365,7 +385,7 @@ function levelFail(level) {
 }
 
 function togglePause() {
-  if (isPaused) {
+  if (isPaused.value) {
     resume();
   } else {
     pause();
@@ -373,17 +393,17 @@ function togglePause() {
 }
 
 function pause() {
-  if (isRunning) {
+  if (isRunning.value) {
     app.ticker.stop();
-    isPaused = true;
+    isPaused.value = true;
     pauseScreen.value.pause();
     hudDiv.value.classList.add("cursor");
   }
 }
 
 function resume() {
-  if (isRunning) {
-    isPaused = false;
+  if (isRunning.value) {
+    isPaused.value = false;
     pauseScreen.value.resume();
     hudDiv.value.classList.remove("cursor");
 

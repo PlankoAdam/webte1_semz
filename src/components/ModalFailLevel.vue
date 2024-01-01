@@ -11,7 +11,7 @@
       <div class="buttons">
         <button
           ref="reLvlBtn"
-          class="start restart md:text-4xl text-3xl m-0 max-w-fit"
+          class="menubtn restart md:text-4xl text-3xl m-0 max-w-fit"
           @click="closeModal('restart-level')"
         >
           Restart Level
@@ -63,9 +63,17 @@ defineExpose({ show });
 </script>
 
 <style>
-.restart:hover {
+.restart:active {
   text-shadow: 0 0 10px #f00000, 0 0 20px #f00000, 0 0 30px #f00000,
     0 0 40px #f00000, 0 0 50px #f00000;
   transition: 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .restart:hover {
+    text-shadow: 0 0 10px #f00000, 0 0 20px #f00000, 0 0 30px #f00000,
+      0 0 40px #f00000, 0 0 50px #f00000;
+    transition: 0.3s ease;
+  }
 }
 </style>

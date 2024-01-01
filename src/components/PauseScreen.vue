@@ -3,7 +3,9 @@
     ref="mainDiv"
     class="flex fixed w-full h-full backdrop-blur-sm justify-center items-center transition-all opacity-0 cursor-none select-none"
   >
-    <h1 class="text-center text-9xl drop-shadow-[5px_5px_5px_rgba(0,0,0,0.7)]">
+    <h1
+      class="text-center text-6xl md:text-9xl drop-shadow-[5px_5px_5px_rgba(0,0,0,0.7)]"
+    >
       Paused
     </h1>
   </div>

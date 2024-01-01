@@ -13,21 +13,21 @@
           :disabled="!continueAvailable"
           ref="continueBtn"
           @click="closeModal('continue-game')"
-          class="start md:text-4xl text-4xl m-0 max-w-fit"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
         >
           CONTINUE
         </button>
         <button
           ref="newGameBtn"
           @click="closeModal('new-game')"
-          class="start md:text-4xl text-4xl m-0 max-w-fit"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
         >
           NEW GAME
         </button>
         <button
           ref="randomBtn"
           @click="closeModal('random')"
-          class="start md:text-4xl text-4xl m-0 max-w-fit"
+          class="menubtn md:text-4xl text-4xl m-0 max-w-fit"
         >
           RANDOM LEVELS
         </button>
@@ -39,7 +39,7 @@
           Game Description
         </button>
         <div v-if="description" class="max-h-0 md:w-3/5 w-4/5 self-center">
-          <p class="text text-justify lg:text-lg">
+          <p class="text text-justify text-xs lg:text-lg">
             Greetings cosmic rescuer! Your mission involves skillfully
             navigating your spacecraft through asteroid fields to save stranded
             space kitties. Dodge the celestial obstacles with precision and
@@ -148,30 +148,41 @@ p {
   align-items: center;
 }
 
-.start,
+.menubtn,
 .gamedesc {
   min-width: 10%;
   min-height: fit-content;
   color: aliceblue;
   font-family: spaceRanger;
   transition: 0.3s ease;
+  user-select: none;
 }
 
-.start {
+.menubtn {
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
 }
 
-.start:hover,
-.gamedesc:hover {
+.menubtn:active,
+.gamedesc:active {
   text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
     0 0 40px #00ffff, 0 0 50px #00ffff;
   transition: 0.3s ease;
 }
 
-.start:disabled {
+@media (min-width: 768px) {
+  .menubtn:hover,
+  .gamedesc:hover {
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff,
+      0 0 40px #00ffff, 0 0 50px #00ffff;
+    transition: 0.3s ease;
+  }
+}
+
+.menubtn:disabled {
   text-shadow: none !important;
   cursor: default !important;
+  opacity: 0.4 !important;
 }
 
 .text {
