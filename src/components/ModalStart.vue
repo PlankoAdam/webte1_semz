@@ -25,6 +25,13 @@
           NEW GAME
         </button>
         <button
+          ref="randomBtn"
+          @click="closeModal('random')"
+          class="start md:text-4xl text-4xl m-0 max-w-fit"
+        >
+          RANDOM LEVELS
+        </button>
+        <button
           ref="descBtn"
           @click.stop="showDesc"
           class="gamedesc md:text-2xl m-0 text-2xl max-w-fit mb-3 mt-5"
@@ -53,9 +60,10 @@ const modalDiv = ref(null);
 const imgCont = ref(null);
 const continueBtn = ref(null);
 const newGameBtn = ref(null);
+const randomBtn = ref(null);
 const descBtn = ref(null);
 let description = ref(false);
-const emits = defineEmits(["new-game", "continue-game"]);
+const emits = defineEmits(["new-game", "continue-game", "random"]);
 
 const props = defineProps({
   continueAvailable: {
@@ -83,14 +91,16 @@ function closeDesc() {
 function closeModal(event) {
   newGameBtn.value.blur();
   continueBtn.value.blur();
+  randomBtn.value.blur();
 
   modalDiv.value.classList.add("select-none");
   modalDiv.value.classList.add("cursor-none");
 
   descBtn.value.classList.add("startanim1");
-  newGameBtn.value.classList.add("startanim2");
-  continueBtn.value.classList.add("startanim3");
-  imgCont.value.classList.add("startanim4");
+  randomBtn.value.classList.add("startanim2");
+  newGameBtn.value.classList.add("startanim3");
+  continueBtn.value.classList.add("startanim4");
+  imgCont.value.classList.add("startanim5");
 
   setTimeout(() => {
     modalDiv.value.classList.add("hidden");
@@ -201,6 +211,11 @@ p {
 
 .startanim4 {
   animation: shrink 0.8s 0.6s ease-in-out both;
+  cursor: none !important;
+}
+
+.startanim5 {
+  animation: shrink 0.8s 0.8s ease-in-out both;
   cursor: none !important;
 }
 </style>

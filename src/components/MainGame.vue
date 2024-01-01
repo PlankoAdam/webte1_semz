@@ -3,6 +3,7 @@
     ref="modalStart"
     @continue-game="continueGame"
     @new-game="newGame"
+    @random="randomLevels"
     :continue-available="continueAvailable"
   >
   </ModalStart>
@@ -74,6 +75,12 @@ let timer = ref(0);
 let showHUDText = ref(false);
 let showHUDTimer = false;
 let isPaused = false;
+let levelIndexes = [];
+let randomized = false;
+
+for (let i = 0; i < levelsData.length; i++) {
+  levelIndexes.push(i);
+}
 
 const hudDiv = ref(null);
 const modalStart = ref(null);
@@ -195,6 +202,14 @@ function newGame() {
   nextLevel();
 }
 
+function randomLevels() {
+  randomized = true;
+  levelIndexes.sort((a, b) => {
+    return 0.5 - Math.random();
+  });
+  newGame();
+}
+
 //Ticker callback function for controlling the player object
 let playerTickerfn;
 let prevLevelScore = 0;
@@ -233,7 +248,7 @@ function resetLevel() {
   if (currentLevelIndex >= levelsData.length) {
     currentLevelIndex = 0;
   }
-  currentLevel = new GameLevel(levelsData[currentLevelIndex]);
+  currentLevel = new GameLevel(levelsData[levelIndexes[currentLevelIndex]]);
   currentLevel.score = 0;
 
   if (currentLevel.timeLimitSec != 0) {
@@ -339,7 +354,9 @@ function stopLevel(level) {
 function levelComplete(level) {
   stopLevel(level);
   modalNextLevel.value.show();
-  localStorage.setItem("userLevel", currentLevelIndex);
+  if (!randomized) {
+    localStorage.setItem("userLevel", currentLevelIndex);
+  }
 }
 
 function levelFail(level) {
